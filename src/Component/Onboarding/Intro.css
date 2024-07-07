@@ -15,7 +15,7 @@
 }
 
 /* 요소의 초기 상태 및 애니메이션 정의 */
-.e43, .e41, .e44 {
+.e43, .e41_intro, .e44 {
     opacity: 0; /* 초기 상태에서 투명하게 설정 */
     animation: fadeIn 2s ease-in forwards; /* 애니메이션 적용 */
 }
@@ -27,7 +27,7 @@
     left: 0;
 }
 
-.e41 {
+.e41_intro {
     position: absolute;
     bottom: 0;
     z-index: 0;
