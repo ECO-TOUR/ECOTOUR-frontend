@@ -1,0 +1,85 @@
+/* 전체 화면 */
+.keyword_container {
+    background-color: white;
+    height: 100vh;
+}
+
+/* 타이틀 */
+.keyword_title{
+    font-weight: 800;
+    font-size: 25px;
+    padding-top: 80px;
+    padding-left: 28px;
+    text-align: left;
+}
+
+/* 설명 text*/
+.keyword_text{
+    color: #676767;
+    font-size: 13px;
+    padding-top: 10px;
+    padding-left: 28px;
+}
+
+/* 키워드 메인 wrap*/
+.keyword_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px 0px 20px 0px;
+}
+  
+/* 키워드 행 */
+.keyword_row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+  
+/* 키워드 박스*/
+.keyword_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    margin: 5px 12px;
+    width: 150px;
+    height: 64px;
+    border-radius: 10px;
+    border: 2px solid #676767;
+    background: #FFF;
+    font-size: 15px;
+    color: #676767;
+    font-weight: 800;
+}
+  
+.keyword_box.clicked {
+    background-color: white; /* 클릭 시 변경될 색상 */
+    stroke-width: 2px;
+    box-shadow: 0 0 10px 5px rgba(145, 235, 134, 0.5); /* 블러 효과 */
+    border-color: #91EB86; /* 경계선 색상 */
+    color: #333;
+}
+
+/* 다음 버튼 */
+#next_btn{
+    border-radius: 10px;
+    background: #333;
+    color: white;
+    margin: 0 auto;
+    width: 343px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 0.3s; /* 부드러운 색상 전환을 위한 트랜지션 */
+}
+
+/* 다음 버튼에 마우스 올린 경우 */
+#next_btn:hover {
+    background: #444; /* 마우스를 올렸을 때 연한 색상으로 변경 */
+}

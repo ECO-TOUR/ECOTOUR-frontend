@@ -15,18 +15,18 @@ function Agreement() {
 
   const allCheckBtnClick = () => {
 
-    if(isAllClicked == false){
+    if(isAllClicked === false){
       setIsAllClicked(!isAllClicked);
       
-      if(isClicked1 == false){
+      if(isClicked1 === false){
         setIsClicked1(!isClicked1);
       }
 
-      if(isClicked2 == false){
+      if(isClicked2 === false){
         setIsClicked2(!isClicked2);
       }
 
-      if(isClicked3 == false){
+      if(isClicked3 === false){
         setIsClicked3(!isClicked3);
       }
     }
@@ -34,15 +34,15 @@ function Agreement() {
     else{
       setIsAllClicked(!isAllClicked);
       
-      if(isClicked1 == true){
+      if(isClicked1 === true){
         setIsClicked1(!isClicked1);
       }
 
-      if(isClicked2 == true){
+      if(isClicked2 === true){
         setIsClicked2(!isClicked2);
       }
 
-      if(isClicked3 == true){
+      if(isClicked3 === true){
         setIsClicked3(!isClicked3);
       }
     }
@@ -51,7 +51,7 @@ function Agreement() {
   const isCheckBtnClick1 = () => {
     setIsClicked1(!isClicked1);
 
-    if(isClicked2 == true && isClicked3 == true){
+    if(isClicked2 === true && isClicked3 === true){
       setIsAllClicked(!isAllClicked);
     }
   };
@@ -59,7 +59,7 @@ function Agreement() {
   const isCheckBtnClick2 = () => {
     setIsClicked2(!isClicked2);
 
-    if(isClicked1 == true && isClicked3 == true){
+    if(isClicked1 === true && isClicked3 === true){
       setIsAllClicked(!isAllClicked);
     }
   };
@@ -67,15 +67,15 @@ function Agreement() {
   const isCheckBtnClick3 = () => {
     setIsClicked3(!isClicked3);
 
-    if(isClicked1 == true && isClicked2 == true){
+    if(isClicked1 === true && isClicked2 === true){
       setIsAllClicked(!isAllClicked);
     }
   };
 
   // 회원가입 버튼 클릭 시
   const onClickSignUpBtn = () => {
-    if(isAllClicked == true){
-      navigate('/main');
+    if(isAllClicked === true){
+      navigate('/key-word');
     }
 
     else{
