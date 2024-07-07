@@ -18,9 +18,9 @@ const BottomSheet = ({ children }) => {
       }}
       variants={{
         visible: { y: 0 },
-        hidden: { y: "100%" }
+        hidden: { y: "67%" }
       }}
-      dragConstraints={{ top: 0 }}
+      dragConstraints={{ top: 0 }} // 드래그 제약 조건을 설정
       dragElastic={0.2}
     >
       <Header />

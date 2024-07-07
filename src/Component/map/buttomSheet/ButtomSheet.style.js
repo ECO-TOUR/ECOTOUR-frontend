@@ -5,20 +5,17 @@ import { BOTTOM_SHEET_HEIGHT } from "../../../constants";
 
 // bottomsheet 전체 박스
 const Wrapper = styled(motion.div)`
+  display: flex;
   flex-direction: column;
   position: fixed;
-  z-index: 10;
-  top: 20vh;
-  left: 0;
-  right: 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  background-color: white;
-  height: ${BOTTOM_SHEET_HEIGHT}px;
   width: 400px;
   margin: 0 auto;
-
-  overflow: auto;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  height: ${BOTTOM_SHEET_HEIGHT}px;
 `;
 
 // bottomsheet 헤더
