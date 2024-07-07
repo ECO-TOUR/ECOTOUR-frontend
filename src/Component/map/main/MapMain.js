@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import './MapMain.css';
 import BottomSheet from "../buttomSheet/ButtomSheet";
+import LocationBtn from '../../../assets/LocationBtn.svg';
 
 const {kakao} = window;
 
@@ -21,6 +22,7 @@ function MapMain() {
       <div id="map_main_header_container">지도</div>
       <div class="map_search_container">검색</div>
       <div id="map" style={{width: '400px', height: '350px'}}></div>
+      <img src={LocationBtn} class="location_btn"/>
 
       <BottomSheet>
         <span>Content</span>
