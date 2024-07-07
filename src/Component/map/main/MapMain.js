@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import './MapMain.css';
+import BottomSheet from "../buttomSheet/ButtomSheet";
 
 const {kakao} = window;
 
@@ -19,7 +20,11 @@ function MapMain() {
     <div id="map_main_container">
       <div id="map_main_header_container">지도</div>
       <div class="map_search_container">검색</div>
-      <div id="map" style={{width: '500px', height: '500px'}}></div>
+      <div id="map" style={{width: '400px', height: '350px'}}></div>
+
+      <BottomSheet>
+        <span>Content</span>
+      </BottomSheet>
     </div>
   )
 }
