@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import { useEffect, useMemo, useState } from "react";
+import { Map as KakaoMap, MapMarker } from "react-kakao-maps-sdk";
 import './MapMain.css';
 import BottomSheet from "../buttomSheet/ButtomSheet";
 import LocationBtn from '../../../assets/LocationBtn.svg';
@@ -7,23 +8,52 @@ const {kakao} = window;
 
 function MapMain() {
 
-  useEffect(() => {
-    const container = document.getElementById('map'); // 지도를 담을 영역의 DOM 레퍼런스
-    const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-      level: 3
-    };
+  // 지도의 중심좌표
+  const [center, setCenter] = useState({
+    lat: 33.450701,
+    lng: 126.570667,
+  });
 
-    const map = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
-  },[])
+  // 현재 위치
+  const [position, setPosition] = useState({
+    lat: 33.450701,
+    lng: 126.570667,
+  });
+
+  // 지도가 처음 렌더링되면 중심좌표를 현위치로 설정하고 위치 변화 감지
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setCenter({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    });
+
+    navigator.geolocation.watchPosition((pos) => {
+      setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    });
+  }, []);
 
   return (
     <div id="map_main_container">
       <div id="map_main_header_container">지도</div>
       <div class="map_search_container">검색</div>
-      <div id="map" style={{width: '400px', height: '350px'}}></div>
-      <img src={LocationBtn} class="location_btn"/>
-
+      <KakaoMap // 지도를 표시할 Container
+        id="map"
+        center={center}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+        level={4} // 지도의 확대 레벨
+      >
+        {/* 현위치 마커 */}
+        <MapMarker
+          image={{
+            src: require("/position.svg").default,
+            size: { width: 30, height: 30 },
+          }}
+          position={position}
+        />
+      </KakaoMap>
+      <img src={LocationBtn} class="location_btn" />
       <BottomSheet>
         <span>Content</span>
       </BottomSheet>
