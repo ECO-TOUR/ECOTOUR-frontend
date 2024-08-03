@@ -8,7 +8,7 @@
 .keyword_title{
     font-weight: 800;
     font-size: 25px;
-    padding-top: 102px;
+    padding-top: 80px;
     padding-left: 28px;
     text-align: left;
 }
@@ -26,14 +26,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
+    margin: 30px 0px 20px 0px;
 }
   
 /* 키워드 행 */
 .keyword_row {
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
   
 /* 키워드 박스*/
@@ -43,7 +43,7 @@
     align-items: center;
     cursor: pointer;
     transition: border-color 0.3s;
-    margin: 5px 15px;
+    margin: 5px 12px;
     width: 150px;
     height: 64px;
     border-radius: 10px;
@@ -60,4 +60,26 @@
     box-shadow: 0 0 10px 5px rgba(145, 235, 134, 0.5); /* 블러 효과 */
     border-color: #91EB86; /* 경계선 색상 */
     color: #333;
+}
+
+/* 다음 버튼 */
+#next_btn{
+    border-radius: 10px;
+    background: #333;
+    color: white;
+    margin: 0 auto;
+    width: 343px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 0.3s; /* 부드러운 색상 전환을 위한 트랜지션 */
+}
+
+/* 다음 버튼에 마우스 올린 경우 */
+#next_btn:hover {
+    background: #444; /* 마우스를 올렸을 때 연한 색상으로 변경 */
 }

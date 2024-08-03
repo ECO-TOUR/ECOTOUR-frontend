@@ -1,0 +1,78 @@
+/* 전체 화면 */
+#intro_container {
+    background-color: white;
+    height: 100vh;
+    position: relative;
+    text-align: center;
+}
+
+
+/* 페이드 인 애니메이션 정의 */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* 요소의 초기 상태 및 애니메이션 정의 */
+.e43, .e41, .e44 {
+    opacity: 0; /* 초기 상태에서 투명하게 설정 */
+    animation: fadeIn 2s ease-in forwards; /* 애니메이션 적용 */
+}
+
+.e43 {
+    position: absolute;
+    top: 0;
+    z-index: 0;
+    left: 0;
+}
+
+.e41 {
+    position: absolute;
+    bottom: 0;
+    z-index: 0;
+    right: 0;
+}
+
+.e44 {
+    position: absolute;
+    bottom: 0;
+    z-index: 0;
+    left: 0;
+}
+
+/* 문구 */
+.intro_text{
+    position: relative;
+    z-index: 1;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 2;
+    padding: 300px 0px 0px 0px;
+    opacity: 0; /* 초기 상태에서 투명하게 설정 */
+    animation: fadeIn 2s ease-in forwards; /* 애니메이션 적용 */
+}
+
+/* 시작 버튼 */
+#start_btn{
+    position: relative;
+    z-index: 1;
+    border-radius: 10px;
+    background: #333;
+    color: white;
+    margin: 220px auto 0px auto;
+    width: 343px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 0.3s; /* 부드러운 색상 전환을 위한 트랜지션 */
+}
+
+/* 버튼에 마우스 올린 경우 */
+#start_btn:hover {
+    background: #444; /* 마우스를 올렸을 때 연한 색상으로 변경 */
+}
