@@ -6,6 +6,7 @@ import Home from './Component/Main/Home';
 import KeyWord from './Component/Onboarding/KeyWord';
 import Intro from './Component/Onboarding/Intro';
 import MapMain from './Component/map/main/MapMain';
+import MapSearch from './Component/map/search/MapSearch';
 // import Mypage from './component/Mypage/Mypage.js';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/intro" element={<Intro />} />
             <Route path="/main" element={<Home />} />
             <Route path="/map-main" element={<MapMain />} />
+            <Route path="/map-search" element={<MapSearch />} />
             {/* <Route path="/mypage" element={<Mypage />} /> */}
           </Routes>
         </BrowserRouter>

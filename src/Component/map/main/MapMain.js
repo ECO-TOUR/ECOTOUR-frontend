@@ -5,6 +5,7 @@ import BottomSheet from "../buttomSheet/ButtomSheet";
 import LocationBtn from '../../../assets/LocationBtn.svg'; // 현위치 버튼
 import Marker from '../../../assets/Marker.svg'; // 현위치 아이콘
 import debounce from 'lodash/debounce';
+import { useNavigate } from 'react-router-dom';
 
 function MapMain() {
 
@@ -49,10 +50,15 @@ function MapMain() {
     []
   );
 
+  const navigate = useNavigate();
+  function onClickSearch(){
+    navigate('/map-search');
+  }
+
   return (
     <div id="map_main_container">
       <div id="map_main_header_container">지도</div>
-      <div class="map_search_container">검색</div>
+      <div class="map_search_container" onClick={onClickSearch}>검색</div>
       <KakaoMap // 지도를 표시할 Container
         id="map"
         center={center}

@@ -29,6 +29,7 @@
     margin: 20px auto;
     position: relative;
     z-index: 0;
+    cursor: pointer;
 }
 
 /* 현위치 버튼*/
