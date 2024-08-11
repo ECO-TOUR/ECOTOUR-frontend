@@ -23,7 +23,6 @@ function App() {
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/addform" element={<AddForm />} />
-
           </Routes>
         </BrowserRouter>
       </RecoilRoot>
