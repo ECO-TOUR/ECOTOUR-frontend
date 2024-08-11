@@ -7,18 +7,18 @@ function Post() {
     const [posts, setPosts] = useState([]);
   
     // 컴포넌트가 마운트될 때 실행되는 useEffect 훅
-    useEffect(() => {
-      // axios를 사용하여 GET 요청을 보내고 데이터 가져오기
-      axios.get('http://localhost:8000/api/posts/')
-        .then(response => {
-          // 요청이 성공하면 response.data를 posts 상태로 설정
-          setPosts(response.data);
-        })
-        .catch(error => {
-          // 요청이 실패하면 에러를 콘솔에 출력
-          console.error('Error fetching data:', error);
-        });
-    }, []); // 빈 배열을 두 번째 인수로 전달하여 컴포넌트가 마운트될 때만 실행되도록 설정
+    // useEffect(() => {
+    //   // axios를 사용하여 GET 요청을 보내고 데이터 가져오기
+    //   axios.get('http://localhost:8000/api/posts/')
+    //     .then(response => {
+    //       // 요청이 성공하면 response.data를 posts 상태로 설정
+    //       setPosts(response.data);
+    //     })
+    //     .catch(error => {
+    //       // 요청이 실패하면 에러를 콘솔에 출력
+    //       console.error('Error fetching data:', error);
+    //     });
+    // }, []); // 빈 배열을 두 번째 인수로 전달하여 컴포넌트가 마운트될 때만 실행되도록 설정
   
 
     return(

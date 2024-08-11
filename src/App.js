@@ -4,9 +4,9 @@ import Login from './component/Login/Login.js';
 import Agreement from './component/Agreement/Agreement.js'
 import Home from './component/Main/Home.js';
 import Mypage from './component/Mypage/Mypage.js';
-import Intro from './Component/Onboarding/Intro';
+import Intro from './component/Onboarding/Intro.js';
 import Community from './component/Community/Community.js'
-import KeyWord from './component/Onboarding/KeyWord';
+import KeyWord from './component/Onboarding/KeyWord.js';
 
 function App() {
   return (

@@ -14,6 +14,9 @@ const Community = () => {
                 <Post/>
             </div>
         </div>
+        <div className='add-post'>
+          <button className="button-3" role="button">+</button>
+        </div>
     </div>
   )
 }
