@@ -7,6 +7,7 @@ import Mypage from './component/Mypage/Mypage.js';
 import Intro from './component/Onboarding/Intro.js';
 import Community from './component/Community/Community.js'
 import KeyWord from './component/Onboarding/KeyWord.js';
+import AddForm  from './component/Community/AddForm.js';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/main" element={<Home />} />
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/community/addform" element={<AddForm />} />
 
           </Routes>
         </BrowserRouter>
