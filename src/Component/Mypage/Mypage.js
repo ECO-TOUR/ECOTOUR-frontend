@@ -4,7 +4,7 @@ import profileIcon from '../../assets/profile.svg';
 import './Mypage.css'
 import Header from '../Main/Header';
 import Navbar from '../Main/Navbar';
-
+import MyPost from './MyPost';
 const ToggleSwitch = () => {
     const [checked, setChecked] = useState(false);
   
@@ -42,6 +42,9 @@ const PostList = () => {
                 <div className='post-title'>
                     <div className='title'>내가쓴 글</div>
                     <a href='#'> 더 보기</a>
+                </div>
+                <div>
+                    <MyPost></MyPost>
                 </div>
             </div>
         </div>
