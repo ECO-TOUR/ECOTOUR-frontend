@@ -1,15 +1,14 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import Login from './Component/Login/Login';
-import Agreement from './Component/Agreement/Agreement'
-import Home from './Component/Main/Home';
-import KeyWord from './Component/Onboarding/KeyWord';
-import Intro from './Component/Onboarding/Intro';
-import MapMain from './Component/map/main/MapMain';
-import MapSearch from './Component/map/search/MapSearch';
+import Login from './component/Login/Login';
+import Agreement from './component/Agreement/Agreement'
+import Home from './component/Main/Home';
+import Intro from './component/Onboarding/Intro';
+import MapMain from './component/map/main/MapMain';
+import MapSearch from './component/map/search/MapSearch';
 import Mypage from './component/Mypage/Mypage.js';
 import Community from './component/Community/Community.js';
-import KeyWord from './Component/Onboarding/KeyWord.js';
+import KeyWord from './component/Onboarding/KeyWord.js';
 import AddForm  from './component/Community/AddForm.js';
 
 function App() {
