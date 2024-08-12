@@ -8,8 +8,8 @@ import Intro from './Component/Onboarding/Intro';
 import MapMain from './Component/map/main/MapMain';
 import MapSearch from './Component/map/search/MapSearch';
 import Mypage from './component/Mypage/Mypage.js';
-import Community from './component/Community/Community.js'
-import KeyWord from './component/Onboarding/KeyWord.js';
+import Community from './component/Community/Community.js';
+import KeyWord from './Component/Onboarding/KeyWord.js';
 import AddForm  from './component/Community/AddForm.js';
 
 function App() {
