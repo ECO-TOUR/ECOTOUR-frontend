@@ -1,0 +1,96 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nametag {
+    background-color: white;
+}
+.nametag-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 144px;
+    padding: 0px 30px 0px 0px;
+}
+
+.text-area {
+    margin-left: 10px;
+}
+.profile-icon {
+    width: 85px;
+    height: 85px;
+}
+
+.nickname{
+    font-size: x-large;
+    font-weight: 600;
+}
+.first-line {
+    color: #333;
+    font-family: ABeeZee;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 600;
+}
+
+.second-line{
+    margin-top: 6px;
+    color: #676767;
+    font-family: ABeeZee;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.postList{
+    width: 100%;
+    background-color: white;
+}
+.postList-area{
+    height: 250px;
+    padding: 12px 12px;
+}
+.post-title{
+    display: flex;
+    justify-content: space-between;
+}
+.title{
+    color: #333;
+    font-family: ABeeZee;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 900;
+}
+a{
+    color: #333;
+    text-decoration: none;
+}
+
+.settings{
+    background-color: white;
+}
+.settings-area{
+    height: 120px;
+    padding: 12px 12px;
+}
+.line{
+    align-items: center;
+    max-width: 360px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 19px;
+    font-weight: 500;
+    margin-left: 18px;
+    margin-top: 10px;
+    display: flex;
+}
+
+.service{
+    background-color: white;
+}
+.service-area{
+    height: 200px;
+    padding: 12px 12px;
+}
