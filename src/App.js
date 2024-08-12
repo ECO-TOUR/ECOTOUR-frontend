@@ -2,7 +2,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import Login from './component/Login/Login';
 import Agreement from './component/Agreement/Agreement'
-import Home from './component/main/Home';
+import Home from './component/Main/Home';
 import Intro from './component/Onboarding/Intro';
 import Mypage from './component/Mypage/Mypage.js';
 import Community from './component/Community/Community.js';

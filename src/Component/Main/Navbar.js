@@ -52,7 +52,7 @@ const Navbar = () => {
     <NavbarArea>
       <NavItem 
         highlight={highlightedItem === 'chat'}
-        onClick={() => handleNavigation('chat', '/chat')}
+        onClick={() => handleNavigation('chat', '/community')}
       >
         <ChatIcon />
       </NavItem>
