@@ -5,6 +5,8 @@ import './Mypage.css'
 import Header from '../Main/Header';
 import Navbar from '../Main/Navbar';
 import MyPost from './MyPost';
+import MyPostLarge from './MyPostLarge';
+
 const ToggleSwitch = () => {
     const [checked, setChecked] = useState(false);
   
@@ -44,7 +46,8 @@ const PostList = () => {
                     <a href='#'> 더 보기</a>
                 </div>
                 <div>
-                    <MyPost></MyPost>
+                    {/* <MyPost /> */}
+                    <MyPostLarge />
                 </div>
             </div>
         </div>
