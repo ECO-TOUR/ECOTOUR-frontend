@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const Search_main_container = styled.div`
     background-color: white;
-    height: 100vh;
+    height: 100%;
+    padding: 0px 0px 50px 0px;
 `;
 
 /* 헤더 */
@@ -49,6 +50,7 @@ export const Recent_header = styled.div`
     display: flex;
     padding: 0px 30px;
     align-items: center;
+    margin-bottom: 30px;
 `;
 
 // 최근 검색어 제목
