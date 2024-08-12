@@ -3,6 +3,7 @@ import Switch from 'react-switch';
 import profileIcon from '../../assets/profile.svg';
 import './Mypage.css'
 import Header from '../Main/Header';
+import Navbar from '../Main/Navbar';
 
 const ToggleSwitch = () => {
     const [checked, setChecked] = useState(false);
@@ -81,6 +82,7 @@ const Mypage = () => {
             <PostList />
             <Settings />
             <ServiceManage />
+            <Navbar />
         </div>
     )
 }
