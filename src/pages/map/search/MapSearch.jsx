@@ -1,6 +1,8 @@
 import React from 'react';
 import * as S from "./MapSearch.style";
 import { useNavigate } from 'react-router-dom';
+// 컴포넌트
+import RecentSearches from '../../../component/map/search/RecentSearches.jsx';
 
 function MapSearch() {
 
@@ -24,6 +26,7 @@ function MapSearch() {
           <S.Delete_btn>전체 삭제</S.Delete_btn>
         </S.Recent_header>
 
+        <RecentSearches/>
       </S.Recent_container>
     </S.Search_main_container>
   )
