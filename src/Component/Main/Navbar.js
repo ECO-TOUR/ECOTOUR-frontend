@@ -16,9 +16,9 @@ const NavbarArea = styled.div`
   display: flex;
   justify-content: space-around;
   flex-shrink: 0;  /* 고정 */
-  position: sticky;
+  position: fixed;
   bottom: 0;
-  margin-top: 40px;
+  z-index: 100;
 `;
 
 const NavItem = styled.button`
@@ -56,7 +56,7 @@ const Navbar = () => {
       </NavItem>
       <NavItem
         highlight={highlightedItem === 'search'}
-        onClick={() => handleNavigation('search', '/search')}
+        onClick={() => handleNavigation('search', '/map-main')}
       >
         <SearchIcon />
       </NavItem>

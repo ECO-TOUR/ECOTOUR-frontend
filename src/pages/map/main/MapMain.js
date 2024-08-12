@@ -6,6 +6,7 @@ import LocationBtn from '../../../assets/LocationBtn.svg'; // 현위치 버튼
 import Marker from '../../../assets/Marker.svg'; // 현위치 아이콘
 import debounce from 'lodash/debounce';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../../../component/main/Navbar';
 
 function MapMain() {
 
@@ -80,10 +81,10 @@ function MapMain() {
       </KakaoMap>
       {/* 현위치 버튼 */}
       <img src={LocationBtn} class="location_btn" onClick={setCenterToMyPosition}/>
-
       <BottomSheet>
         <span>Content</span>
       </BottomSheet>
+      <Navbar/>
     </div>
   )
 }

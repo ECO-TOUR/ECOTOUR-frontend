@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Search_main_container = styled.div`
     background-color: white;
     height: 100%;
+    padding-bottom: 100px;
 `;
 
 /* 헤더 */
