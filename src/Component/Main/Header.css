@@ -1,0 +1,17 @@
+.header{
+    background-color: white;
+}
+.header-area{
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+.header-title{
+    padding: 12px;
+    width: calc(100% - 40px);
+    text-align: center;
+    font-size: x-large;
+    font-weight: 600;
+    border-bottom: 1px solid #333;
+    margin: 0 auto; /* 가운데 정렬 */
+}

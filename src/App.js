@@ -7,7 +7,10 @@ import KeyWord from './Component/Onboarding/KeyWord';
 import Intro from './Component/Onboarding/Intro';
 import MapMain from './Component/map/main/MapMain';
 import MapSearch from './Component/map/search/MapSearch';
-// import Mypage from './component/Mypage/Mypage.js';
+import Mypage from './component/Mypage/Mypage.js';
+import Community from './component/Community/Community.js'
+import KeyWord from './component/Onboarding/KeyWord.js';
+import AddForm  from './component/Community/AddForm.js';
 
 function App() {
   return (
@@ -22,7 +25,9 @@ function App() {
             <Route path="/main" element={<Home />} />
             <Route path="/map-main" element={<MapMain />} />
             <Route path="/map-search" element={<MapSearch />} />
-            {/* <Route path="/mypage" element={<Mypage />} /> */}
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/community/addform" element={<AddForm />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>
