@@ -7,42 +7,59 @@ import Marker from '../../../assets/Marker.svg'; // 현위치 아이콘
 import debounce from 'lodash/debounce';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../../component/main/Navbar';
+import { useRecoilState } from 'recoil';
+import { NavAtoms } from '../../../recoil/NavAtoms';
 
 function MapMain() {
+  // nav 설정
+  const [highlightedItem, setHighlightedItem] = useRecoilState(NavAtoms);
 
   // 지도의 중심좌표
   const [center, setCenter] = useState({
-    lat: 33.450701,
-    lng: 126.570667,
+    lat: null,
+    lng: null,
   });
 
   // 현재 위치
   const [position, setPosition] = useState({
-    lat: 33.450701,
-    lng: 126.570667,
+    lat: null,
+    lng: null,
   });
 
-  // 지도가 처음 렌더링되면 중심좌표를 현위치로 설정하고 위치 변화 감지
   useEffect(() => {
+    setHighlightedItem("search");
 
-    navigator.geolocation.getCurrentPosition((pos) => {
+    // 위치 감지
+    const handlePosition = (pos) => {
       setCenter({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-    });
-
-    navigator.geolocation.watchPosition((pos) => {
       setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-    });
+    };
+
+    // 위치 감지 실패 핸들러
+    const handleError = (error) => {
+      console.error("위치 정보를 가져오는 데 실패했습니다:", error);
+      alert("실시간 위치 정보를 활성화 해주세요.");
+    };
+
+    // 위치 가져오기
+    navigator.geolocation.getCurrentPosition(handlePosition, handleError);
+
+    // 위치 변경 감지
+    const watchId = navigator.geolocation.watchPosition(handlePosition, handleError);
+
+    // Clean up
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
   }, []);
 
-  // 지도의 중심을 유저의 현재 위치로 변경
   const setCenterToMyPosition = () => {
     setCenter(position);
   };
 
-  // 지도 중심좌표 이동 감지 시 이동된 중심좌표로 설정
   const updateCenterWhenMapMoved = useMemo(
     () =>
-      debounce((map: kakao.maps.Map) => {
+      debounce((map) => {
         setCenter({
           lat: map.getCenter().getLat(),
           lng: map.getCenter().getLng(),
@@ -52,25 +69,24 @@ function MapMain() {
   );
 
   const navigate = useNavigate();
-  function onClickSearch(){
+  function onClickSearch() {
     navigate('/map-search');
   }
 
   return (
     <div id="map_main_container">
       <div id="map_main_header_container">지도</div>
-      <div class="map_search_container" onClick={onClickSearch}>검색</div>
-      <KakaoMap // 지도를 표시할 Container
+      <div className="map_search_container" onClick={onClickSearch}>검색</div>
+      <KakaoMap
         id="map"
         center={center}
         style={{
           width: "100%",
           height: "50%",
         }}
-        level={4} // 지도의 확대 레벨
+        level={4}
         onCenterChanged={updateCenterWhenMapMoved}
       >
-        {/* 현위치 마커 */}
         <MapMarker
           image={{
             src: Marker,
@@ -79,14 +95,13 @@ function MapMain() {
           position={position}
         />
       </KakaoMap>
-      {/* 현위치 버튼 */}
-      <img src={LocationBtn} class="location_btn" onClick={setCenterToMyPosition}/>
+      <img src={LocationBtn} className="location_btn" onClick={setCenterToMyPosition} />
       <BottomSheet>
         <span>Content</span>
       </BottomSheet>
-      <Navbar/>
+      <Navbar />
     </div>
-  )
+  );
 }
 
 export default MapMain;

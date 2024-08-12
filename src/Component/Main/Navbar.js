@@ -6,6 +6,8 @@ import { ReactComponent as HomeIcon } from '../../assets/home.svg';
 import { ReactComponent as SearchIcon } from '../../assets/search.svg';
 import { ReactComponent as ChatIcon } from '../../assets/chat.svg';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { NavAtoms } from '../../recoil/NavAtoms';
 
 const NavbarArea = styled.div`
   width: 400px;
@@ -38,7 +40,7 @@ const NavItem = styled.button`
 `;
 
 const Navbar = () => {
-  const [highlightedItem, setHighlightedItem] = useState('home');
+  const [highlightedItem, setHighlightedItem] = useRecoilState(NavAtoms);
   const navigate = useNavigate();
 
   const handleNavigation = (item, path) => {

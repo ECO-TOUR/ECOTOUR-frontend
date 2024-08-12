@@ -36,7 +36,7 @@
 .location_btn{
     position: absolute;
     top: 58%;
-    right: 37.3%;
+    right: 610px;
     z-index: 1;
     cursor: pointer;
 }
