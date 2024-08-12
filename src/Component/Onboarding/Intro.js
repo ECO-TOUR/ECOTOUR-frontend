@@ -18,7 +18,7 @@ function Intro() {
     <div id="intro_container">
         <img src={Ellipse43} alt="Ellipse 43" className='e43'/>
         <img src={Ellipse44} alt="Ellipse 44" className='e44'/>
-        <img src={Ellipse41} alt="Ellipse 41" className='e41'/>
+        <img src={Ellipse41} alt="Ellipse 41" className='e41_intro'/>
         <div class="intro_text">
             ECO TOUR에 오신 것을 환영해요!<br/>
             지금 바로 여러분만의<br/>

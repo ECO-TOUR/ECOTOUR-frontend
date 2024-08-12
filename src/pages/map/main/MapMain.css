@@ -1,0 +1,43 @@
+#map_main_container {
+    background-color: white;
+    height: 100vh;
+}
+
+/* 헤더 */
+#map_main_header_container{
+    width: 358px;
+    border-bottom: 1px solid #E7DDD9;
+    padding: 20px 0px;
+    font-weight: 800;
+    text-align: center;
+    color: #333;
+    font-size: 17px;
+    margin: 0px auto;
+}
+
+/* 검색 컴포넌트 */
+.map_search_container{
+    width: 320px;
+    border-radius: 10px;
+    background: #F5F5F5;
+    color: #676767;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 10px 20px 11px 20px;
+    display: flex;
+    align-items: center;
+    margin: 20px auto;
+    position: relative;
+    z-index: 0;
+    cursor: pointer;
+}
+
+/* 현위치 버튼*/
+.location_btn{
+    position: absolute;
+    top: 58%;
+    right: 610px;
+    z-index: 1;
+    cursor: pointer;
+}
+  

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Switch from 'react-switch';
 import profileIcon from '../../assets/profile.svg';
 import './Mypage.css'
-import Header from '../Main/Header';
-import Navbar from '../Main/Navbar';
+import Header from '../main/Header';
+import Navbar from '../main/Navbar';
 
 const ToggleSwitch = () => {
     const [checked, setChecked] = useState(false);

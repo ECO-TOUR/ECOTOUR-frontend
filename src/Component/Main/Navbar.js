@@ -6,25 +6,30 @@ import { ReactComponent as HomeIcon } from '../../assets/home.svg';
 import { ReactComponent as SearchIcon } from '../../assets/search.svg';
 import { ReactComponent as ChatIcon } from '../../assets/chat.svg';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { NavAtoms } from '../../recoil/NavAtoms';
 
 const NavbarArea = styled.div`
   width: 400px;
   height: 80px;
   bottom: 0;
   border-top: 1px solid #D9D9D9;
-  padding: 0;
   background-color: white;
   display: flex;
   justify-content: space-around;
+  flex-shrink: 0;  /* 고정 */
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
 `;
 
 const NavItem = styled.button`
   background: none;
   padding: 0;
   border: none;
-  margin-top: 10px;
-  width: 44px;
-  height: 44px;
+  margin-top: 20px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 
   svg {
@@ -35,7 +40,7 @@ const NavItem = styled.button`
 `;
 
 const Navbar = () => {
-  const [highlightedItem, setHighlightedItem] = useState('home');
+  const [highlightedItem, setHighlightedItem] = useRecoilState(NavAtoms);
   const navigate = useNavigate();
 
   const handleNavigation = (item, path) => {
@@ -53,7 +58,7 @@ const Navbar = () => {
       </NavItem>
       <NavItem
         highlight={highlightedItem === 'search'}
-        onClick={() => handleNavigation('search', '/search')}
+        onClick={() => handleNavigation('search', '/map-main')}
       >
         <SearchIcon />
       </NavItem>
