@@ -11,7 +11,7 @@ import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../../recoil/NavAtoms';
 
 function MapMain() {
-  // nav 설정
+  // Nav 변수 설정
   const [highlightedItem, setHighlightedItem] = useRecoilState(NavAtoms);
 
   // 지도의 중심좌표
@@ -27,7 +27,7 @@ function MapMain() {
   });
 
   useEffect(() => {
-    setHighlightedItem("search");
+    setHighlightedItem("search"); // Nav 변수 설정
 
     // 위치 감지
     const handlePosition = (pos) => {
