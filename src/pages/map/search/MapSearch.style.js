@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Search_main_container = styled.div`
     background-color: white;
     height: 100%;
-    padding: 0px 0px 50px 0px;
 `;
 
 /* 헤더 */
@@ -67,3 +66,8 @@ export const Delete_btn = styled.div`
     cursor: pointer;
 `;
 
+export const Navbar = styled.div`
+  flex-shrink: 0;  /* 고정 */
+  position: sticky;
+  bottom: 0;
+`;

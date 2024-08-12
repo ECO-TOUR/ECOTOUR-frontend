@@ -2,8 +2,9 @@ import React from 'react';
 import * as S from "./MapSearch.style";
 import { useNavigate } from 'react-router-dom';
 // 컴포넌트
-import RecentSearches from '../../../component/map/search/RecentSearches.jsx'; // 최근 검색어
-import RealTimeSearches from '../../../component/map/search/RealTimeSearch.jsx'; // 최근 검색어
+import RecentSearches from '../../../component/map/search/RecentSearches'; // 최근 검색어
+import RealTimeSearches from '../../../component/map/search/RealTimeSearch'; // 최근 검색어
+import Navbar from '../../../component/Main/Navbar';
 
 function MapSearch() {
 
@@ -38,6 +39,7 @@ function MapSearch() {
         {/* 실시간 검색어 리스트 컴포넌트 */}
         <RealTimeSearches/>
       </S.Recent_container>
+      <Navbar/>
     </S.Search_main_container>
   )
 }

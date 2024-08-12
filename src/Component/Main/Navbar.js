@@ -12,19 +12,22 @@ const NavbarArea = styled.div`
   height: 80px;
   bottom: 0;
   border-top: 1px solid #D9D9D9;
-  padding: 0;
   background-color: white;
   display: flex;
   justify-content: space-around;
+  flex-shrink: 0;  /* 고정 */
+  position: sticky;
+  bottom: 0;
+  margin-top: 40px;
 `;
 
 const NavItem = styled.button`
   background: none;
   padding: 0;
   border: none;
-  margin-top: 10px;
-  width: 44px;
-  height: 44px;
+  margin-top: 20px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 
   svg {
