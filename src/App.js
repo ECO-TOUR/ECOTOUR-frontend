@@ -1,13 +1,17 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import Login from './component/Login/Login.js';
-import Agreement from './component/Agreement/Agreement.js'
-import Home from './component/Main/Home.js';
+import Login from './component/Login/Login';
+import Agreement from './component/Agreement/Agreement'
+import Home from './component/main/Home';
+import Intro from './component/Onboarding/Intro';
 import Mypage from './component/Mypage/Mypage.js';
-import Intro from './component/Onboarding/Intro.js';
-import Community from './component/Community/Community.js'
+import Community from './component/Community/Community.js';
 import KeyWord from './component/Onboarding/KeyWord.js';
 import AddForm  from './component/Community/AddForm.js';
+//page
+import MapMain from './pages/map/main/MapMain';
+import MapSearch from './pages/map/search/MapSearch';
+
 
 function App() {
   return (
@@ -20,6 +24,8 @@ function App() {
             <Route path="/key-word" element={<KeyWord />} />
             <Route path="/intro" element={<Intro />} />
             <Route path="/main" element={<Home />} />
+            <Route path="/map-main" element={<MapMain />} />
+            <Route path="/map-search" element={<MapSearch />} />
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/addform" element={<AddForm />} />
