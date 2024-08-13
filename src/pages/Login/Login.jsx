@@ -19,7 +19,7 @@ function Login() {
     <S.Login_container>
       <S.Login_txt>자연과<br/>함께하는 여행</S.Login_txt>
       <S.Logo>ECO TOUR</S.Logo>
-      <S.Login_btn><img src={KakaoLoginBtn} onClick={onclickLoginBtn}/></S.Login_btn>
+      <S.Login_btn src={KakaoLoginBtn} onClick={onclickLoginBtn}/>
       <S.E41 src={Ellipse41}/>
       <S.E42 src={Ellipse42}/>
     </S.Login_container>

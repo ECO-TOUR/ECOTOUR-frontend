@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Agreement.css';
+import * as S from './Agreement.style';
 import Agreement_Arrow from '../../assets/agreement_arrow.svg';
 import Agreement_Check from '../../assets/agree_check.svg';
 import { useNavigate } from 'react-router-dom';
@@ -84,9 +84,9 @@ function Agreement() {
   }
 
   return (
-    <div className="container">
-      <div class="agreement_title">약관을 동의해주세요</div>
-      <div class="agree_box">
+    <S.Agree_container>
+      <S.Agreement_title>약관을 동의해주세요</S.Agreement_title>
+      {/* <div class="agree_box">
         <div class="agreement_wrap">
           <div className={`agree_btn ${isAllClicked ? 'clicked' : ''}`} onClick={allCheckBtnClick}>
             <img src={Agreement_Check} className={`agree_check ${isAllClicked ? 'clicked' : ''}`}></img>
@@ -118,8 +118,8 @@ function Agreement() {
           </div>
         </div>
         <div id="signUp_btn" onClick={onClickSignUpBtn}><div id="signUp_btn_text">회원가입 완료하기</div></div>
-      </div>
-    </div>
+      </div> */}
+    </S.Agree_container>
   );
 }
 
