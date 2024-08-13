@@ -1,5 +1,7 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
+import { GlobalStyle } from './GlobalStyle';
+
 import Login from './component/Login/Login';
 import Agreement from './component/Agreement/Agreement'
 import Home from './component/main/Home';
@@ -17,6 +19,7 @@ function App() {
   return (
     <>
       <RecoilRoot>
+        <GlobalStyle />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login />} />
