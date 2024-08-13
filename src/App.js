@@ -3,14 +3,14 @@ import { RecoilRoot } from 'recoil';
 import { GlobalStyle } from './GlobalStyle';
 
 import Home from './component/main/Home';
-import Intro from './component/Onboarding/Intro';
 import Mypage from './component/Mypage/Mypage.js';
 import Community from './component/Community/Community.js';
-import KeyWord from './component/Onboarding/KeyWord.js';
 import AddForm  from './component/Community/AddForm.js';
 //page
 import Login from './pages/Login/Login';
 import Agreement from './pages/Agreement/Agreement'
+import KeyWord from './pages/Onboarding/KeyWord.js';
+import Intro from './pages/Onboarding/Intro';
 import MapMain from './pages/map/main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
 
