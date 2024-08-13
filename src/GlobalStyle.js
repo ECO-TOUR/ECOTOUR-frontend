@@ -56,6 +56,10 @@ export const GlobalStyle = createGlobalStyle`
 	font-style: normal; 
 }
 
+body{
+
+}
+
   html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -94,12 +98,22 @@ html,body, input, button {
   line-height: 1;
   max-width: 430px; /* 모바일 환경에 맞춰 최대 너비를 430px로 고정 */
   background-color: #f2f2f2;
-  height: 100vh;
   overflow-x: hidden;
   font-family: 'S-CoreDream';
   position: relative;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* 웹킷 브라우저에서 스크롤바 숨기기 */
+::-webkit-scrollbar {
+  width: 0; /* 수평 스크롤바 숨기기 */
+  height: 0; /* 수직 스크롤바 숨기기 */
+}
+
+div, img {
+  height: auto; /* height를 자동으로 설정 */
+  background: none;
 }
 
 #root {
