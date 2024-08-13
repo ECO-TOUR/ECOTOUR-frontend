@@ -9,7 +9,7 @@ export const Login_container = styled.div`
 export const Login_txt = styled.div`
     padding: 130px 0px 0px 40px;
     color: #333333;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 28px;
     text-align: left;
     line-height: 1.5;

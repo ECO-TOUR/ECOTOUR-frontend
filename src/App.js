@@ -2,8 +2,6 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { GlobalStyle } from './GlobalStyle';
 
-import Login from './pages/Login/Login';
-import Agreement from './component/Agreement/Agreement'
 import Home from './component/main/Home';
 import Intro from './component/Onboarding/Intro';
 import Mypage from './component/Mypage/Mypage.js';
@@ -11,6 +9,8 @@ import Community from './component/Community/Community.js';
 import KeyWord from './component/Onboarding/KeyWord.js';
 import AddForm  from './component/Community/AddForm.js';
 //page
+import Login from './pages/Login/Login';
+import Agreement from './pages/Agreement/Agreement'
 import MapMain from './pages/map/main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
 

@@ -86,39 +86,45 @@ function Agreement() {
   return (
     <S.Agree_container>
       <S.Agreement_title>약관을 동의해주세요</S.Agreement_title>
-      {/* <div class="agree_box">
-        <div class="agreement_wrap">
-          <div className={`agree_btn ${isAllClicked ? 'clicked' : ''}`} onClick={allCheckBtnClick}>
-            <img src={Agreement_Check} className={`agree_check ${isAllClicked ? 'clicked' : ''}`}></img>
-          </div>
-          <div className={`agree_text ${isAllClicked ? 'clicked' : ''}`}>약관 전체 동의</div>
-        </div>
-        <div class="agree_line"></div>
+      <S.Agree_box>
+        <S.Agreement_wrap>
+          <S.Agree_btn className={`${isAllClicked ? 'clicked' : ''}`} onClick={allCheckBtnClick}>
+            <S.Agree_check src={Agreement_Check} className={`${isAllClicked ? 'clicked' : ''}`}></S.Agree_check>
+          </S.Agree_btn>
+          <S.Agree_text className={`agree_text ${isAllClicked ? 'clicked' : ''}`}>약관 전체 동의</S.Agree_text>
+        </S.Agreement_wrap>
+
+        <S.Agree_line/>
         <div>
-          <div class="agreement_wrap">
-            <div className={`agree_btn ${isClicked1 ? 'clicked' : ''}`} onClick={isCheckBtnClick1}>
-              <img src={Agreement_Check} className={`agree_check ${isClicked1 ? 'clicked' : ''}`}></img>
-            </div>
-            <div className={`agree_text ${isClicked1 ? 'clicked' : ''}`}>이용약관 동의 (필수)</div>
-            <img src={Agreement_Arrow} className='agree_arrow'/>
-          </div>
-          <div class="agreement_wrap">
-            <div className={`agree_btn ${isClicked2 ? 'clicked' : ''}`} onClick={isCheckBtnClick2}>
-              <img src={Agreement_Check} className={`agree_check ${isClicked2 ? 'clicked' : ''}`}></img>
-            </div>
-            <div className={`agree_text ${isClicked2 ? 'clicked' : ''}`}>개인정보 수집 및 이용동의 (필수)</div>
-            <img src={Agreement_Arrow} className='agree_arrow'/>
-          </div>
-          <div class="agreement_wrap">
-            <div className={`agree_btn ${isClicked3 ? 'clicked' : ''}`} onClick={isCheckBtnClick3}>
-              <img src={Agreement_Check} className={`agree_check ${isClicked3 ? 'clicked' : ''}`}></img>
-            </div>
-            <div className={`agree_text ${isClicked3 ? 'clicked' : ''}`}>만 14세 이상입니다 (필수)</div>
-            <img src={Agreement_Arrow} className='agree_arrow'/>
-          </div>
+          <S.Agreement_wrap>
+            <S.Agree_btn className={`${isClicked1 ? 'clicked' : ''}`} onClick={isCheckBtnClick1}>
+              <S.Agree_check src={Agreement_Check} className={`${isClicked1 ? 'clicked' : ''}`}></S.Agree_check>
+            </S.Agree_btn>
+            <S.Agree_text className={`${isClicked1 ? 'clicked' : ''}`}>이용약관 동의 (필수)</S.Agree_text>
+            <S.Agree_arrow src={Agreement_Arrow} className='agree_arrow'/>
+          </S.Agreement_wrap>
+
+          <S.Agreement_wrap>
+            <S.Agree_btn className={`${isClicked2 ? 'clicked' : ''}`} onClick={isCheckBtnClick2}>
+              <S.Agree_check src={Agreement_Check} className={`${isClicked2 ? 'clicked' : ''}`}></S.Agree_check>
+            </S.Agree_btn>
+            <S.Agree_text className={`${isClicked2 ? 'clicked' : ''}`}>개인정보 수집 및 이용동의 (필수)</S.Agree_text>
+            <S.Agree_arrow src={Agreement_Arrow}/>
+          </S.Agreement_wrap>
+
+          <S.Agreement_wrap>
+            <S.Agree_btn className={`${isClicked3 ? 'clicked' : ''}`} onClick={isCheckBtnClick3}>
+              <S.Agree_check src={Agreement_Check} className={`${isClicked3 ? 'clicked' : ''}`}></S.Agree_check>
+            </S.Agree_btn>
+            <S.Agree_text className={`${isClicked3 ? 'clicked' : ''}`}>만 14세 이상입니다 (필수)</S.Agree_text>
+            <S.Agree_arrow src={Agreement_Arrow}/>
+          </S.Agreement_wrap>
         </div>
-        <div id="signUp_btn" onClick={onClickSignUpBtn}><div id="signUp_btn_text">회원가입 완료하기</div></div>
-      </div> */}
+
+        <S.SignUp_btn onClick={onClickSignUpBtn}>
+          <S.SignUp_btn_text>회원가입 완료하기</S.SignUp_btn_text>
+        </S.SignUp_btn>
+      </S.Agree_box>
     </S.Agree_container>
   );
 }
