@@ -76,7 +76,7 @@ export const Agree_line = styled.div`
 // 오른쪽 화살표
 export const Agree_arrow = styled.img`
     margin-left: auto;
-    padding-right: 10px;
+    margin-right: 10px;
     cursor: pointer;
 `;
 
