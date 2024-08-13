@@ -10,7 +10,7 @@ export const Agree_container = styled.div`
 export const Agreement_title = styled.div`
     font-weight: 800;
     font-size: 25px;
-    padding-top: 30%;
+    padding-top: 20%;
     padding-left: 40px;
     text-align: left;
 `;

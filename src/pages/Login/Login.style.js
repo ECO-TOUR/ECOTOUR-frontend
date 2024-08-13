@@ -7,7 +7,7 @@ export const Login_container = styled.div`
 
 /* 로고 위 문구(자연과 함께하는 여행) */
 export const Login_txt = styled.div`
-    padding: 130px 0px 0px 40px;
+    padding: 100px 0px 0px 40px;
     color: #333333;
     font-weight: 700;
     font-size: 28px;
