@@ -7,11 +7,10 @@ import Navbar from './Navbar';
 function Home() {
   return (
     <>
-    <Header></Header>
+    <Header name="ECO TOUR" color="#91EB86"></Header>
     <div className="container">
       Main페이지
       <br/>
-      <Link to="/mypage">Go To Mypage</Link>
     </div>
     <Navbar></Navbar>
     </>

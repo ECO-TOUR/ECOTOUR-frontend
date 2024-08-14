@@ -21,6 +21,8 @@ const NavbarArea = styled.div`
   position: fixed;
   bottom: 0;
   z-index: 100;
+  left: 50%; /* 화면 중앙에 수평 위치 조정 */
+  transform: translateX(-50%); /* 중앙 정렬을 위해 위치 조정 */
 `;
 
 const NavItem = styled.button`
@@ -28,8 +30,8 @@ const NavItem = styled.button`
   padding: 0;
   border: none;
   margin-top: 20px;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
 
   svg {
