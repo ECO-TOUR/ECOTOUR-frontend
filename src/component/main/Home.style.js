@@ -4,7 +4,8 @@ import { Swiper } from 'swiper/react';
 // 전체
 export const Container = styled.div`
     background-color: white;
-    height: 100vh;
+    height: 100%;
+    padding: 0px 0px 100px 0px;
 `;
 
 // 배너
@@ -33,6 +34,7 @@ export const BannerContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 `;
 
 // content 헤더

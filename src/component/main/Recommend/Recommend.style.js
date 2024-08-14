@@ -14,6 +14,15 @@ export const ContentBox = styled.div`
     height: 164px;
     flex-shrink: 0;
     margin: 0 5px;
+    cursor: pointer;
+    transition: 
+        box-shadow 0.3s ease, 
+        transform 0.3s ease; /* 부드러운 트랜지션 효과 추가 */
+
+    &:hover {
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 입체감 추가 */
+        transform: translateY(-1px); /* 요소를 살짝 위로 이동 */
+    }
 `;
 
 // content 이미지
@@ -34,7 +43,7 @@ export const ContentName = styled.div`
 export const ContentRegion = styled.div`
     color: #676767;
     font-size: 12px;
-    font-weight: 300;
+    font-weight: 400;
     padding: 0px 9px;
 `;
 

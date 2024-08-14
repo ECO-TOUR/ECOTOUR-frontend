@@ -12,7 +12,7 @@ import { ReactComponent as Banner1 } from '../../assets/banner1.svg';
 import Header from './Header';
 import Navbar from './Navbar';
 import Recommend from './Recommend/Recommend';
-
+import Top5 from './Top5/Top5';
 
 function Home() {
   return (
@@ -53,8 +53,11 @@ function Home() {
       <S.ContentText>ECO TOUR가 000님에게 추천하는 생태관광지를 확인해 보세요</S.ContentText>
       <Recommend/>
 
+      {/* top5 생태관광지 */}
       <S.ContentHeader>이번 달 TOP5 인기 생태관광지</S.ContentHeader>
       <S.ContentText>이번 달에 가장 인기있는 생태관광지를 확인해 보세요</S.ContentText>
+      <Top5/>
+
       <Navbar />
     </S.Container>
   );

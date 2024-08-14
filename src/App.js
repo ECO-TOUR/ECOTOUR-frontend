@@ -11,7 +11,7 @@ import Login from './pages/Login/Login';
 import Agreement from './pages/Agreement/Agreement'
 import KeyWord from './pages/Onboarding/KeyWord.js';
 import Intro from './pages/Onboarding/Intro';
-import MapMain from './pages/map/main/MapMain';
+import MapMain from './pages/map/Main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
 
 
