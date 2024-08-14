@@ -8,8 +8,11 @@ import 'swiper/css/autoplay';
 // 필요 모듈은 Swiper 패키지의 직접 가져오기 방식으로 변경
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { ReactComponent as Banner1 } from '../../assets/banner1.svg';
+// 컴포넌트
 import Header from './Header';
 import Navbar from './Navbar';
+import Recommend from './Recommend/Recommend';
+
 
 function Home() {
   return (
@@ -45,6 +48,13 @@ function Home() {
         </S.StyledSwiper>
       </div>
 
+      {/* 추천 생태관광지 */}
+      <S.ContentHeader>ECO TOUR 추천 생태관광지</S.ContentHeader>
+      <S.ContentText>ECO TOUR가 000님에게 추천하는 생태관광지를 확인해 보세요</S.ContentText>
+      <Recommend/>
+
+      <S.ContentHeader>이번 달 TOP5 인기 생태관광지</S.ContentHeader>
+      <S.ContentText>이번 달에 가장 인기있는 생태관광지를 확인해 보세요</S.ContentText>
       <Navbar />
     </S.Container>
   );

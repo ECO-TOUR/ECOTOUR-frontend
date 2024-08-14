@@ -7,14 +7,7 @@ export const Container = styled.div`
     height: 100vh;
 `;
 
-// 배너 이미지
-export const BannerContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-// 배너 페이지네이션
+// 배너
 export const StyledSwiper = styled(Swiper)`
     height: 220px;
 
@@ -33,5 +26,29 @@ export const StyledSwiper = styled(Swiper)`
         font-size: 16px; /* 화살표 아이콘의 크기를 조절합니다 */
         color: #676767; /* 화살표 아이콘 색상 */
     }
+`;
+
+// 배너 이미지
+export const BannerContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+// content 헤더
+export const ContentHeader = styled.div`
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 30px;
+    padding: 0px 20px;
+`;
+
+// content text
+export const ContentText = styled.div`
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 10px;
+    padding: 0px 20px;
+    color: #676767;
 `;
   
