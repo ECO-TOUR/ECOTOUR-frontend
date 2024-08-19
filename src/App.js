@@ -9,7 +9,7 @@ import Community from './component/Community/Community.js';
 import KeyWord from './component/Onboarding/KeyWord.js';
 import AddForm  from './component/Community/AddForm.js';
 //page
-import MapMain from './pages/map/main/MapMain';
+import MapMain from './pages/map/Main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
 import LikeMain from './pages/Like/LikeMain.js';
 
