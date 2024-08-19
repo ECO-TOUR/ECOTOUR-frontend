@@ -122,6 +122,7 @@ div, img {
 
 #root {
   position: relative;
+  min-width: 320px;
 }
 menu, ol, ul {
   list-style: none;

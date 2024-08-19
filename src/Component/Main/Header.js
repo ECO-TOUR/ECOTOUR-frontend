@@ -18,6 +18,8 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderArea = styled.div`
+  width: 100%;
+  min-width: 320px;
   height: 60px;
   display: flex;
   align-items: center;

@@ -6,13 +6,16 @@ import Navbar from '../../component/Main/Navbar.js';
 
 const CommunityContainer = styled.div`
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   background-color: white;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
     display: none;
   }
+  max-width: 430px;
+  min-width: 320px;
+  margin: 0 auto;
 `;
 
 const CommunityArea = styled.div`
@@ -25,6 +28,7 @@ const CommunityArea = styled.div`
 
 const SearchBar = styled.input`
   width: 100%;
+  min-width: 320px;
   height: 40px;
   align-self: center;
   background-color: #f5f5f5;
@@ -47,11 +51,13 @@ const PostTitle = styled.div`
 
 const StyledPost = styled.div`
   margin-top: 16px;
-  width: 370px;
+  width: 100%;
+  max-width: 370px;
   height: 484px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
+  align-self: center;
 `;
 
 const PhotoArea = styled.div`
