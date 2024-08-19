@@ -55,14 +55,16 @@
 
 /* 시작 버튼 */
 #start_btn{
-    position: relative;
+    position: fixed;
+    bottom: 70px;
+    left: 50%; /* 화면 중앙에 수평 위치 조정 */
+    transform: translateX(-50%); /* 중앙 정렬을 위해 위치 조정 */
     z-index: 1;
     border-radius: 10px;
     background: #333;
     color: white;
-    margin: 220px auto 0px auto;
     width: 343px;
-    height: 45px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,5 +76,5 @@
 
 /* 버튼에 마우스 올린 경우 */
 #start_btn:hover {
-    background: #444; /* 마우스를 올렸을 때 연한 색상으로 변경 */
+    background: #555; /* 마우스를 올렸을 때 연한 색상으로 변경 */
 }

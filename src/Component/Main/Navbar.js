@@ -10,8 +10,8 @@ import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../recoil/NavAtoms';
 
 const NavbarArea = styled.div`
-  width: 400px;
-  height: 80px;
+  width: 100%;
+  height: 70px;
   bottom: 0;
   border-top: 1px solid #D9D9D9;
   background-color: white;
@@ -21,15 +21,17 @@ const NavbarArea = styled.div`
   position: fixed;
   bottom: 0;
   z-index: 100;
+  left: 50%; /* 화면 중앙에 수평 위치 조정 */
+  transform: translateX(-50%); /* 중앙 정렬을 위해 위치 조정 */
 `;
 
 const NavItem = styled.button`
   background: none;
   padding: 0;
   border: none;
-  margin-top: 20px;
-  width: 30px;
-  height: 30px;
+  margin-top: 15px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
 
   svg {
