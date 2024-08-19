@@ -11,7 +11,7 @@ import AddForm  from './component/Community/AddForm.js';
 //page
 import MapMain from './pages/map/main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
-
+import LikeMain from './pages/Like/LikeMain.js';
 
 function App() {
   return (
@@ -29,6 +29,7 @@ function App() {
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/addform" element={<AddForm />} />
+            <Route path="/like" element={<LikeMain />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>

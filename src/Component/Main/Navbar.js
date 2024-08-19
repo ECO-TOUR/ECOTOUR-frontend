@@ -70,7 +70,7 @@ const Navbar = () => {
       </NavItem>
             <NavItem
         highlight={highlightedItem === 'heart'}
-        onClick={() => handleNavigation('heart', '/heart')}
+        onClick={() => handleNavigation('heart', '/like')}
       >
         <HeartIcon />
       </NavItem>
