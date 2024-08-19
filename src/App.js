@@ -2,7 +2,6 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { GlobalStyle } from './GlobalStyle';
 
-import Home from './component/main/Home';
 import Mypage from './component/Mypage/Mypage.js';
 import Community from './component/Community/Community.js';
 import AddForm  from './component/Community/AddForm.js';
@@ -13,6 +12,7 @@ import KeyWord from './pages/Onboarding/KeyWord.js';
 import Intro from './pages/Onboarding/Intro';
 import MapMain from './pages/map/Main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
+import Home from './pages/Main/Home';
 
 
 function App() {

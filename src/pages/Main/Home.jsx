@@ -9,10 +9,11 @@ import 'swiper/css/autoplay';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { ReactComponent as Banner1 } from '../../assets/banner1.svg';
 // 컴포넌트
-import Header from './Header';
-import Navbar from './Navbar';
-import Recommend from './Recommend/Recommend';
-import Top5 from './Top5/Top5';
+import Header from '../../component/main/Header';
+import Navbar from '../../component/main/Navbar';
+import Recommend from '../../component/main/Recommend/Recommend';
+import Top5 from '../../component/main/Top5/Top5';
+import Community from '../../component/main/Community/Community';
 
 function Home() {
   return (
@@ -57,6 +58,11 @@ function Home() {
       <S.ContentHeader>이번 달 TOP5 인기 생태관광지</S.ContentHeader>
       <S.ContentText>이번 달에 가장 인기있는 생태관광지를 확인해 보세요</S.ContentText>
       <Top5/>
+
+      {/* 인기게시글 */}
+      <S.ContentHeader>인기 있는 게시글</S.ContentHeader>
+      <S.ContentText>지금 인기있는 커뮤니티 게시글을 확인해 보세요</S.ContentText>
+      <Community/>
 
       <Navbar />
     </S.Container>
