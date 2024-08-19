@@ -1,22 +1,24 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import Login from './component/Login/Login';
-import Agreement from './component/Agreement/Agreement'
-import Home from './component/Main/Home';
-import Intro from './component/Onboarding/Intro';
+import { GlobalStyle } from './GlobalStyle';
+
 import Mypage from './component/Mypage/Mypage.js';
 import Community from './component/Community/Community.js';
-import KeyWord from './component/Onboarding/KeyWord.js';
 import AddForm  from './component/Community/AddForm.js';
 //page
+import Login from './pages/Login/Login';
+import Agreement from './pages/Agreement/Agreement'
+import KeyWord from './pages/Onboarding/KeyWord.js';
+import Intro from './pages/Onboarding/Intro';
 import MapMain from './pages/map/Main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
-import LikeMain from './pages/Like/LikeMain.js';
+
 
 function App() {
   return (
     <>
       <RecoilRoot>
+        <GlobalStyle />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login />} />
