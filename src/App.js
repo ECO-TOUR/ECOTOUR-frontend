@@ -2,9 +2,9 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { GlobalStyle } from './GlobalStyle';
 
-import Mypage from './component/Mypage/Mypage.js';
-import Community from './component/Community/Community.js';
-import AddForm  from './component/Community/AddForm.js';
+import Mypage from './pages/Mypage/Mypage.js';
+import Community from './pages/Community/Community.js';
+import AddForm  from './pages/Community/AddForm.js';
 //page
 import Login from './pages/Login/Login';
 import Agreement from './pages/Agreement/Agreement'
