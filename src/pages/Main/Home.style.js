@@ -54,3 +54,8 @@ export const ContentText = styled.div`
     color: #676767;
 `;
   
+export const UpImg = styled.div`
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+`;

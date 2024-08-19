@@ -18,8 +18,7 @@ function Community() {
                         <img src={LikeIcon}/><S.InfoText>20</S.InfoText>
                         <img src={ChatIcon}/><S.InfoText>5</S.InfoText>
                     </S.ContentInfo>                    
-                </S.ContentDiv>
-                
+                </S.ContentDiv>                
             </S.ContentBox>
         ))}
     </S.Component>

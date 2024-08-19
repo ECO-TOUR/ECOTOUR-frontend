@@ -103,7 +103,6 @@ html,body, input, button {
   line-height: 1;
   max-width: 430px; /* 모바일 환경에 맞춰 최대 너비를 430px로 고정 */
   background-color: #f2f2f2;
-  overflow-x: hidden;
   font-family: 'Pretendard';
   position: relative;
   margin-left: auto;
