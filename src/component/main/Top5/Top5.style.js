@@ -34,13 +34,13 @@ export const ContentNum = styled.div`
     color: #91EB86;
     font-weight: 700;
     font-size: 17px;
-    margin-left: -80px;
+    margin-left: 20px;
     padding: 5px 0px;
 `;
 
 // 이름, 지역 컨테이너
 export const ContentInfo = styled.div`
-    margin-left: -80px;
+    margin-left: 25px;
 `;
 
 export const ContentName = styled.div`
