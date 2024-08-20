@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as S from './Detail.style';
 import { Map as KakaoMap, MapMarker } from "react-kakao-maps-sdk";
 // 컴포넌트
@@ -22,6 +22,8 @@ function Detail() {
         });  
     };
 
+    const[address, setAddress] = useState("충청북도 단양군 단양읍 고수동굴길 8");
+
   return (
     <S.Container>
         {/* 헤더 */}
@@ -42,8 +44,8 @@ function Detail() {
         </S.TitleComponent>
 
         {/* 지도(위치) */}
-        <S.Address>충청북도 단양군 단양읍 고수동굴길 8</S.Address>
-        <Map/>
+        <S.Address>{address}</S.Address>
+        <Map address={address}/>
         <S.Line/>
 
         {/* 관광지 정보 */}

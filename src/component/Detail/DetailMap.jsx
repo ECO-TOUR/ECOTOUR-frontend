@@ -3,71 +3,46 @@ import { Map as KakaoMap, MapMarker } from "react-kakao-maps-sdk";
 import debounce from 'lodash/debounce';
 import { useNavigate } from 'react-router-dom';
 
-function DetailMap() {
+const {kakao} = window;
+function DetailMap({ address }) {
 
-  // 지도의 중심좌표
-  const [center, setCenter] = useState({
-    lat: 37.5665, // 서울의 기본 위도
-    lng: 126.9780, // 서울의 기본 경도
+  const [state, setState] = useState({
+    // 지도의 초기 위치
+    center: { lat: 37.49676871972202, lng: 127.02474726969814 },
+    // 지도 위치 변경시 panto를 이용할지(부드럽게 이동)
+    isPanto: true,
   });
-
-  // 현재 위치
-  const [position, setPosition] = useState({
-    lat: 37.5665, // 서울의 기본 위도
-    lng: 126.9780, // 서울의 기본 경도
-  });
-
+  const [searchAddress, SetSearchAddress] = useState(address);
+  
+  // 주소 입력후 검색 클릭 시 원하는 주소로 이동
   useEffect(() => {
-
-    // 위치 감지
-    const handlePosition = (pos) => {
-      setCenter({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-      setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    const geocoder = new kakao.maps.services.Geocoder();
+    
+    let callback = function(result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        const newSearch = result[0]
+        setState({
+          center: { lat: newSearch.y, lng: newSearch.x }
+        })
+      }
     };
-
-    // 위치 감지 실패 핸들러
-    const handleError = (error) => {
-      console.error("위치 정보를 가져오는 데 실패했습니다:", error);
-      alert("실시간 위치 정보를 활성화 해주세요.");
-    };
-
-    // 위치 가져오기
-    navigator.geolocation.getCurrentPosition(handlePosition, handleError);
-
-    // 위치 변경 감지
-    const watchId = navigator.geolocation.watchPosition(handlePosition, handleError);
-
-    // Clean up
-    return () => {
-      navigator.geolocation.clearWatch(watchId);
-    };
-  }, []);
-
-  const setCenterToMyPosition = () => {
-    setCenter(position);
-  };
-
-  const updateCenterWhenMapMoved = useMemo(
-    () =>
-      debounce((map) => {
-        setCenter({
-          lat: map.getCenter().getLat(),
-          lng: map.getCenter().getLng(),
-        });
-      }, 500),
-    []
-  );
-
+      geocoder.addressSearch(`${searchAddress}`, callback);
+    }, [])
+  
   return (
     <div>
       <KakaoMap
-        center={center}
+        center={state.center}
+        isPanto={state.isPanto}
         style={{
           width: "100%",
           height: "200px",
         }}
-        level={4}
+        level={3}
       >
+        {!state.isLoading && (
+          <MapMarker position={state.center}/>
+        )}
       </KakaoMap>
     </div>
   )
