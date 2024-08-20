@@ -15,6 +15,7 @@ export const HeaderComponent = styled.div`
     position: relative;
     border-bottom: 1px solid #D9D9D9;
     width: 370px;
+    margin: 0 auto;
 `;
 
 // 뒤로가기 버튼
@@ -47,7 +48,8 @@ export const Title = styled.div`
 
 // 좋아요 공유 아이콘 박스
 export const IconBox = styled.div`
-    margin-right: 29px;
+    margin-right: 30px;
+    margin-left: auto;
 `;
 
 // 좋아요, 공유 아이콘 이미지
@@ -115,4 +117,12 @@ export const InfoText = styled.div`
     font-weight: 300;
     padding: 0px 30px 0px 45px;
     line-height: 1.3;
+`;
+
+export const UpImg = styled.div`
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    margin-top: 20px;
+    padding: 1px 0px;
 `;

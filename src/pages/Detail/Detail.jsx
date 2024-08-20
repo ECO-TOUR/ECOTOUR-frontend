@@ -5,13 +5,23 @@ import { Map as KakaoMap, MapMarker } from "react-kakao-maps-sdk";
 import Header from '../../component/main/Header';
 import Map from '../../component/Detail/DetailMap';
 import Review from '../../component/Detail/Review';
+import Nav from '../../component/main/Navbar';
 // img
 import { ReactComponent as BackBtn } from '../../assets/back_btn.svg';
 import EmptyHeart from '../../assets/empty_heart.svg';
 import ShareIcon from '../../assets/share_icon.svg';
 import exampleImage from '../../assets/example1.png'; // 이미지 파일을 import
+import { ReactComponent as UpIcon } from '../../assets/up_icon.svg';
 
 function Detail() {
+    // 스크롤 함수
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });  
+    };
+
   return (
     <S.Container>
         {/* 헤더 */}
@@ -108,6 +118,11 @@ function Detail() {
 
         {/* 방문자 커뮤니티 */}
         <Review/>
+
+        <S.UpImg>
+            <UpIcon onClick={scrollToTop}/>
+        </S.UpImg>
+        <Nav/>
     </S.Container>
   )
 }
