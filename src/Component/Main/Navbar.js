@@ -11,6 +11,7 @@ import { NavAtoms } from '../../recoil/NavAtoms';
 
 const NavbarArea = styled.div`
   width: 100%;
+  min-width: 320px;
   max-width: 430px;
   height: 70px;
   bottom: 0;

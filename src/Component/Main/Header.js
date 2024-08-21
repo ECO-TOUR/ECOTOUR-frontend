@@ -11,11 +11,12 @@ const HeaderContainer = styled.div`
   &:after {
     content: '';
     position: absolute;
-    bottom: 5px;
     left: 16px;
     right: 16px;
-    height: 1px;
+    bottom: 0;
+    height: 2px;
     background-color: #e9e9e9;
+    
   }
 `;
 

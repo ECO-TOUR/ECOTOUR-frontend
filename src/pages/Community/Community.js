@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 import React from 'react';
-import Post from './Post.js';
 import Header from '../../component/Main/Header.js';
 import Navbar from '../../component/Main/Navbar.js';
+import Post from '../../component/community/Main/Post.js'; // Post 컴포넌트 불러오기
 
 const CommunityContainer = styled.div`
+  padding-top: 60px;
+  padding-bottom: 70px;
+  margin: 0;
   height: 100vh;
   width: 100%;
   background-color: white;
@@ -15,26 +18,26 @@ const CommunityContainer = styled.div`
   }
   max-width: 430px;
   min-width: 320px;
-  margin: 0 auto;
 `;
 
 const CommunityArea = styled.div`
   margin: 6px 16px;
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   width: calc(100% - 32px);
+  min-width: calc(var(--mim-width) - 32px);
 `;
 
 const SearchBar = styled.input`
   width: 100%;
-  min-width: 320px;
+  min-width: calc(var(--mim-width) - 32px);
   height: 40px;
   align-self: center;
   background-color: #f5f5f5;
   border: none;
   border-radius: 10px;
   padding-left: 15px;
+  padding-right: 15px;
   color: #333333;
   font-weight: 400;
   font-size: 13px;
@@ -42,65 +45,28 @@ const SearchBar = styled.input`
 `;
 
 const PostArea = styled.div`
+  min-width: calc(320px - 32px);
+  width: 100%;
   margin-top: 16px;
+  font-weight: bold;
 `;
 
 const PostTitle = styled.div`
   margin-bottom: 10px;
 `;
 
-const StyledPost = styled.div`
-  margin-top: 16px;
-  width: 100%;
-  max-width: 370px;
-  height: 484px;
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.15);
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-`;
 
-const PhotoArea = styled.div`
-  align-self: center;
-  margin-top: 16px;
-  width: 348px;
-  height: 348px;
-  background-color: #333333;
-`;
-
-const FirstLine = styled.div`
-  margin: 5px 10px 0 10px;
-  font-size: 15px;
-  font-weight: 600;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const SecondLine = styled.div`
-  height: 60px;
-  margin: 5px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ThirdLine = styled.div`
-  margin: 5px 10px;
-  margin-bottom: 5px;
-  font-size: 12px;
-  font-weight: 600;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const AddPostButtonContainer = styled.div`
+const AddButtonArea = styled.div`
   position: fixed;
-  bottom: 15rem;
-  right: 32rem;
+  bottom: 80px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-end;
 `;
-
 const AddPostButton = styled.button`
+  margin-left: 0;
+  margin-right: 10px;
   appearance: none;
   background-color: #2ea44f;
   border: 1px solid rgba(27, 31, 35, 0.15);
@@ -134,6 +100,7 @@ const AddPostButton = styled.button`
   &:hover {
     background-color: #2c974b;
   }
+  z-index: 1000;
 
   &:focus {
     box-shadow: rgba(46, 164, 79, 0.4) 0 0 0 3px;
@@ -157,30 +124,19 @@ const Community = () => {
   return (
     <>
       <Header pageName="게시판" />
-      <CommunityContainer>
-        <CommunityArea>
-          <SearchBar type="text" placeholder="검색" />
-          <PostArea>
-            <PostTitle>전체 게시글</PostTitle>
-            <StyledPost>
-              <PhotoArea />
-              <FirstLine>First Line</FirstLine>
-              <SecondLine>Second Line</SecondLine>
-              <ThirdLine>Third Line</ThirdLine>
-            </StyledPost>
-            <StyledPost>
-              <PhotoArea />
-              <FirstLine>First Line</FirstLine>
-              <SecondLine>Second Line</SecondLine>
-              <ThirdLine>Third Line</ThirdLine>
-            </StyledPost>
+      <CommunityContainer id='community-container'>
+        <CommunityArea id='community-area'>
+          <SearchBar id='community-search' type="text" placeholder="검색" />
+          <PostArea id='post-area'>
+            <PostTitle id='post-title'>전체 게시글</PostTitle>
+            <Post id='post'/>
           </PostArea>
         </CommunityArea>
-        <AddPostButtonContainer>
-          <AddPostButton role="button">+</AddPostButton>
-        </AddPostButtonContainer>
       </CommunityContainer>
-      <Navbar />
+      <AddButtonArea id='add-button-area'>
+        <AddPostButton role="button">+</AddPostButton>
+      </AddButtonArea>
+      <Navbar id='navbar' />
     </>
   );
 };
