@@ -86,8 +86,6 @@ time, mark, audio, video {
   max-width: 430px; /* 모바일 환경에 맞춰 최대 너비를 430px로 고정 */
   background-color: white;
   height: 100vh;
-  margin-left: auto;
-  margin-right: auto;
   font-family: 'Pretendard';
 }
 /* HTML5 display-role reset for older browsers */

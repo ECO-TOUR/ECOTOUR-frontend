@@ -13,6 +13,7 @@ import Intro from './pages/Onboarding/Intro';
 import MapMain from './pages/map/Main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
 import Home from './pages/Main/Home';
+import Detail from './pages/Detail/Detail';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/addform" element={<AddForm />} />
+            <Route path="/detail" element={<Detail />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>
