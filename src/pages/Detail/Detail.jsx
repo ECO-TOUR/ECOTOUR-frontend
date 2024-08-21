@@ -9,6 +9,7 @@ import Nav from '../../component/main/Navbar';
 // img
 import { ReactComponent as BackBtn } from '../../assets/back_btn.svg';
 import EmptyHeart from '../../assets/empty_heart.svg';
+import FillHeart from '../../assets/click_heart.svg';
 import ShareIcon from '../../assets/share_icon.svg';
 import exampleImage from '../../assets/example1.png'; // 이미지 파일을 import
 import { ReactComponent as UpIcon } from '../../assets/up_icon.svg';
@@ -22,7 +23,15 @@ function Detail() {
         });  
     };
 
+    // 지도 마커 표시 주소 변수
     const[address, setAddress] = useState("충청북도 단양군 단양읍 고수동굴길 8");
+
+    // 좋아요 상태 변수
+    const [liked, setLiked] = useState(false);
+    // 버튼 클릭 시 호출되는 함수: 상태를 토글
+    const toggleLike = () => {
+        setLiked(!liked);
+    };
 
   return (
     <S.Container>
@@ -38,7 +47,7 @@ function Detail() {
         <S.TitleComponent>
             <S.Title>단양고수동굴</S.Title>
             <S.IconBox>
-                <S.IconImg src={EmptyHeart}/>
+                <S.IconImg src={liked ? FillHeart : EmptyHeart} onClick={toggleLike}/>
                 <S.IconImg src={ShareIcon}/>
             </S.IconBox>
         </S.TitleComponent>
