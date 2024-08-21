@@ -3,6 +3,8 @@ import React from 'react';
 import Header from '../../component/Main/Header.js';
 import Navbar from '../../component/Main/Navbar.js';
 import Post from '../../component/community/Main/Post.js'; // Post 컴포넌트 불러오기
+import { ReactComponent as WriteIcon } from '../../assets/write.svg';
+import { useNavigate } from 'react-router-dom';
 
 const CommunityContainer = styled.div`
   padding-top: 60px;
@@ -68,7 +70,7 @@ const AddPostButton = styled.button`
   margin-left: 0;
   margin-right: 10px;
   appearance: none;
-  background-color: #2ea44f;
+  background-color: #91EB86;
   border: 1px solid rgba(27, 31, 35, 0.15);
   border-radius: 50px;
   box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
@@ -102,9 +104,9 @@ const AddPostButton = styled.button`
   }
   z-index: 1000;
 
-  &:focus {
-    box-shadow: rgba(46, 164, 79, 0.4) 0 0 0 3px;
+  &:hover {
     outline: none;
+    background-color: #2ea44f; 
   }
 
   &:disabled {
@@ -120,7 +122,13 @@ const AddPostButton = styled.button`
   }
 `;
 
+
 const Community = () => {
+  const navigate = useNavigate();
+
+  const moveToAddForm = () =>{
+    navigate('./addform/')
+  }
   return (
     <>
       <Header pageName="게시판" />
@@ -134,7 +142,9 @@ const Community = () => {
         </CommunityArea>
       </CommunityContainer>
       <AddButtonArea id='add-button-area'>
-        <AddPostButton role="button">+</AddPostButton>
+        <AddPostButton role="button" onClick={moveToAddForm}>
+          <WriteIcon />
+        </AddPostButton>
       </AddButtonArea>
       <Navbar id='navbar' />
     </>
