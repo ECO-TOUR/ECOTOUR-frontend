@@ -3,7 +3,9 @@ import styled from 'styled-components';
 
 // styled-components로 스타일 정의
 const HeaderContainer = styled.div`
-  position: relative;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
   background-color: white;
 
   &:after {
