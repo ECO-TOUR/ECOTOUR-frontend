@@ -31,9 +31,11 @@ const HeaderTitle = styled.div`
   font-weight: 800;
   text-align: center;
   font-size: 19px;
+  color: ${(props) => props.color || 'black'};
 `;
 
 const Header = (props) => {
+
   return (
     <HeaderContainer>
       <HeaderArea>
