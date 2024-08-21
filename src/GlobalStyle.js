@@ -1,6 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
+  
+  //전역변수 추가 - 이상빈
+  :root {
+    --max-width: 430px;
+    --min-width: 320px;
+  }
+
   @font-face {
       font-family: 'Pretendard';
       font-style: normal;
@@ -86,8 +93,6 @@ time, mark, audio, video {
   max-width: 430px; /* 모바일 환경에 맞춰 최대 너비를 430px로 고정 */
   background-color: white;
   height: 100vh;
-  margin-left: auto;
-  margin-right: auto;
   font-family: 'Pretendard';
 }
 /* HTML5 display-role reset for older browsers */
@@ -101,14 +106,16 @@ footer, header, hgroup, main, menu, nav, section {
 }
 html,body, input, button {
   line-height: 1;
-  max-width: 430px; /* 모바일 환경에 맞춰 최대 너비를 430px로 고정 */
+  max-width: var(--max-width); /* 모바일 환경에 맞춰 최대 너비를 430px로 고정 */
   background-color: #f2f2f2;
   font-family: 'Pretendard';
   position: relative;
   margin-left: auto;
   margin-right: auto;
 }
-
+html,body{
+  min-width: var(--min-width);
+}
 /* 웹킷 브라우저에서 스크롤바 숨기기 */
 ::-webkit-scrollbar {
   width: 0; /* 수평 스크롤바 숨기기 */
@@ -122,7 +129,6 @@ div, img {
 
 #root {
   position: relative;
-  min-width: 320px;
 }
 menu, ol, ul {
   list-style: none;
@@ -158,3 +164,4 @@ input {
 }
 
 `;
+
