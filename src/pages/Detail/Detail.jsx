@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import * as S from './Detail.style';
-import { Map as KakaoMap, MapMarker } from "react-kakao-maps-sdk";
 // 컴포넌트
 import Header from '../../component/main/Header';
 import Map from '../../component/Detail/DetailMap';
@@ -25,6 +24,11 @@ function Detail() {
 
     // 지도 마커 표시 주소 변수
     const[address, setAddress] = useState("충청북도 단양군 단양읍 고수동굴길 8");
+    // 관광지 이름
+    const [title, setTitle] = useState("단양고수동굴");
+
+    const mainImage = document.querySelector('.MainImg');
+    const mainImgRef = useRef();
 
     // 좋아요 상태 변수
     const [liked, setLiked] = useState(false);
@@ -32,6 +36,51 @@ function Detail() {
     const toggleLike = () => {
         setLiked(!liked);
     };
+
+    useEffect(() => {
+        // 카카오톡 sdk 추가
+        const script = document.createElement("script");
+        script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+        script.async = true;
+        document.body.appendChild(script);
+        return () => document.body.removeChild(script);
+    }, []);
+
+    const shareToKatalk = () => {
+        // 이미지 URL이 존재하는지 확인
+        const imageUrl = mainImgRef.current ? mainImgRef.current.src : '';
+        console.log(imageUrl);
+        // kakao sdk script 부른 후 window.Kakao로 접근
+        if (window.Kakao) {
+          const kakao = window.Kakao;
+    
+          // 중복 initialization 방지
+          // 카카오에서 제공하는 javascript key를 이용하여 initialize
+          if (!kakao.isInitialized()) {
+            kakao.init("e2615a5b9086f44b29fc393b782e4f29");
+          }
+    
+          kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: title,
+                description: `${title}에 대해 더 자세히 보고싶다면?`,
+                imageUrl: imageUrl,
+                link: {
+                    webUrl: window.location.href,
+                },
+            },
+            buttons: [
+                {
+                    title: '자세히 보러가기',
+                    link: {
+                    webUrl: window.location.href,
+                    },
+                },
+                ],
+            });
+        }
+      };
 
   return (
     <S.Container>
@@ -43,12 +92,12 @@ function Detail() {
             <Header name="ECO TOUR" color="#91EB86" />
         </S.HeaderComponent>
 
-        <S.MainImg src={exampleImage}/>
+        <S.MainImg src={exampleImage} ref={mainImgRef}/>
         <S.TitleComponent>
-            <S.Title>단양고수동굴</S.Title>
+            <S.Title>{title}</S.Title>
             <S.IconBox>
                 <S.IconImg src={liked ? FillHeart : EmptyHeart} onClick={toggleLike}/>
-                <S.IconImg src={ShareIcon}/>
+                <S.IconImg src={ShareIcon} onClick={shareToKatalk}/>
             </S.IconBox>
         </S.TitleComponent>
 
