@@ -18,6 +18,15 @@ export const HeaderComponent = styled.div`
     margin: 0 auto;
 `;
 
+// 헤더
+export const Header = styled.div`
+    font-weight: 800;
+    font-size: 19px;
+    color: #91EB86;
+    text-align: center;
+    padding: 20px 0px;
+`;
+
 // 뒤로가기 버튼
 export const BackBtn = styled.div`
     position: absolute;

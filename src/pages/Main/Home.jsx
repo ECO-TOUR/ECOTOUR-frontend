@@ -10,7 +10,6 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { ReactComponent as Banner1 } from '../../assets/banner1.svg';
 import { ReactComponent as UpIcon } from '../../assets/up_icon.svg';
 // 컴포넌트
-import Header from '../../component/Main/Header';
 import Navbar from '../../component/Main/Navbar';
 import Recommend from '../../component/Main/Recommend/Recommend';
 import Top5 from '../../component/Main/Top5/Top5';
@@ -28,7 +27,7 @@ function Home() {
 
   return (
     <S.Container>
-      <Header name="ECO TOUR" color="#91EB86" />
+      <S.Header>ECO TOUR</S.Header>
       {/* 배너 */}
       <div>
         <S.StyledSwiper
