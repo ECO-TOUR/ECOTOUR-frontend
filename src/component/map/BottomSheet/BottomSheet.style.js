@@ -9,7 +9,6 @@ const Wrapper = styled(motion.div)`
   flex-direction: column;
   position: fixed;
   width: 100%;
-  border-radius: 20px 20px 0px 0px;
   margin: 0 auto;
   z-index: 1;
   top: 0;
@@ -21,12 +20,9 @@ const Wrapper = styled(motion.div)`
 
 // bottomsheet 헤더
 const HeaderWrapper = styled(motion.div)`
-  height: 48px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  height: 35px;
   position: relative;
   padding-top: 16px;
-  padding-bottom: 4px;
   cursor: pointer;
 `;
 
@@ -41,7 +37,19 @@ const HandleBar = styled(motion.div)`
 
 const ContentWrapper = styled.div`
   height: 80vh;
-  padding: 10px;
 `;
 
-export { Wrapper, HeaderWrapper, HandleBar, ContentWrapper };
+const NoneHeader = styled.div`
+  margin-top: 35px;
+`;
+
+// 뒤로가기 버튼
+export const BackBtn = styled.div`
+  position: absolute;
+  left: 5%;
+  top: 2.6%;
+  cursor: pointer;
+  z-index: 2000;
+`;
+
+export { Wrapper, HeaderWrapper, HandleBar, ContentWrapper, NoneHeader };

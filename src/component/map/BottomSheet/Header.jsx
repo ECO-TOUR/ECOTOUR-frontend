@@ -1,4 +1,4 @@
-import * as S from "./ButtomSheet.style";
+import * as S from "./BottomSheet.style";
 
 const Header = () => {
   return (
