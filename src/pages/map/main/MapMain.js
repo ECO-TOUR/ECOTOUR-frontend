@@ -84,7 +84,7 @@ function MapMain() {
           width: "100%",
           height: "50%",
         }}
-        level={4}
+        level={2}
         onCenterChanged={updateCenterWhenMapMoved}
       >
         <MapMarker

@@ -17,13 +17,13 @@
 
 /* 검색 컴포넌트 */
 .map_search_container{
-    width: 320px;
+    width: 358px;
     border-radius: 10px;
     background: #F5F5F5;
     color: #676767;
     font-size: 13px;
-    font-weight: 800;
-    padding: 10px 20px 11px 20px;
+    font-weight: 500;
+    padding: 12px 20px 13px 20px;
     display: flex;
     align-items: center;
     margin: 20px auto;
@@ -36,7 +36,7 @@
 .location_btn{
     position: absolute;
     top: 58%;
-    right: 610px;
+    right: 10px;
     z-index: 1;
     cursor: pointer;
 }
