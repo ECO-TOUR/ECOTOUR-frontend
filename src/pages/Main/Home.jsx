@@ -28,7 +28,7 @@ function Home() {
 
   return (
     <S.Container>
-      <Header name="ECO TOUR" color="#91EB86" />
+      <Header pageName="ECO TOUR" color="#91EB86" />
       {/* 배너 */}
       <div>
         <S.StyledSwiper

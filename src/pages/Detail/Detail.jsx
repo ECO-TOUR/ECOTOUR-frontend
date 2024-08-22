@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as S from './Detail.style';
 // 컴포넌트
-import Header from '../../component/main/Header';
+import Header from '../../component/Main/Header';
 import Map from '../../component/Detail/DetailMap';
 import Review from '../../component/Detail/Review';
-import Nav from '../../component/main/Navbar';
+import Nav from '../../component/Main/Navbar';
 // img
 import { ReactComponent as BackBtn } from '../../assets/back_btn.svg';
 import EmptyHeart from '../../assets/empty_heart.svg';

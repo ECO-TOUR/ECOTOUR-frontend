@@ -44,12 +44,14 @@ const LocArea = styled.div`
 `;
 
 const AddPhotoArea = styled.div`
-    /* border: 1px solid gray; */
     height: 66px;
     width: calc(100% - 32px);
     margin: 0 16px;
     padding: 0;
     display: flex;
+    overflow-x: auto;
+    white-space: nowrap; /* 이미지들이 한 줄에 나열되도록 설정 */
+
 `;
 
 const AddPhotoBtn = styled.button`
@@ -60,6 +62,7 @@ const AddPhotoBtn = styled.button`
     margin-left: 0px;
     padding: 0;
     width: 60px;
+    flex-shrink: 0; 
     cursor: pointer;
     &:hover {
         background-color: #ccc;
@@ -96,6 +99,8 @@ const AddForm = () => {
 
         const newImageUrls = files.map((file) => URL.createObjectURL(file));
         setUploadedImage((prevImages) => [...prevImages, ...newImageUrls]);
+
+        fileInputRef.current.value = '';
     };
 
     const handleButtonClick = () => {
@@ -106,8 +111,13 @@ const AddForm = () => {
         fileInputRef.current.click(); // 버튼 클릭 시 파일 입력을 클릭하도록 트리거
     };
 
+    const imageDelete = (index) => {
+        const newImages =uploadedImage.filter((_, i) => i !== index);
+        setUploadedImage(newImages);
+    };
+
     const handlePost = async () => {
-        if (!uploadedImage && !textContent) {
+        if (uploadedImage.length === 0 || textContent.trim() === '') {
             alert("내용 또는 사진을 추가해 주세요");
             return;
         }
@@ -150,12 +160,9 @@ const AddForm = () => {
                 <Checkbox></Checkbox>
             </LocArea>
             <AddPhotoArea id='add-photo-area'>
-
-                {uploadedImage.length < 5 && (
-                    <AddPhotoBtn onClick={handleButtonClick}>
-                        <CameraIcon />
-                    </AddPhotoBtn>
-                )}
+                <AddPhotoBtn onClick={handleButtonClick}>
+                    <CameraIcon />
+                </AddPhotoBtn>
                 <input
                         type='file'
                         accept='image/*'
@@ -165,7 +172,10 @@ const AddForm = () => {
                         onChange={handleFileChange}
                     />
                 {uploadedImage.map((imageSrc, index) => (
-                    <AddedPhoto key={index} imageSrc={imageSrc} />
+                    <AddedPhoto 
+                        key={index} 
+                        imageSrc={imageSrc} 
+                        onClick={() => imageDelete(index)}/>
                 ))}
             </AddPhotoArea>
             <PostBtn id='post-button' onClick={handlePost}>
