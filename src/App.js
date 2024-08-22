@@ -14,6 +14,7 @@ import MapMain from './pages/map/Main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
 import Home from'./pages/Main/Home'
 import LikeMain from './pages/Like/LikeMain.js'
+import Detail from './pages/Detail/Detail';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/community" element={<Community />} />
             <Route path="/community/addform" element={<AddForm />} />
             <Route path="/like" element={<LikeMain />} />
+            <Route path="/detail" element={<Detail />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>

@@ -13,6 +13,10 @@ export const ContentBox = styled.div`
     margin: 0px 9px 20px 9px;
     cursor: pointer;
     position: relative;
+    transition: filter 0.3s ease; /* 부드러운 전환을 위한 속성 */
+    &:hover{
+        filter: brightness(0.9); /* 마우스 오버 시 더 어둡게 */
+    }
 `;
 
 // content 이미지
@@ -21,11 +25,6 @@ export const ContentImage = styled.img`
     width: 180px;
     height: 210px;
     filter: brightness(0.9);
-    transition: filter 0.3s ease; /* 부드러운 전환을 위한 속성 */
-
-    &:hover {
-        filter: brightness(0.7); /* 마우스 오버 시 더 어둡게 */
-    }
 `;
 
 export const ContentDiv = styled.div`
