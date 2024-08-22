@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Map as KakaoMap, MapMarker } from "react-kakao-maps-sdk";
 import './MapMain.css';
-import BottomSheet from "../buttomSheet/ButtomSheet";
+import BottomSheet from "../../../component/map/ButtomSheet/ButtomSheet";
 import LocationBtn from '../../../assets/LocationBtn.svg'; // 현위치 버튼
 import Marker from '../../../assets/Marker.svg'; // 현위치 아이콘
 import debounce from 'lodash/debounce';
