@@ -98,30 +98,20 @@ const Post = () => {
         window.addEventListener('resize', handleResize);
         
         //게시물 정보 받아오기
-        axios.get('http://localhost:8000/community/api/postbest/')
+        axios.get('http://localhost:8000/community/api/postinquire/')
           .then(response => {
-            console.log("🚀 ~ useEffect ~ response:", response)
-            // setPosts(response.data);
+            setPosts(response.data.content);
           })
           .catch(error => {
             console.error('Error fetching data:', error);
           });
-        // API 데이터가 없는 경우 예시 데이터 사용
-        if (posts.length === 0) {
-        setPosts([
-            { id: 1, title: 'FirstLine', location: 'Locate', content: 'SecondLine', comments: [], img: exampleImage },
-            { id: 2, title: 'FirstLine', location: 'Locate', content: 'SecondLine', comments: [], img: exampleImage },
-            { id: 3, title: 'FirstLine', location: 'Locate', content: 'SecondLine', comments: [], img: exampleImage },
-            { id: 4, title: 'FirstLine', location: 'Locate', content: 'SecondLine', comments: [], img: exampleImage },
-            { id: 5, title: 'FirstLine', location: 'Locate', content: 'SecondLine', comments: [], img: exampleImage }
-        ]);
-        }
-
+        
+        console.log(posts);
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-
-  }, [posts]); // posts 배열을 의존성 배열로 설정
+        
+  }, []); 
 
   const toggleLike = id => {
     setLikedPosts(prevLikedPosts => ({
@@ -133,19 +123,19 @@ const Post = () => {
   return (
     <>
       {posts.map(post => (
-        <StyledPost key={post.id} id='post' width={windowWidth}> 
-            <PhotoArea img = {post.img}/>
+        <StyledPost key={post.post_id} id='post' width={windowWidth}> 
+            <PhotoArea img = {post.post_img?post.post_img:exampleImage}/>
             <Like>
-                <LikeButton onClick={() => toggleLike(post.id)}>
-                    <LikeIcon liked={likedPosts[post.id]} />
+                <LikeButton onClick={() => toggleLike(post.post_id)}>
+                    <LikeIcon liked={likedPosts[post.post_id]} />
                 </LikeButton>
             </Like>
             <FirstLine>
-                {post.title}
+                {post.post_text}
             </FirstLine>
             <SecondLine>
-                <div>댓글 {post.comments.length}개</div>
-                <div>{post.time?post.time:"20xx.xx.xx PM 3:55"}</div>
+                <div>댓글 {post.comments?post.comments:'0'}개</div>
+                <div>{post.last_modified?formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
             </SecondLine>
         </StyledPost>
       ))}
@@ -154,3 +144,24 @@ const Post = () => {
 }
 
 export default Post;
+
+
+function formatDate(isoDateString) {
+  const date = new Date(isoDateString);
+
+  // 연도, 월, 일 추출 및 형식 지정
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+  const day = String(date.getDate()).padStart(2, '0');
+
+  // 시간, 분 추출 및 12시간제로 변환
+  let hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+
+  hours = hours % 12;
+  hours = hours ? hours : 12; // 0시를 12시로 변환
+
+  // 최종 포맷팅된 문자열 반환
+  return `${year}.${month}.${day} ${ampm} ${hours}:${minutes}`;
+}
