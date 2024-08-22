@@ -11,6 +11,8 @@ import { NavAtoms } from '../../recoil/NavAtoms';
 
 const NavbarArea = styled.div`
   width: 100%;
+  min-width: 320px;
+  max-width: 430px;
   height: 70px;
   bottom: 0;
   border-top: 1px solid #D9D9D9;
@@ -30,13 +32,14 @@ const NavItem = styled.button`
   padding: 0;
   border: none;
   margin-top: 15px;
-  width: 28px;
-  height: 28px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
   cursor: pointer;
 
   svg {
-    width: 100%;
-    height: 100%;
+    width: 28px;
+    height: 28px;
     fill: ${props => props.highlight ? '#333333' : (props.color || '#D9D9D9')};
   }
 `;
@@ -54,7 +57,7 @@ const Navbar = () => {
     <NavbarArea>
       <NavItem 
         highlight={highlightedItem === 'chat'}
-        onClick={() => handleNavigation('chat', '/chat')}
+        onClick={() => handleNavigation('chat', '/community')}
       >
         <ChatIcon />
       </NavItem>
@@ -72,7 +75,7 @@ const Navbar = () => {
       </NavItem>
             <NavItem
         highlight={highlightedItem === 'heart'}
-        onClick={() => handleNavigation('heart', '/heart')}
+        onClick={() => handleNavigation('heart', '/like')}
       >
         <HeartIcon />
       </NavItem>

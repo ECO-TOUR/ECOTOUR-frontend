@@ -1,7 +1,7 @@
 import React from 'react'
 import styled  from 'styled-components'
-import Checkbox  from './Checkbox';
-import AddPhoto from './AddPhoto';
+import Checkbox  from '../../component/community/AddForm/Checkbox';
+import AddPhoto from '../../component/community/AddForm/AddPhoto';
 
 const AddFormArea = styled.div`
     height: 690px;
@@ -32,7 +32,6 @@ const MyLoc = styled.div`
     display: flex;
     align-items: center;
 `;
-
 
 const MyPhotoArea = styled.div`
     /* border: 1px solid gray; */

@@ -2,9 +2,9 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { GlobalStyle } from './GlobalStyle';
 
-import Mypage from './component/Mypage/Mypage.js';
-import Community from './component/Community/Community.js';
-import AddForm  from './component/Community/AddForm.js';
+import Mypage from './pages/Mypage/Mypage.js';
+import Community from './pages/Community/Community.js';
+import AddForm  from './pages/Community/AddForm.js';
 //page
 import Login from './pages/Login/Login';
 import Agreement from './pages/Agreement/Agreement'
@@ -12,9 +12,9 @@ import KeyWord from './pages/Onboarding/KeyWord.js';
 import Intro from './pages/Onboarding/Intro';
 import MapMain from './pages/map/Main/MapMain';
 import MapSearch from './pages/map/search/MapSearch';
-import Home from './pages/Main/Home';
+import Home from'./pages/Main/Home'
+import LikeMain from './pages/Like/LikeMain.js'
 import Detail from './pages/Detail/Detail';
-
 
 function App() {
   return (
@@ -33,6 +33,7 @@ function App() {
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/addform" element={<AddForm />} />
+            <Route path="/like" element={<LikeMain />} />
             <Route path="/detail" element={<Detail />} />
           </Routes>
         </BrowserRouter>

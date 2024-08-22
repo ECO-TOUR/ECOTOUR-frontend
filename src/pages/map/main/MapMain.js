@@ -6,7 +6,7 @@ import LocationBtn from '../../../assets/LocationBtn.svg'; // 현위치 버튼
 import Marker from '../../../assets/Marker.svg'; // 현위치 아이콘
 import debounce from 'lodash/debounce';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../../../component/main/Navbar';
+import Navbar from '../../../component/Main/Navbar';
 import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../../recoil/NavAtoms';
 
