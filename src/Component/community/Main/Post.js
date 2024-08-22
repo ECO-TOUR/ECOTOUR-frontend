@@ -79,7 +79,7 @@ const SecondLine = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: end;
-`;
+`; 
 
 
 // Post 컴포넌트 정의
@@ -134,7 +134,7 @@ const Post = () => {
                 {post.post_text}
             </FirstLine>
             <SecondLine>
-                <div>댓글 {post.comments?post.comments:'0'}개</div>
+                <div>댓글 {post.comm_cnt?post.comm_cnt:'0'}개</div>
                 <div>{post.last_modified?formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
             </SecondLine>
         </StyledPost>

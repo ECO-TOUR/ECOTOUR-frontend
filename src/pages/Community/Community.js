@@ -126,7 +126,7 @@ const AddPostButton = styled.button`
     height: 45px;
   }
 `;
-
+ 
 
 const Community = () => {
   const navigate = useNavigate();
