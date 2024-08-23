@@ -23,15 +23,28 @@ export const StateBtnComponent = styled.div`
     display: flex;
 `;
 
-// 정렬 버튼(별점순, 조회순)
-export const StateBtn = styled.div`
+// 별점순 버튼
+export const StateBtn1 = styled.div`
     border-radius: 15px;
-    background: #333;
-    color: white;
+    background: ${(props) => (props.btnState1 ? "#91EB86;" : "#333")};
+    color: ${(props) => (props.btnState1 ? "#333" : "white")};
     font-size: 12px;
     padding: 7px 12px;
     margin: 0px 4px;
     cursor: pointer;
+    font-weight: 500;
+`;
+
+// 조회순 버튼
+export const StateBtn2 = styled.div`
+    border-radius: 15px;
+    background: ${(props) => (props.btnState2 ? "#91EB86;" : "#333")};
+    color: ${(props) => (props.btnState2 ? "#333" : "white")};
+    font-size: 12px;
+    padding: 7px 12px;
+    margin: 0px 4px;
+    cursor: pointer;
+    font-weight: 500;
 `;
 
 // 리스트가 없을 때
@@ -58,6 +71,7 @@ export const ContentBox = styled.div`
     margin-bottom: 18px;
     padding: 10px;
     display: flex;
+    cursor: pointer;
 `;
 
 // 사진

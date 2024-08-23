@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import * as S from './Content.style';
 
 // img
@@ -15,12 +16,26 @@ function Content() {
     const [scoreList, setScoreList] = useState(false); // 별점순 버튼 상태
     const [viewList, setViewList] = useState(false) // 조회순 버튼 상태
 
+    // 별점순 버튼 클릭 시
     function onClickScoreListBtn(){
-        setScoreList(!scoreList);
+        if(scoreList === false){
+            setScoreList(true);
+            setViewList(false);
+        }
+        else{
+            setScoreList(false);
+        }
     }
 
+    // 조회순 버튼 클릭 시
     function onClickViewListBtn(){
-        setViewList(!viewList);
+        if(viewList === false){
+            setScoreList(false);
+            setViewList(true);
+        }
+        else{
+            setViewList(false);
+        }
     }
 
     // 좋아요 상태 변수
@@ -29,13 +44,18 @@ function Content() {
     const toggleLike = () => {
         setLiked(!liked);
     };
+
+    const navigate = useNavigate();
+    const onClickDetail = () => {
+        navigate('/detail');
+    }
   return (
     <>
         <S.Header closeState={closeState}>
             <S.CountNum>{contents.length} 개</S.CountNum>
             <S.StateBtnComponent>
-                <S.StateBtn onClick={onClickScoreListBtn}>별점순</S.StateBtn>
-                <S.StateBtn onClick={onClickViewListBtn}>조회순</S.StateBtn>
+                <S.StateBtn1 onClick={onClickScoreListBtn} btnState1={scoreList}>별점순</S.StateBtn1>
+                <S.StateBtn2 onClick={onClickViewListBtn} btnState2={viewList}>조회순</S.StateBtn2>
             </S.StateBtnComponent>
         </S.Header>
         {contents.length === 0 ? 
@@ -45,7 +65,7 @@ function Content() {
             </S.None>):
             (<S.ContentComponent closeState={closeState}>
                 {contents.map((content, index) => (
-                    <S.ContentBox>
+                    <S.ContentBox onClick={onClickDetail}>
                         <S.Img src={exampleImage}/>
                         <S.InfoBox>
                             <S.Name>순천만습지</S.Name>
