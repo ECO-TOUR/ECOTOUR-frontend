@@ -5,7 +5,7 @@ import { Swiper } from 'swiper/react';
 export const Container = styled.div`
     background-color: white;
     height: 100%;
-    padding: 0px 0px 100px 0px;
+    padding: 0px 0px 90px 0px;
 `;
 
 // 헤더
