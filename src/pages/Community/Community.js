@@ -120,8 +120,13 @@ const AddPostButton = styled.button`
     background-color: #298e46;
     box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
   }
-`;
 
+  svg{
+    width: 45px;
+    height: 45px;
+  }
+`;
+ 
 
 const Community = () => {
   const navigate = useNavigate();
