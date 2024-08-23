@@ -14,9 +14,8 @@ const HeaderContainer = styled.div`
     left: 16px;
     right: 16px;
     bottom: 0;
-    height: 2px;
-    background-color: #e9e9e9;
-    
+    height: 0.5px;
+    background-color: #D9D9D9;
   }
 `;
 

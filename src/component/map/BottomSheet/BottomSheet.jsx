@@ -1,4 +1,5 @@
 import {useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import useBottomSheet from "./useBottomSheet";
 import * as S from "./BottomSheet.style";
 // component
@@ -12,6 +13,7 @@ import { useRecoilState } from "recoil";
 import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
 
 const BottomSheet = ({ children }) => {
+  const navigate = useNavigate();
   const { onDragEnd, controls } = useBottomSheet();
   const [closeState, setCloseState] = useRecoilState(StateAtoms); // bottom 열림, 닫힘 상태
 
@@ -42,7 +44,7 @@ const BottomSheet = ({ children }) => {
       {/* closeState에 따른 헤더 */}
       {closeState ? (<Header />):(
         <>
-        <S.BackBtn onClick={() => window.history.back()}>
+        <S.BackBtn onClick={() => navigate('/map-search')}>
           <BackBtn/>
         </S.BackBtn>
         <MainHeader pageName="검색어/현위치"/>

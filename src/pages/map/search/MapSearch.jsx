@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import RecentSearches from '../../../component/map/Search/RecentSearches'; // 최근 검색어
 import RealTimeSearches from '../../../component/map/Search/RealTimeSearch'; // 최근 검색어
 import Navbar from '../../../component/Main/Navbar';
+// img
+import { ReactComponent as BackBtn } from '../../../assets/back_btn.svg';
 
 function MapSearch() {
 
@@ -12,14 +14,24 @@ function MapSearch() {
   function onClickBackBtn(){
     navigate('/map-main');
   }
+
+  const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+          event.preventDefault(); // 기본 Enter 동작 방지
+          navigate('/map-main'); // 페이지 이동
+      }
+  };
+
   return (
     <S.Search_main_container>
       <S.Header_container>
-        <S.BackBtn onClick={onClickBackBtn}>X</S.BackBtn>
+        <S.BackBtn onClick={onClickBackBtn}>
+          <BackBtn/>
+        </S.BackBtn>
         검색
       </S.Header_container>
 
-      <S.Search_container placeholder="지역이나 생태관광지를 검색해보세요"></S.Search_container>
+      <S.Search_container placeholder="지역이나 생태관광지를 검색해보세요" onKeyDown={handleKeyDown} ></S.Search_container>
       
       {/* 최근 검색어 */}
       <S.Recent_container>

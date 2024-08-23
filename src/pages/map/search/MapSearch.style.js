@@ -14,7 +14,7 @@ export const Header_container = styled.div`
     font-weight: 800;
     text-align: center;
     color: #333;
-    font-size: 17px;
+    font-size: 19px;
     margin: 0px auto;
 `;
 
@@ -27,17 +27,20 @@ export const BackBtn = styled.div`
 
 /* 검색 컴포넌트 */
 export const Search_container = styled.input`
-    width: 320px;
+    width: 358px;
     border-radius: 10px;
     background: #F5F5F5;
     color: #676767;
     font-size: 13px;
-    padding: 14px 20px 15px 20px;
+    font-weight: 500;
+    padding: 12px 20px 13px 20px;
     display: flex;
     align-items: center;
     margin: 20px auto;
+    position: relative;
+    z-index: 0;
+    cursor: pointer;
     border: none;
-    font-weight: 600;
 `;
 
 // 최근 검색어 컴포넌트
