@@ -1,11 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const CheckboxWrapper = styled.div`
-  * {
-    box-sizing: border-box;
-  }
-`;
 
 const CheckboxInput = styled.input`
   position: absolute;
@@ -16,19 +11,12 @@ const CheckboxLabel = styled.label`
   -webkit-user-select: none;
   user-select: none;
   cursor: pointer;
-  padding: 6px 8px;
+  padding: 6px 0;
   border-radius: 6px;
   overflow: hidden;
   transition: all 0.2s ease;
   display: inline-block;
-
-  &:not(:last-child) {
-    margin-right: 6px;
-  }
-
-  &:hover {
-    background: rgba(0, 119, 255, 0.06);
-  }
+  height: 37px;
 
   span {
     float: left;
@@ -38,8 +26,8 @@ const CheckboxLabel = styled.label`
 
   span:first-child {
     position: relative;
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
     border-radius: 4px;
     transform: scale(1);
     border: 1px solid #cccfdb;
@@ -49,8 +37,8 @@ const CheckboxLabel = styled.label`
 
   span:first-child svg {
     position: absolute;
-    top: 3px;
-    left: 3px;
+    top: 6px;
+    left: 5px;
     fill: none;
     stroke: #fff;
     stroke-width: 2;
@@ -64,8 +52,11 @@ const CheckboxLabel = styled.label`
   }
 
   span:last-child {
+    display: flex; 
+    align-items: center;
     padding-left: 8px;
     line-height: 18px;
+    height: 24px;
   }
 
   &:hover span:first-child {
@@ -107,12 +98,12 @@ const waveAnimation = `
 
 const CheckboxWrapperStyled = styled.div`
   ${CheckboxLabel}:hover span:first-child {
-    border-color: #07f;
+    border-color: #91EB86;
   }
 
   ${CheckboxInput}:checked + ${CheckboxLabel} span:first-child {
-    background: #07f;
-    border-color: #07f;
+    background: #91EB86;
+    border-color: #91EB86;
     animation: wave-4 0.4s ease;
   }
 
@@ -132,7 +123,7 @@ const Checkbox = () => (
           <use xlinkHref="#check-4" />
         </CheckboxSvg>
       </span>
-      <span>내 위치 공유하기</span>
+      <span height='18px'>내 위치 공유하기</span>
     </CheckboxLabel>
     <InlineSvg className="inline-svg">
       <symbol id="check-4" viewBox="0 0 12 10">

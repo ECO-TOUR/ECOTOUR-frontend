@@ -104,7 +104,7 @@ footer, header, hgroup, main, menu, nav, section {
 *[hidden] {
     display: none;
 }
-html,body, input, button {
+html, body, input, button {
   line-height: 1;
   max-width: var(--max-width); /* 모바일 환경에 맞춰 최대 너비를 430px로 고정 */
   background-color: #f2f2f2;
