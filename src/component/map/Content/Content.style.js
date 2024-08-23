@@ -11,9 +11,9 @@ export const Header = styled.div`
 // 개수
 export const CountNum = styled.div`
     color: #333;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
-    margin-left: 5px;
+    margin-left: 10px;
 `;
 
 // 버튼 컴포넌트

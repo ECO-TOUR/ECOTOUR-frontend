@@ -5,13 +5,20 @@ import Header from "./Header";
 import MainHeader from "../../Main/Header";
 // img
 import { ReactComponent as BackBtn } from '../../../assets/back_btn.svg';
+import { ReactComponent as MapIcon } from '../../../assets/map_icon.svg';
 // recoil
-import { useRecoilValue } from "recoil"; 
-import { StateAtoms } from "../../../recoil/BottomSheetAtoms"
+import { useRecoilState } from "recoil"; 
+import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
 
 const BottomSheet = ({ children }) => {
   const { onDragEnd, controls } = useBottomSheet();
-  const closeState = useRecoilValue(StateAtoms); // bottom 열림, 닫힘 상태
+  const [closeState, setCloseState] = useRecoilState(StateAtoms); // bottom 열림, 닫힘 상태
+
+  // MapBtn 클릭 시 bottomsheet를 내리는 함수
+  const handleMapBtnClick = () => {
+    controls.start("hidden"); // 'hidden' 상태로 애니메이션 실행
+    setCloseState(true);
+  };
 
   return (
     <S.Wrapper
@@ -41,6 +48,12 @@ const BottomSheet = ({ children }) => {
         </>
       )}
       <S.ContentWrapper>{children}</S.ContentWrapper>
+      <S.MapBtnConponent>
+        <S.MapBtn onClick={handleMapBtnClick}> {/* MapBtn 클릭 이벤트 추가 */}
+          <MapIcon/>
+          <S.MapText>지도 보기</S.MapText>
+        </S.MapBtn>
+      </S.MapBtnConponent>
     </S.Wrapper>
   );
 };
