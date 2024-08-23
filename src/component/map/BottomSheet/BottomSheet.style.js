@@ -23,7 +23,7 @@ const Wrapper = styled(motion.div)`
 const HeaderWrapper = styled(motion.div)`
   height: 35px;
   position: relative;
-  padding-top: 13px;
+  padding-top: 15px;
   cursor: pointer;
   border-radius: 15px 15px 0px 0px;
 `;
@@ -31,7 +31,7 @@ const HeaderWrapper = styled(motion.div)`
 // 헤더 바
 const HandleBar = styled(motion.div)`
   width: 32px;
-  height: 3px;
+  height: 4px;
   border-radius: 2px;
   background-color: #d0d0d0;
   margin: auto;
@@ -69,7 +69,7 @@ export const MapBtn = styled.div`
   border-radius: 20px;
   background: #333;
   color: white;
-  padding: 9px 20px;
+  padding: 10px 20px;
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;

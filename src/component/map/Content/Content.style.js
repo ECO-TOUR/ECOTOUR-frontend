@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Header = styled.div`
     display: flex;
     align-items: center;
-    margin-top: ${(props) => (props.closeState ? "0px" : "80px")};
+    margin-top: ${(props) => (props.closeState ? "10px" : "80px")};
     padding: 0px 20px;
 `;
 
@@ -83,8 +83,9 @@ export const Img = styled.img`
 
 // 정보 박스
 export const InfoBox = styled.div`
-    padding: 15px 10px 0px 10px;
+    padding: 15px 5px 0px 10px;
     margin-left: 10px;
+    width: 100%;
 `;
 
 // 관광지 이름
@@ -105,8 +106,8 @@ export const ContentWrap = styled.div`
     display: flex;
     align-items: center;
     margin-top: 20px;
-    width: 205px;
     padding: 0px 2px;
+    width: 100%; // 부모 요소의 너비를 기준으로 100%
 `;
 
 export const ScoreBox = styled.div`

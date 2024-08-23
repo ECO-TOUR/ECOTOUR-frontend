@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './Content.style';
 
@@ -41,10 +41,26 @@ function Content() {
         });
     };
 
-    const navigate = useNavigate();
-    const onClickDetail = () => {
-        navigate('/detail');
+    // 이전 상태를 저장하기 위한 useRef
+    const prevCloseStateRef = useRef();
+    useEffect(() => {
+        prevCloseStateRef.current = closeState;
+    }, [closeState]);
+
+    // 이전 상태와 현재 상태를 비교하여 변화 감지
+    const wasCloseStateChanged = () => {
+        return prevCloseStateRef.current !== closeState;
     };
+    
+    const navigate = useNavigate();
+    const onClickDetail = (event) => {
+        setTimeout(() => {
+            if (!wasCloseStateChanged()) {
+                navigate('/detail');
+            }
+        }, 300); // 애니메이션 지속 시간과 맞추어야 할 수 있음
+    };
+    
 
     return (
         <>
@@ -62,7 +78,7 @@ function Content() {
                 </S.None>):
                 (<S.ContentComponent closeState={closeState}>
                     {contents.map((content, index) => (
-                        <S.ContentBox key={index} onClick={onClickDetail}>
+                        <S.ContentBox key={index} onClick={onClickDetail} >
                             <S.Img src={exampleImage}/>
                             <S.InfoBox>
                                 <S.Name>순천만습지</S.Name>

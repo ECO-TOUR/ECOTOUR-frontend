@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import useBottomSheet from "./useBottomSheet";
 import * as S from "./BottomSheet.style";
 // component
