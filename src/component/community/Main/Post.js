@@ -98,7 +98,7 @@ const Post = () => {
         window.addEventListener('resize', handleResize);
         
         //게시물 정보 받아오기
-        axios.get('http://localhost:8000/community/api/postinquire/')
+        axios.get('/community/api/postinquire/')
           .then(response => {
             setPosts(response.data.content);
           })

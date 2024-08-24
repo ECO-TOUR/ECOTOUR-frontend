@@ -20,6 +20,7 @@
     "swiper": "^11.1.9",
     "web-vitals": "^2.1.4"
   },
+  "proxy": "http://localhost:8000",
   "scripts": {
     "start": "set HTTPS=true&&set SSL_CRT_FILE=./mkcert/cert.pem&&set SSL_KEY_FILE=./mkcert/key.pem&&react-scripts start",
     "build": "react-scripts build",
