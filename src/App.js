@@ -6,7 +6,7 @@ import { GlobalStyle } from './GlobalStyle';
 import Mypage from './pages/Mypage/Mypage.js';
 import Community from './pages/Community/Community.js';
 import AddForm  from './pages/Community/AddForm.js';
-import Post from './pages/Community/PostDetail.js'
+import Post from './pages/Community/Post.js'
 import Login from './pages/Login/Login';
 import Agreement from './pages/Agreement/Agreement'
 import KeyWord from './pages/Onboarding/KeyWord.js';
@@ -34,7 +34,7 @@ function App() {
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/addform" element={<AddForm />} />
-            <Route path="/community/post" element={<Post />} />
+            <Route path="/community/post/:postId" element={<Post />} />
             <Route path="/like" element={<LikeMain />} />
             <Route path="/detail" element={<Detail />} />
           </Routes>

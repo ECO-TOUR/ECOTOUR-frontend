@@ -2,18 +2,22 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import exampleImage from '../../../assets/example2.jpg';
+import { useParams } from 'react-router-dom';
+import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
+import Comment from './Comment'
 
 const StyledPost = styled.div`
-    margin-top: 16px;
     width: 100%;
-    height: ${props => `calc(${props.width > 430 ? 430 : props.width}px + 128px)` };
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.15);
-    display: flex;
+    height: 100%;
     flex-direction: column;
     align-self: center;
-    padding: 10px;
-`;
+    padding: 0 16px;
+    overflow-y: auto;
 
+    &::-webkit-scrollbar {
+      display: none;
+    }
+`;
 const PhotoArea = styled.div`
     background-image: url(${props => props.img});
     background-size: cover;
@@ -23,8 +27,8 @@ const PhotoArea = styled.div`
     width: 100%;
     aspect-ratio: 1 / 1;
     background-color: #333333;
-`;
 
+`;
 const Like = styled.div`
     margin-top: 5px;
     height: 35px;
@@ -32,8 +36,11 @@ const Like = styled.div`
     font-size: 15px;
     font-weight: 600;
     align-self: start;
+    position: relative;
 `;
 const LikeButton = styled.button`
+    position: absolute;
+    left: -5px;
     height: 35px;
     width: 35px;
     outline: none;
@@ -61,7 +68,6 @@ const LikeIcon = ({ liked }) => (
       />
     </svg>
   );
-
 const FirstLine = styled.div`
     height: 75px;
     width: 100%;
@@ -69,7 +75,6 @@ const FirstLine = styled.div`
     font-size: 16px;
     font-weight: 500;
 `;
-
 const SecondLine = styled.div`
     width: 100%;
     margin-top: 5px;
@@ -80,13 +85,58 @@ const SecondLine = styled.div`
     justify-content: space-between;
     align-items: end;
 `; 
+const UserArea = styled.div`
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  svg{
+    width: 40px;
+    height: 40px;
+  };
+`;
+
+const Info = styled.div`
+  margin-left: 10px;
+  margin-top: 5px;
+  div{
+    margin-bottom: 5px;
+  }
+`;
+
+const CommentArea = styled.div`
+  padding-top : 7px;
+
+`
+const Modify = styled.button`
+  margin-left: auto; 
+  margin-right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #676767;
+`;
 
 
 // Post 컴포넌트 정의
-const Post = () => {
+const PostDetail = () => {
+    const userId = 1;
+    const {postId} = useParams();
     const [posts, setPosts] = useState([]);
-    const [likedPosts, setLikedPosts] = useState({});
+    const [post, setPost] = useState(null);
+    const [liked, setLiked] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
+    const sampleComments = [
+      { text: " 1번째 댓글" },
+      { text: " 2번째 댓글" },
+      { text: " 3번째 댓글" },
+      { text: " 4번째 댓글" },
+      { text: " 5번째 댓글" },
+      { text: " 6번째 댓글" },
+      { text: " 7번째 댓글" },
+    ];
 
     useEffect(() => {
         //사이즈에 따라 게시물 크기 변경
@@ -98,52 +148,64 @@ const Post = () => {
         window.addEventListener('resize', handleResize);
         
         //게시물 정보 받아오기
-        axios.get('http://localhost:8000/community/api/postinquire/')
+        axios.get(`/community/api/postinquire/${userId}/`)
           .then(response => {
-            setPosts(response.data.content);
+            setPosts(response.data.content); 
+            const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
+            setPost(selectedPost);
+            setLiked(selectedPost && selectedPost.like === "yes");
+            console.log(selectedPost);
           })
           .catch(error => {
             console.error('Error fetching data:', error);
           });
         
-        console.log(posts);
+
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-        
-  }, []); 
+  }, [postId]); 
 
-  const toggleLike = id => {
-    setLikedPosts(prevLikedPosts => ({
-        ...prevLikedPosts,
-        [id]: !prevLikedPosts[id]
-    }));
+  const toggleLike = () => {
+      setLiked(prevLiked => !prevLiked);
   };
+
+  if (!post){
+    return <div>Loading...</div>
+  }
 
   return (
     <>
-      {posts.map(post => (
-        <StyledPost key={post.post_id} id='post' width={windowWidth}> 
-            <PhotoArea img = {post.post_img?post.post_img:exampleImage}/>
+        <StyledPost id="post-area"width={windowWidth}> 
+            <UserArea id="user-area">
+              <ProfileIcon/>
+              <Info>
+                <div>User Id</div>
+                <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
+              </Info>
+              <Modify>수정</Modify>
+            </UserArea>
+            <PhotoArea img = {post.post_img || exampleImage}/>
             <Like>
-                <LikeButton onClick={() => toggleLike(post.post_id)}>
-                    <LikeIcon liked={likedPosts[post.post_id]} />
+                <LikeButton onClick={toggleLike}>
+                    <LikeIcon liked={liked} />
                 </LikeButton>
             </Like>
             <FirstLine>
                 {post.post_text}
             </FirstLine>
             <SecondLine>
-                <div>댓글 {post.comm_cnt?post.comm_cnt:'0'}개</div>
-                <div>{post.last_modified?formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
+                <div>댓글 {post.comm_cnt || '0'}개</div>
             </SecondLine>
+            <CommentArea>
+              <Comment comments={sampleComments}></Comment>
+            </CommentArea>
         </StyledPost>
-      ))}
     </>
   );
 }
 
-export default Post;
+export default PostDetail;
 
 
 function formatDate(isoDateString) {
