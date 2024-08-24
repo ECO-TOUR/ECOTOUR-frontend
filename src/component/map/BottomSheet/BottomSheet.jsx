@@ -4,7 +4,7 @@ import useBottomSheet from "./useBottomSheet";
 import * as S from "./BottomSheet.style";
 // component
 import Header from "./Header";
-import MainHeader from "../../Main/Header";
+import MainHeader from "../../main/Header";
 // img
 import { ReactComponent as BackBtn } from '../../../assets/back_btn.svg';
 import { ReactComponent as MapIcon } from '../../../assets/map_icon.svg';

@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react'
 import styled  from 'styled-components'
 import Checkbox  from '../../component/community/AddForm/Checkbox';
 import AddedPhoto from '../../component/community/AddForm/AddedPhoto';
-import Header from '../../component/Main/Header'
-import Navbar from '../../component/Main/Navbar'
+import Header from '../../component/main/Header'
+import Navbar from '../../component/main/Navbar'
 import {ReactComponent as CameraIcon} from '../../assets/camera_icon.svg'
 import axios from 'axios';
 
