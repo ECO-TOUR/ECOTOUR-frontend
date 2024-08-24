@@ -2,16 +2,16 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { GlobalStyle } from './GlobalStyle';
 
+//page
 import Mypage from './pages/Mypage/Mypage.js';
 import Community from './pages/Community/Community.js';
 import AddForm  from './pages/Community/AddForm.js';
-//page
 import Login from './pages/Login/Login';
 import Agreement from './pages/Agreement/Agreement'
 import KeyWord from './pages/Onboarding/KeyWord.js';
 import Intro from './pages/Onboarding/Intro';
 import MapMain from './pages/map/Main/MapMain';
-import MapSearch from './pages/map/search/MapSearch';
+import MapSearch from './pages/map/Search/MapSearch';
 import Home from'./pages/Main/Home'
 import LikeMain from './pages/Like/LikeMain.js'
 import Detail from './pages/Detail/Detail';

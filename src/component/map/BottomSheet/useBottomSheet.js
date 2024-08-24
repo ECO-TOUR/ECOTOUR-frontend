@@ -1,11 +1,14 @@
 import { useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 import usePreviousValue from "./usePreviousValue";
+import { useRecoilState } from "recoil";
+import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
 
 const useBottomSheet = () => {
   const [isOpen, setIsOpen] = useState(true);
   const controls = useAnimation();
   const prevIsOpen = usePreviousValue(isOpen);
+  const [state, setState] = useRecoilState(StateAtoms); 
 
   // Bottom Sheet의 애니메이션 상태 정의
   const animationVariants = {
@@ -17,7 +20,8 @@ const useBottomSheet = () => {
     // 드래그가 끝날 때의 y 좌표에 따라 Bottom Sheet를 닫거나 엽니다.
     const shouldClose = info.offset.y > 5;
 
-    console.log(shouldClose);
+    //console.log(shouldClose);
+    setState(shouldClose);
     if (shouldClose) {
       controls.start("hidden");
       setIsOpen(true);

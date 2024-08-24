@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Component = styled.div`
-    padding: 28px 15px;
+    padding: 28px 15px 0px 15px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

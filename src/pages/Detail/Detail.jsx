@@ -89,7 +89,7 @@ function Detail() {
             <S.BackBtn onClick={() => window.history.back()}>
                 <BackBtn/>
             </S.BackBtn>
-            <Header name="ECO TOUR" color="#91EB86" />
+            <S.Header>ECO TOUR</S.Header>
         </S.HeaderComponent>
 
         <S.MainImg src={exampleImage} ref={mainImgRef}/>

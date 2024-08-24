@@ -5,7 +5,16 @@ import { Swiper } from 'swiper/react';
 export const Container = styled.div`
     background-color: white;
     height: 100%;
-    padding: 0px 0px 100px 0px;
+    padding: 0px 0px 90px 0px;
+`;
+
+// 헤더
+export const Header = styled.div`
+    font-weight: 800;
+    font-size: 19px;
+    color: #91EB86;
+    text-align: center;
+    padding: 20px 0px;
 `;
 
 // 배너
