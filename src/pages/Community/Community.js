@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
-import Header from '../../component/Main/Header.js';
-import Navbar from '../../component/Main/Navbar.js';
+import Header from '../../component/main/Header.js';
+import Navbar from '../../component/main/Navbar.js';
 import Post from '../../component/community/Main/Post.js'; // Post 컴포넌트 불러오기
 import { ReactComponent as WriteIcon } from '../../assets/write.svg';
 import { useNavigate } from 'react-router-dom';

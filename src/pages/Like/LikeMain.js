@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import Header from '../../component/Main/Header'
-import Navbar from '../../component/Main/Navbar'
+import Header from '../../component/main/Header'
+import Navbar from '../../component/main/Navbar'
 
 const LikeArea = styled.div`
     height: 690px;

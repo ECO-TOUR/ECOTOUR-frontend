@@ -3,7 +3,7 @@ import { Map as KakaoMap, MapMarker } from "react-kakao-maps-sdk";
 import './MapMain.css';
 // component
 import BottomSheet from "../../../component/map/BottomSheet/BottomSheet";
-import Navbar from '../../../component/Main/Navbar';
+import Navbar from '../../../component/main/Navbar';
 import Content from "../../../component/map/Content/Content";
 // img
 import LocationBtn from '../../../assets/LocationBtn.svg'; // 현위치 버튼

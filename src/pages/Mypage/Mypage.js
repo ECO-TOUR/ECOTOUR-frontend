@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Switch from 'react-switch';
 import profileIcon from '../../assets/profile.svg';
-import Header from '../../component/Main/Header';
-import Navbar from '../../component/Main/Navbar';
+import Header from '../../component/main/Header';
+import Navbar from '../../component/main/Navbar';
 import MyPost from './MyPost';
 import MyPostLarge from './MyPostLarge';
 
