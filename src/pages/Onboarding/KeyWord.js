@@ -10,6 +10,9 @@ function KeyWord() {
     // 선택한 키워드 개수
     const [keywordCount, setKeywordCount] = useState(0);
 
+    // 키워드 배열 정의
+    const keywords = ['섬', '천연기념물', '생태교육', '산', '국립공원', '과학관', '박물관', '바다'];
+
     // 키워드 클릭 시 상태를 토글하는 함수
     const handleButtonClick = (index) => {
         const newClickedStates = [...clickedStates];
@@ -50,7 +53,7 @@ function KeyWord() {
                     key={index}
                     onClick={() => handleButtonClick(index)}
                     >
-                    키워드 {index + 1}
+                    {keywords[index]}
                     </div>
                 );
                 })}
