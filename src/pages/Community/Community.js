@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import React from 'react';
 import Header from '../../component/main/Header.js';
 import Navbar from '../../component/main/Navbar.js';
-import Post from '../../component/community/Main/Post.js'; // Post 컴포넌트 불러오기
+import Posts from '../../component/community/Main/Posts.js'; 
+import SearchBar from '../../component/community/Main/SearchBar.js'
 import { ReactComponent as WriteIcon } from '../../assets/write.svg';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,21 +31,6 @@ const CommunityArea = styled.div`
   min-width: calc(var(--mim-width) - 32px);
 `;
 
-const SearchBar = styled.input`
-  width: 100%;
-  min-width: calc(var(--mim-width) - 32px);
-  height: 40px;
-  align-self: center;
-  background-color: #f5f5f5;
-  border: none;
-  border-radius: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
-  color: #333333;
-  font-weight: 400;
-  font-size: 13px;
-  box-sizing: border-box;
-`;
 
 const PostArea = styled.div`
   min-width: calc(320px - 32px);
@@ -134,15 +120,16 @@ const Community = () => {
   const moveToAddForm = () =>{
     navigate('./addform/')
   }
+
   return (
     <>
       <Header pageName="게시판" />
       <CommunityContainer id='community-container'>
         <CommunityArea id='community-area'>
-          <SearchBar id='community-search' type="text" placeholder="검색" />
+          <SearchBar />
           <PostArea id='post-area'>
             <PostTitle id='post-title'>전체 게시글</PostTitle>
-            <Post id='post'/>
+            <Posts id='post'/>
           </PostArea>
         </CommunityArea>
       </CommunityContainer>

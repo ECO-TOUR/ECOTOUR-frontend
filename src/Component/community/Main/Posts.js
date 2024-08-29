@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import exampleImage from '../../../assets/example2.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const StyledPost = styled.div`
     margin-top: 16px;
@@ -15,6 +16,7 @@ const StyledPost = styled.div`
 `;
 
 const PhotoArea = styled.div`
+    /* border: 0.5px solid #333333; */
     background-image: url(${props => props.img});
     background-size: cover;
     background-repeat: no-repeat;
@@ -80,13 +82,20 @@ const SecondLine = styled.div`
     justify-content: space-between;
     align-items: end;
 `; 
-
+ 
 
 // Post 컴포넌트 정의
-const Post = () => {
+const Posts = () => {
+    const navigate = useNavigate();
+
+    const moveToPostDetail = (postId) =>{
+      navigate(`./post/${postId}`);
+    };
+    const userId = 21;
     const [posts, setPosts] = useState([]);
     const [likedPosts, setLikedPosts] = useState({});
     const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
+
 
     useEffect(() => {
         //사이즈에 따라 게시물 크기 변경
@@ -98,15 +107,15 @@ const Post = () => {
         window.addEventListener('resize', handleResize);
         
         //게시물 정보 받아오기
-        axios.get('/community/api/postinquire/')
+        axios.get(`/community/api/postinquire/${userId}/`)
           .then(response => {
             setPosts(response.data.content);
+            console.log('Fetched data:', response.data.content);
           })
           .catch(error => {
             console.error('Error fetching data:', error);
           });
         
-        console.log(posts);
         return () => {
             window.removeEventListener('resize', handleResize);
         };
@@ -123,8 +132,8 @@ const Post = () => {
   return (
     <>
       {posts.map(post => (
-        <StyledPost key={post.post_id} id='post' width={windowWidth}> 
-            <PhotoArea img = {post.post_img?post.post_img:exampleImage}/>
+        <StyledPost onClick={() => moveToPostDetail(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
+            <PhotoArea img = {post.post_img || exampleImage}/>
             <Like>
                 <LikeButton onClick={() => toggleLike(post.post_id)}>
                     <LikeIcon liked={likedPosts[post.post_id]} />
@@ -140,10 +149,10 @@ const Post = () => {
         </StyledPost>
       ))}
     </>
-  );
+  );  
 }
 
-export default Post;
+export default Posts;
 
 
 function formatDate(isoDateString) {
