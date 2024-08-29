@@ -7,6 +7,7 @@ export const Search_div = styled.div`
     align-items: center;
     padding: 5px 5px 15px 5px;
     margin: 10px 25px;
+    cursor: pointer;
 `;
 
 // 검색어 text

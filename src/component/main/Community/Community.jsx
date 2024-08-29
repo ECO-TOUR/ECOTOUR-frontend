@@ -27,9 +27,9 @@ function Community() {
     <S.Component>
         {contents.map((content, index) => (
             <S.ContentBox>
-                <S.ContentImage src={exampleImage}/>
+                <S.ContentImage src={content.post_img}/>
                 <S.ContentDiv>
-                    <S.ContentTitle>여기 정말 재미있었어요! 하하하하</S.ContentTitle>
+                    <S.ContentTitle>{content.post_text}</S.ContentTitle>
                     <S.ContentInfo>
                         <img src={LikeIcon}/><S.InfoText>20</S.InfoText>
                         <img src={ChatIcon}/><S.InfoText>5</S.InfoText>

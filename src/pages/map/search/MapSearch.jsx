@@ -10,11 +10,13 @@ import { ReactComponent as BackBtn } from '../../../assets/back_btn.svg';
 
 function MapSearch() {
 
+  // 뒤로가기 버튼 클릭 시
   const navigate = useNavigate();
   function onClickBackBtn(){
     navigate('/map-main');
   }
 
+  // 엔터 클릭 시 검색
   const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
           event.preventDefault(); // 기본 Enter 동작 방지
