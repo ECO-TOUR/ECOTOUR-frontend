@@ -39,7 +39,7 @@ const HeaderTitle = styled.div`
 const Header = (props) => {
 
   return (
-    <HeaderContainer>
+    <HeaderContainer id='header-container'>
       <HeaderArea>
         <HeaderTitle>
           {props.pageName ? props.pageName : 'Header'}
