@@ -16,6 +16,7 @@ import MapSearch from './pages/map/Search/MapSearch.jsx';
 import Home from'./pages/Main/Home'
 import LikeMain from './pages/Like/LikeMain.js'
 import Detail from './pages/Detail/Detail';
+import KakaoRedirect from './pages/Agreement/KakaoRedirect';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/agreement" element={<Agreement />} />
+            <Route path='/auth' element={<KakaoRedirect />} />
             <Route path="/key-word" element={<KeyWord />} />
             <Route path="/intro" element={<Intro />} />
             <Route path="/main" element={<Home />} />

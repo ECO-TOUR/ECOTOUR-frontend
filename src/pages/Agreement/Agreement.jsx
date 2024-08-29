@@ -73,11 +73,15 @@ function Agreement() {
   };
 
   // 회원가입 버튼 클릭 시
+  const REST_API_KEY = '1c0e13d2c1d6cf63767d0a06515d1d6e';
+  const REDIRECT_URI = 'https://localhost:3000/auth';
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   const onClickSignUpBtn = () => {
+    // 다 동의했을 경우
     if(isAllClicked === true){
-      navigate('/key-word');
+      window.location.href = link;
     }
-
+    // 다 동의하지 않았을 경우
     else{
       alert('전체 약관 동의를 해주세요');
     }
