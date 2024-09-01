@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import exampleImage from '../../../assets/example2.jpg';
-import { useParams } from 'react-router-dom';
 import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
 import Comment from './Comment'
 
@@ -118,27 +117,49 @@ const Modify = styled.button`
 `;
 
 const PostDetail = ({post, comments}) => {
-    const [liked, setLiked] = useState(false);
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
+  const [liked, setLiked] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
+  const userId = 1;
 
-    useEffect(() => {
-        //사이즈에 따라 게시물 크기 변경
-        const handleResize = () =>{
-            const updateWidth = window.innerWidth > 430 ? 430 : window.innerWidth;
-            setWindowWidth(updateWidth);
-        };
+  useEffect(() => {
+    if(post) {
+      setLiked(post.like === 'yes');
+    }
+  },[post]);
 
-        window.addEventListener('resize', handleResize);
-    
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
+  useEffect(() => {
+      //사이즈에 따라 게시물 크기 변경
+      const handleResize = () =>{
+          const updateWidth = window.innerWidth > 430 ? 430 : window.innerWidth;
+          setWindowWidth(updateWidth);
+      };
+
+      window.addEventListener('resize', handleResize);
+  
+      return () => {
+          window.removeEventListener('resize', handleResize);
+      };
   }); 
 
   const toggleLike = () => {
       setLiked(prevLiked => !prevLiked);
+      LikeHandler(userId, post.post_id);
   };
 
+    
+  //좋아요 기능
+  const LikeHandler = (userId, postId) => {
+    axios.post(`/community/api/postlike/${userId}/`, {
+      'post_id':postId, 
+    })
+    .then(response => {
+      console.log('like 성공',response);
+    })
+    .catch(error => {
+      console.log('error like', error);
+    })
+  }
+  
   if (!post){
     return <div>Loading...</div>
   }

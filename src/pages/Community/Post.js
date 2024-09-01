@@ -120,7 +120,9 @@ const Post = () => {
     })
 
   };
+
   
+
   return (
     <>
         <Header pageName="게시판" />

@@ -14,7 +14,6 @@ const StyledPost = styled.div`
     align-self: center;
     padding: 10px;
 `;
-
 const PhotoArea = styled.div`
     /* border: 0.5px solid #333333; */
     background-image: url(${props => props.img});
@@ -26,7 +25,6 @@ const PhotoArea = styled.div`
     aspect-ratio: 1 / 1;
     background-color: #333333;
 `;
-
 const Like = styled.div`
     margin-top: 5px;
     height: 35px;
@@ -58,12 +56,11 @@ const LikeIcon = ({ liked }) => (
     >
       <path
         d="M22 8.5C22 5.46243 19.5376 3 16.5 3C14.7819 3.05354 13.1586 3.80024 12 5.07C10.8414 3.80024 9.2181 3.05354 7.5 3C4.46243 3 2 5.46243 2 8.5C2 12.42 6.75 16.75 9 19L11.28 21.28C11.4205 21.4207 11.6112 21.4998 11.81 21.5H12.19C12.3888 21.4998 12.5795 21.4207 12.72 21.28L15 19C17.25 16.75 22 12.42 22 8.5Z"
-        fill={liked ? "#91EB86" : "none"}
+        fill={liked === "yes" ? "#91EB86" : "none"}
         stroke="#333"
       />
     </svg>
   );
-
 const FirstLine = styled.div`
     height: 75px;
     width: 100%;
@@ -71,7 +68,6 @@ const FirstLine = styled.div`
     font-size: 16px;
     font-weight: 500;
 `;
-
 const SecondLine = styled.div`
     width: 100%;
     margin-top: 5px;
@@ -82,7 +78,17 @@ const SecondLine = styled.div`
     justify-content: space-between;
     align-items: end;
 `; 
- 
+const LikeHandler = (userId, postId) => {
+  axios.post(`/community/api/postlike/${userId}/`, {
+    'post_id':postId, 
+  })
+  .then(response => {
+    console.log('like 성공',response);
+  })
+  .catch(error => {
+    console.log('error like', error);
+  })
+}
 
 // Post 컴포넌트 정의
 const Posts = () => {
@@ -91,9 +97,9 @@ const Posts = () => {
     const moveToPostDetail = (postId) =>{
       navigate(`./post/${postId}`);
     };
-    const userId = 21;
+
+    const userId = 1;
     const [posts, setPosts] = useState([]);
-    const [likedPosts, setLikedPosts] = useState({});
     const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
 
 
@@ -122,11 +128,12 @@ const Posts = () => {
         
   }, []); 
 
-  const toggleLike = id => {
-    setLikedPosts(prevLikedPosts => ({
-        ...prevLikedPosts,
-        [id]: !prevLikedPosts[id]
-    }));
+  const toggleLike = (id) => {
+    setPosts(prevPosts => 
+        prevPosts.map(post =>
+          post.post_id === id ? {...post, like: post.like === "yes" ? "no" : "yes"} : post
+        )
+    );
   };
 
   return (
@@ -135,8 +142,12 @@ const Posts = () => {
         <StyledPost onClick={() => moveToPostDetail(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
             <PhotoArea img = {post.post_img || exampleImage}/>
             <Like>
-                <LikeButton onClick={() => toggleLike(post.post_id)}>
-                    <LikeIcon liked={likedPosts[post.post_id]} />
+                <LikeButton onClick={(e) => {
+                    e.stopPropagation();
+                    toggleLike(post.post_id);
+                    LikeHandler(userId, post.post_id);
+                  }}>
+                    <LikeIcon liked={post.like} />
                 </LikeButton>
             </Like>
             <FirstLine>
