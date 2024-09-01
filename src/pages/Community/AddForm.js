@@ -121,25 +121,24 @@ const AddForm = () => {
             alert("내용 또는 사진을 추가해 주세요");
             return;
         }
-
-        const formData = new FormData();
-        formData.append('text', textContent);
-        uploadedImage.forEach((image) =>{
-            formData.append('images', image)
-        });
-
+        const currentDate = new Date().toISOString();
         try{
-            const response = await axios.post('./api/posts', formData, {
-                headers: {
-                    'Content-Type' : 'multipart/form-data',
-                },
+            const response = await axios.post('/community/api/postwrite/',{
+                'text':textContent,
+                'img': uploadedImage,
+                'date': currentDate,
+                'score': 4,
+                'hashtag': '#example',
+                'tour_id': 1,
+                "user_id": 1,
             });
-
+            console.log("🚀 ~ handlePost ~ response:", response)
+            
             if (response.status === 200){
                 alert("게시글이 성공적으로 등록되었습니다.");
             }
         } catch (error) {
-            console.error('게시글 등록 실퍄:', error);
+            console.error('게시글 등록 실패:', error);
             alert('게시글 등록 중 문제가 발생했습니다.');
         }
     };
