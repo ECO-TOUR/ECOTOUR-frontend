@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios';
 import './KeyWord.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,8 +32,20 @@ function KeyWord() {
         if(keywordCount === 0){
             alert("키워드를 1개 이상 선택해주세요!");
         }
-        else
-            navigate("/intro");
+        else{
+            axios.post('//accounts/api/preference/', {
+                // headers: {
+                //   'Content-Type': 'text/plain', // 또는 원하는 MIME 타입을 문자열로 지정
+                // },
+              })
+              .then(response => {
+                console.log(response.data);
+                //navigate("/intro");
+              })
+              .catch(error => {
+                console.error('Error fetching data:', error);
+              });
+        }
     }
 
   return (

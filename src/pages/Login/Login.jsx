@@ -3,17 +3,16 @@ import * as S from './Login.style';
 import Ellipse41 from '../../assets/Ellipse 41.svg';
 import Ellipse42 from '../../assets/Ellipse 42.svg';
 import KakaoLoginBtn from '../../assets/kakao_login_medium_wide.svg';
-import { useNavigate } from 'react-router-dom';
-
 
 function Login() {
 
-    const navigate = useNavigate();
+  const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
-    const onclickLoginBtn = () => {
-      //window.location.href = kakaoURL;
-      navigate('/agreement');
-    };
+  const onclickLoginBtn = () => {
+    window.location.href = link;
+  };
 
   return (
     <S.Login_container>

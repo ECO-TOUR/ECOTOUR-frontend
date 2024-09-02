@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as S from "./MapSearch.style";
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // 컴포넌트
 import RecentSearches from '../../../component/map/Search/RecentSearches'; // 최근 검색어
@@ -17,10 +18,27 @@ function MapSearch() {
   }
 
   // 엔터 클릭 시 검색
+  const [searchValue, setSearchValue] = useState('');
+  // 검색어 입력 시 상태 업데이트
+  const handleInputChange = (event) => {
+    setSearchValue(event.target.value);  // 입력된 값으로 상태 업데이트
+  };
   const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
           event.preventDefault(); // 기본 Enter 동작 방지
-          navigate('/map-main'); // 페이지 이동
+          try {
+            // 검색어를 포함한 API 호출
+            const response = axios.get(`/place`, {
+              params: { search: searchValue },
+              headers: {
+                'Content-Type': 'text/plain', // 필요에 따라 설정
+              },
+            });
+            console.log(response.data);
+
+          } catch (error) {
+            console.error(error);
+          }
       }
   };
 
@@ -33,7 +51,12 @@ function MapSearch() {
         검색
       </S.Header_container>
 
-      <S.Search_container placeholder="지역이나 생태관광지를 검색해보세요" onKeyDown={handleKeyDown} ></S.Search_container>
+      <S.Search_container 
+        placeholder="지역이나 생태관광지를 검색해보세요" 
+        onKeyDown={handleKeyDown} 
+        onChange={handleInputChange}
+        value={searchValue}>
+      </S.Search_container>
       
       {/* 최근 검색어 */}
       <S.Recent_container>

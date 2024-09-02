@@ -12,7 +12,7 @@ function RealTimeSearch() {
         try {
             const response = await axios.get('/place/log/rank');
             setRealTimeSearches(response.data.top_search_terms);
-            //console.log(response.data.top_search_terms);
+            console.log(response.data.top_search_terms);
         } catch (error) {
             console.error('데이터를 가져오는 중 오류 발생:', error);
         }

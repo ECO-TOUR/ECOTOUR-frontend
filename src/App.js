@@ -16,7 +16,7 @@ import MapSearch from './pages/map/Search/MapSearch.jsx';
 import Home from'./pages/Main/Home'
 import LikeMain from './pages/Like/LikeMain.js'
 import Detail from './pages/Detail/Detail';
-import KakaoRedirect from './pages/Agreement/KakaoRedirect';
+import KakaoRedirect from './pages/Login/KakaoRedirect';
 
 function App() {
   return (
