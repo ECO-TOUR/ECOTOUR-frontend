@@ -7,7 +7,6 @@ function KakaoRedirect() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(code);
     axios
       .post('accounts/api/oauth/kakao/usercheck/', {
         headers: {
@@ -24,8 +23,8 @@ function KakaoRedirect() {
           });
         // 기존 회원이라면 메인으로 이동
         else {
-          // 성공적으로 로그인했다면 다음 페이지로 이동
-          //console.log(secureResponse.data.content.user);
+          //console.log(secureResponse.data.content.user.user_id);
+          localStorage.setItem("user_id", secureResponse.data.content.user.user_id);
           navigate('/main')
         }
       })

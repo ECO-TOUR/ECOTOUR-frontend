@@ -14,7 +14,7 @@ function Community() {
         const fetchData = async () => {
             try {
                 const response = await axios.get('/community/api/postbest');
-                console.log(response.data);
+                console.log(response.data.content);
                 setContents(response.data.content);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -27,12 +27,12 @@ function Community() {
     <S.Component>
         {contents.map((content, index) => (
             <S.ContentBox>
-                <S.ContentImage src={content.post_img}/>
+                <S.ContentImage src={content.post_img || exampleImage}/>
                 <S.ContentDiv>
                     <S.ContentTitle>{content.post_text}</S.ContentTitle>
                     <S.ContentInfo>
-                        <img src={LikeIcon}/><S.InfoText>20</S.InfoText>
-                        <img src={ChatIcon}/><S.InfoText>5</S.InfoText>
+                        <img src={LikeIcon}/><S.InfoText>{content.post_likes}</S.InfoText>
+                        <img src={ChatIcon}/><S.InfoText>{content.comm_cnt}</S.InfoText>
                     </S.ContentInfo>                    
                 </S.ContentDiv>                
             </S.ContentBox>

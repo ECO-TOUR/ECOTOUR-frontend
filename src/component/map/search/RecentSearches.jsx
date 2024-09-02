@@ -8,10 +8,11 @@ function RecentSearches() {
   const [recentSearches, setRecentSearches] = useState([]);
   // 최근 검색어 가져오기
   useEffect(() => {
+    console.log(localStorage.getItem("user_id"));
     const fetchData = async () => {
         try {
             const response = await axios.get(`/place/log/5`);
-            //console.log(response.data.search_history);
+            console.log(response.data.search_history);
             setRecentSearches(response.data.search_history);
         } catch (error) {
             console.error('Error fetching data:', error);
