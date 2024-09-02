@@ -3,6 +3,13 @@ import styled from 'styled-components';
 import axios from 'axios';
 import exampleImage from '../../../assets/example2.jpg';
 import { useNavigate } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+
 
 const StyledPost = styled.div`
     margin-top: 16px;
@@ -15,16 +22,11 @@ const StyledPost = styled.div`
     padding: 10px;
 `;
 const PhotoArea = styled.div`
-    /* border: 0.5px solid #333333; */
-    background-image: url(${props => props.img});
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    align-self: center;
     width: 100%;
     aspect-ratio: 1 / 1;
     background-color: #333333;
 `;
+
 const Like = styled.div`
     margin-top: 5px;
     height: 35px;
@@ -140,7 +142,24 @@ const Posts = () => {
     <>
       {posts.map(post => (
         <StyledPost onClick={() => moveToPostDetail(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
-            <PhotoArea img = {post.post_img || exampleImage}/>
+            <PhotoArea>
+              <Swiper pagination={{ clickable: true }} modules={[Pagination]}>
+                {(post.post_img && post.post_img.length > 0 ? post.post_img : [exampleImage]).map((img, index) => (
+                  <SwiperSlide key={index}>
+                    <div
+                      style={{
+                        backgroundImage: `url(${img})`,
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </PhotoArea>
             <Like>
                 <LikeButton onClick={(e) => {
                     e.stopPropagation();

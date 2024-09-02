@@ -4,6 +4,7 @@ import axios from 'axios';
 import exampleImage from '../../../assets/example2.jpg';
 import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
 import Comment from './Comment'
+import { useNavigate } from 'react-router-dom';
 
 const StyledPost = styled.div`
     width: 100%;
@@ -120,7 +121,8 @@ const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
   const userId = 1;
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     if(post) {
       setLiked(post.like === 'yes');
@@ -146,7 +148,6 @@ const PostDetail = ({post, comments}) => {
       LikeHandler(userId, post.post_id);
   };
 
-    
   //좋아요 기능
   const LikeHandler = (userId, postId) => {
     axios.post(`/community/api/postlike/${userId}/`, {
@@ -173,7 +174,7 @@ const PostDetail = ({post, comments}) => {
               <div>User Id</div>
               <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
             </Info>
-            <Modify>수정</Modify>
+            <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
           </UserArea>
           <PhotoArea img = {post.post_img || exampleImage}/>
           <Like>
