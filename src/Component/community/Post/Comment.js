@@ -13,19 +13,32 @@ const CommentContainer = styled.div`
     }
 `;
 const CommentText = styled.div`
-    padding-left: 5px;
+    padding-left: 10px;
     display: flex;
     align-items: center;
 `;
+
+const NoCommets = styled.div`
+    height: 40px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding-left: 5px;
+`
+
 const Comment = ({comments}) => {
   return (
     <>
-        {comments.map((comment, index) => (
-            <CommentContainer key ={index}>
-                <ProfileIcon />
-                <CommentText>{comment.text}</CommentText>
-            </CommentContainer>
-        ))} 
+        {comments.length > 0 ? (
+            comments.map((comment, index) => (
+                <CommentContainer key ={index}>
+                    <ProfileIcon />
+                    <CommentText>{comment.comments}</CommentText>
+                </CommentContainer>
+            ))
+        ) : (
+            <NoCommets>댓글이 없습니다.</NoCommets>
+        ) }
     </>
     );
 };
