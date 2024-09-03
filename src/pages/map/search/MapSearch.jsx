@@ -23,16 +23,14 @@ function MapSearch() {
   const handleInputChange = (event) => {
     setSearchValue(event.target.value);  // 입력된 값으로 상태 업데이트
   };
-  const handleKeyDown = (event) => {
+  const handleKeyDown = async(event) => {
       if (event.key === 'Enter') {
           event.preventDefault(); // 기본 Enter 동작 방지
+
           try {
             // 검색어를 포함한 API 호출
-            const response = axios.get(`/place`, {
+            const response = await axios.get(`/place`, {
               params: { search: searchValue },
-              headers: {
-                'Content-Type': 'text/plain', // 필요에 따라 설정
-              },
             });
             console.log(response.data);
 

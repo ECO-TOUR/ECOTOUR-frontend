@@ -9,9 +9,6 @@ function KakaoRedirect() {
   useEffect(() => {
     axios
       .post('accounts/api/oauth/kakao/usercheck/', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
         code: code,
       })
       .then((secureResponse) => {
@@ -23,8 +20,9 @@ function KakaoRedirect() {
           });
         // 기존 회원이라면 메인으로 이동
         else {
-          //console.log(secureResponse.data.content.user.user_id);
+          //console.log(secureResponse.data.content);
           localStorage.setItem("user_id", secureResponse.data.content.user.user_id);
+          localStorage.setItem("access_token", secureResponse.data.content.response_token.access_token);
           navigate('/main')
         }
       })

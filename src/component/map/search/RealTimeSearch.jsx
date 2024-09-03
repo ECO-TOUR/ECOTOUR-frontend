@@ -6,7 +6,7 @@ function RealTimeSearch() {
 
   const [realTimeSearches, setRealTimeSearches] = useState([]);
 
-  // API 연결
+  // 실시간 검색 순위 조회 API 연결
   useEffect(() => {
     const fetchData = async () => {
         try {
