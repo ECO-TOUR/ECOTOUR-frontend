@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import * as S from './Detail.style';
 // 컴포넌트
-import Header from '../../component/main/Header';
 import Map from '../../component/Detail/DetailMap';
 import Review from '../../component/Detail/Review';
 import Nav from '../../component/main/Navbar';
@@ -10,10 +11,13 @@ import { ReactComponent as BackBtn } from '../../assets/back_btn.svg';
 import EmptyHeart from '../../assets/empty_heart.svg';
 import FillHeart from '../../assets/click_heart.svg';
 import ShareIcon from '../../assets/share_icon.svg';
-import exampleImage from '../../assets/example1.png'; // 이미지 파일을 import
 import { ReactComponent as UpIcon } from '../../assets/up_icon.svg';
 
 function Detail() {
+
+    const { tour_id } = useParams();
+    const [detail, setDetail] = useState(null);
+
     // 스크롤 함수
     const scrollToTop = () => {
         window.scrollTo({
@@ -23,11 +27,11 @@ function Detail() {
     };
 
     // 지도 마커 표시 주소 변수
-    const[address, setAddress] = useState("충청북도 단양군 단양읍 고수동굴길 8");
-    // 관광지 이름
-    const [title, setTitle] = useState("단양고수동굴");
+    const[address, setAddress] = useState("");
+    const [title, setTitle] = useState(""); // 관광지 이름
+    const [image, setImage] = useState(""); // 관광지 이미지
+    const [website, setWebsite] = useState("") // 관광지 홈페이지
 
-    const mainImage = document.querySelector('.MainImg');
     const mainImgRef = useRef();
 
     // 좋아요 상태 변수
@@ -38,13 +42,30 @@ function Detail() {
     };
 
     useEffect(() => {
+        // 관광지 정보 가져오기
+        const fetchDetail = async () => {
+            try {
+              const response = await axios.get(`/place/detail/${tour_id}/`);
+              const { tour_name, tour_location, tour_img, website, tour_tel, 
+                tour_telname, restrooms, parking, fees, opening_hours} = response.data.place_detail;
+              setTitle(tour_name); // 관광지 이름
+              setAddress(tour_location); // 관광지 주소
+              setImage(tour_img); // 관광지 이미지
+              setDetail(response.data.place_detail);
+              console.log(response.data);
+            } catch (error) {
+              console.log(error);
+            }
+          };
+      
+        fetchDetail(); // 컴포넌트가 마운트될 때 API 호출
         // 카카오톡 sdk 추가
         const script = document.createElement("script");
         script.src = "https://developers.kakao.com/sdk/js/kakao.js";
         script.async = true;
         document.body.appendChild(script);
         return () => document.body.removeChild(script);
-    }, []);
+    }, [tour_id]);
 
     const shareToKatalk = () => {
         // 이미지 URL이 존재하는지 확인
@@ -92,7 +113,7 @@ function Detail() {
             <S.Header>ECO TOUR</S.Header>
         </S.HeaderComponent>
 
-        <S.MainImg src={exampleImage} ref={mainImgRef}/>
+        <S.MainImg src={image} ref={mainImgRef}/>
         <S.TitleComponent>
             <S.Title>{title}</S.Title>
             <S.IconBox>
@@ -113,7 +134,9 @@ function Detail() {
                 <S.InfoTitle>개장일</S.InfoTitle>
             </S.InfoHeader>
             <S.InfoText>
-                    하절기(4월~10월) 09:00~18:30, 동절기(11월~3월) 09:00~18:00 ※ 퇴장 1시간전입장마감
+                {detail ? (<>{detail.opening_hours}</>) : (
+                    <>Loading...</> // 데이터를 불러오는 동안 보여줄 내용
+                )}
             </S.InfoText>
         </S.InfoComponent>
 
@@ -133,7 +156,9 @@ function Detail() {
                     <S.InfoTitle>화장실</S.InfoTitle>
                 </S.InfoHeader>
                 <S.InfoText>
-                        있음
+                    {detail ? (<>{detail.restrooms}</>) : (
+                        <>Loading...</> // 데이터를 불러오는 동안 보여줄 내용
+                    )}
                 </S.InfoText>
             </S.InfoComponent>
         </S.InfoBox>
@@ -144,14 +169,22 @@ function Detail() {
                     <S.InfoIcon/>
                     <S.InfoTitle>관련 홈페이지</S.InfoTitle>
                 </S.InfoHeader>
-                <S.InfoText>www.gosucave.co.kr</S.InfoText>
+                <S.InfoText>                    
+                    {detail ? (<>{detail.website}</>) : (
+                        <>Loading...</> // 데이터를 불러오는 동안 보여줄 내용
+                    )}
+                </S.InfoText>
             </S.InfoComponent>
             <S.InfoComponent>
                 <S.InfoHeader>
                     <S.InfoIcon/>
                     <S.InfoTitle>문의</S.InfoTitle>
                 </S.InfoHeader>
-                <S.InfoText>고수동굴문화재관리소 043-422-3072</S.InfoText>
+                <S.InfoText>                    
+                    {detail ? (<>{detail.tour_telname} {detail.tour_tel}</>) : (
+                        <>Loading...</> // 데이터를 불러오는 동안 보여줄 내용
+                    )}
+                </S.InfoText>
             </S.InfoComponent>
         </S.InfoBox>
 
@@ -161,7 +194,9 @@ function Detail() {
                 <S.InfoTitle>이용요금</S.InfoTitle>
             </S.InfoHeader>
             <S.InfoText>
-                개인 - 성인 11,000원 / 청소년 7,000원 / 어린이 5,000원<br/>단체 - 성인 10,000원 / 청소년 6,000원 / 어린이 4,000원
+                {detail ? (<>{detail.fees}</>) : (
+                    <>Loading...</> // 데이터를 불러오는 동안 보여줄 내용
+                )}
             </S.InfoText>
         </S.InfoComponent>
 
@@ -171,7 +206,9 @@ function Detail() {
                 <S.InfoTitle>주차시설</S.InfoTitle>
             </S.InfoHeader>
             <S.InfoText>
-                승용•승합차 3,000원 / 버스 6,000원, 화물차(4t이하) 2,000원 화물차(4t이상) 4,000원 / 이륜차 500원
+                {detail ? (<>{detail.parking}</>) : (
+                    <>Loading...</> // 데이터를 불러오는 동안 보여줄 내용
+                )}
             </S.InfoText>
         </S.InfoComponent>
         <S.Line/>

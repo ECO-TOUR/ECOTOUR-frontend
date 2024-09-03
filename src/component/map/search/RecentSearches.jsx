@@ -6,7 +6,6 @@ import { ReactComponent as ClockIcon } from "../../../assets/search_clock.svg";
 
 function RecentSearches() {
   const queryClient = useQueryClient();
-  //const [recentSearches, setRecentSearches] = useRecoilState(recentSearchesState); // 검색기록 리스트
   const userId = localStorage.getItem("user_id"); // 사용자 id
 
   // useQuery로 API로부터 최근 검색어 목록 가져오기

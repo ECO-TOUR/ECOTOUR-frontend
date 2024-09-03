@@ -45,7 +45,7 @@ function App() {
             <Route path="/community/modifyform/:postId" element={<ModifyForm />} />
             <Route path="/community/post/:postId" element={<Post />} />
             <Route path="/like" element={<LikeMain />} />
-            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/:tour_id" element={<Detail />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>
