@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import exampleImage from '../../../assets/example2.jpg';
-import { useParams } from 'react-router-dom';
 import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
 import Comment from './Comment'
+import { useNavigate } from 'react-router-dom';
 
 const StyledPost = styled.div`
     width: 100%;
@@ -95,7 +95,6 @@ const UserArea = styled.div`
     height: 40px;
   };
 `;
-
 const Info = styled.div`
   margin-left: 10px;
   margin-top: 5px;
@@ -103,7 +102,6 @@ const Info = styled.div`
     margin-bottom: 5px;
   }
 `;
-
 const CommentArea = styled.div`
   padding-top : 7px;
 
@@ -119,88 +117,81 @@ const Modify = styled.button`
   color: #676767;
 `;
 
+const PostDetail = ({post, comments}) => {
+  const [liked, setLiked] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
+  const userId = 1;
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if(post) {
+      setLiked(post.like === 'yes');
+    }
+  },[post]);
 
-// Post 컴포넌트 정의
-const PostDetail = () => {
-    const userId = 1;
-    const {postId} = useParams();
-    const [posts, setPosts] = useState([]);
-    const [post, setPost] = useState(null);
-    const [liked, setLiked] = useState(false);
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
-    const sampleComments = [
-      { text: " 1번째 댓글" },
-      { text: " 2번째 댓글" },
-      { text: " 3번째 댓글" },
-      { text: " 4번째 댓글" },
-      { text: " 5번째 댓글" },
-      { text: " 6번째 댓글" },
-      { text: " 7번째 댓글" },
-    ];
+  useEffect(() => {
+      //사이즈에 따라 게시물 크기 변경
+      const handleResize = () =>{
+          const updateWidth = window.innerWidth > 430 ? 430 : window.innerWidth;
+          setWindowWidth(updateWidth);
+      };
 
-    useEffect(() => {
-        //사이즈에 따라 게시물 크기 변경
-        const handleResize = () =>{
-            const updateWidth = window.innerWidth > 430 ? 430 : window.innerWidth;
-            setWindowWidth(updateWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-        
-        //게시물 정보 받아오기
-        axios.get(`/community/api/postinquire/${userId}/`)
-          .then(response => {
-            setPosts(response.data.content); 
-            const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
-            setPost(selectedPost);
-            setLiked(selectedPost && selectedPost.like === "yes");
-            console.log(selectedPost);
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
-        
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-  }, [postId]); 
+      window.addEventListener('resize', handleResize);
+  
+      return () => {
+          window.removeEventListener('resize', handleResize);
+      };
+  }); 
 
   const toggleLike = () => {
       setLiked(prevLiked => !prevLiked);
+      LikeHandler(userId, post.post_id);
   };
 
+  //좋아요 기능
+  const LikeHandler = (userId, postId) => {
+    axios.post(`/community/api/postlike/${userId}/`, {
+      'post_id':postId, 
+    })
+    .then(response => {
+      console.log('like 성공',response);
+    })
+    .catch(error => {
+      console.log('error like', error);
+    })
+  }
+  
   if (!post){
     return <div>Loading...</div>
   }
 
   return (
     <>
-        <StyledPost id="post-area"width={windowWidth}> 
-            <UserArea id="user-area">
-              <ProfileIcon/>
-              <Info>
-                <div>User Id</div>
-                <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
-              </Info>
-              <Modify>수정</Modify>
-            </UserArea>
-            <PhotoArea img = {post.post_img || exampleImage}/>
-            <Like>
-                <LikeButton onClick={toggleLike}>
-                    <LikeIcon liked={liked} />
-                </LikeButton>
-            </Like>
-            <FirstLine>
-                {post.post_text}
-            </FirstLine>
-            <SecondLine>
-                <div>댓글 {post.comm_cnt || '0'}개</div>
-            </SecondLine>
-            <CommentArea>
-              <Comment comments={sampleComments}></Comment>
-            </CommentArea>
-        </StyledPost>
+      <StyledPost id="post-area" width={windowWidth}> 
+          <UserArea id="user-area">
+            <ProfileIcon/>
+            <Info>
+              <div>User Id</div>
+              <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
+            </Info>
+            <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
+          </UserArea>
+          <PhotoArea img = {post.post_img || exampleImage}/>
+          <Like>
+              <LikeButton onClick={toggleLike}>
+                  <LikeIcon liked={liked} />
+              </LikeButton>
+          </Like>
+          <FirstLine>
+              {post.post_text}
+          </FirstLine>
+          <SecondLine>
+              <div>댓글 {post.comm_cnt || '0'}개</div>
+          </SecondLine>
+          <CommentArea>
+            <Comment comments={comments || []}></Comment>
+          </CommentArea>
+      </StyledPost>
     </>
   );
 }

@@ -6,6 +6,7 @@ import { GlobalStyle } from './GlobalStyle';
 import Mypage from './pages/Mypage/Mypage.js';
 import Community from './pages/Community/Community.js';
 import AddForm  from './pages/Community/AddForm.js';
+import ModifyForm from './pages/Community/ModifyForm.js';
 import Post from './pages/Community/Post.js'
 import Login from './pages/Login/Login';
 import Agreement from './pages/Agreement/Agreement'
@@ -36,6 +37,7 @@ function App() {
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/addform" element={<AddForm />} />
+            <Route path="/community/modifyform/:postId" element={<ModifyForm />} />
             <Route path="/community/post/:postId" element={<Post />} />
             <Route path="/like" element={<LikeMain />} />
             <Route path="/detail" element={<Detail />} />

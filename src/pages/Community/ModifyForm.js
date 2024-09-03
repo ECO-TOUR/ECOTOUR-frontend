@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled  from 'styled-components'
 import Checkbox  from '../../component/community/AddForm/Checkbox';
 import AddedPhoto from '../../component/community/AddForm/AddedPhoto';
@@ -6,8 +6,7 @@ import Header from '../../component/main/Header'
 import Navbar from '../../component/main/Navbar'
 import {ReactComponent as CameraIcon} from '../../assets/camera_icon.svg'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
+import { useParams } from 'react-router-dom';
 const AddFormArea = styled.div`
     padding-top: 60px;
     padding-bottom: 70px;
@@ -86,12 +85,28 @@ const PostBtn = styled.button`
     }
 `;
 
-const AddForm = () => {
+const ModifyForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
     const [textContent, setTextContent] = useState('');
     const fileInputRef = useRef(null);
-    const userId = 5;
-    const navigate = useNavigate();
+    const userId = 1;
+    const {postId} = useParams();
+    const [post, setPost] = useState(null);
+
+    useEffect(() => {
+        axios.get(`/community/api/postinquire/${userId}/`)
+            .then(response => {
+                const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
+                setPost(selectedPost);
+                console.log('se',selectedPost);
+                if(selectedPost){
+                    setTextContent(selectedPost.post_text)
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    },[postId]);
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
@@ -100,8 +115,8 @@ const AddForm = () => {
             return;
         }
 
-        const newImageUrls = files.map((file) => URL.createObjectURL(file));
-        setUploadedImage((prevImages) => [...prevImages, ...newImageUrls]);
+        // const newImageUrls = files.map((file) => URL.createObjectURL(file));
+        setUploadedImage((prevImages) => [...prevImages, ...files]);
 
         fileInputRef.current.value = '';
     };
@@ -125,23 +140,22 @@ const AddForm = () => {
             return;
         }
         const formData = new FormData();
-        const filesArray = [];
-
+        formData.append('post_id', postId);
         formData.append('text', textContent);
-        formData.append('date', new Date().toISOString());
+        formData.append('likes', 7);
         formData.append('score', 4);
         formData.append('hashtag', '#example');
-        formData.append('tour_id', 2508605);
+        formData.append('tour_id', 1);
         formData.append('user_id', userId);
         // formData.append(`img`, file);
-        
-        uploadedImage.forEach((file) => {
-            filesArray.push(file);
+
+        uploadedImage.forEach((file, index) => {
+            formData.append(`img${index}`, file);
         });
-        formData.append(`img`, filesArray);
+
 
         try{
-            const response = await axios.post('/community/api/postwrite/',formData,{
+            const response = await axios.post('/community/api/postmodify/',formData,{
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -150,7 +164,6 @@ const AddForm = () => {
             
             if (response.status === 200){
                 alert("게시글이 성공적으로 등록되었습니다.");
-                navigate('/community/')
             }
         } catch (error) {
             console.error('게시글 등록 실패:', error);
@@ -161,7 +174,7 @@ const AddForm = () => {
 
     return (
     <>
-        <Header/>
+        <Header pageName='게시글'/>
         <AddFormArea id='add-form-area'>
             <TextArea 
                 id='text-area' 
@@ -201,4 +214,4 @@ const AddForm = () => {
     )
 }
 
-export default AddForm
+export default ModifyForm
