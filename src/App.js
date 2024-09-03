@@ -1,6 +1,7 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { GlobalStyle } from './GlobalStyle';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 //page
 import Mypage from './pages/Mypage/Mypage.js';
@@ -19,9 +20,13 @@ import LikeMain from './pages/Like/LikeMain.js'
 import Detail from './pages/Detail/Detail';
 import KakaoRedirect from './pages/Login/KakaoRedirect';
 
+// QueryClient 인스턴스 생성
+const queryClient = new QueryClient();
+
 function App() {
   return (
     <>
+    <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <GlobalStyle />
         <BrowserRouter>
@@ -44,6 +49,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </RecoilRoot>
+    </QueryClientProvider>
     </>
   );
 }

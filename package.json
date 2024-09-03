@@ -12,6 +12,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-kakao-maps-sdk": "^1.1.27",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
     "react-switch": "^7.0.0",
@@ -33,8 +34,6 @@
       "react-app/jest"
     ]
   },
-  "proxy" : "http://localhost:8000",
-
   "browserslist": {
     "production": [
       ">0.2%",
