@@ -52,7 +52,7 @@ function Content() {
         const fetchDetail = async () => {
             try {
                 const response = await axios.get(`/tourlike/api/wishlist/${user_id}/Inquire/`);
-                console.log(response.data);
+                //console.log(response.data);
                 setContents(response.data);
             } catch (error) {
                 console.log(error);
