@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './Content.style';
+import axios from 'axios';
 
 // img
 import exampleImage from '../../../assets/example1.png'; // 이미지 파일을 import
@@ -11,6 +12,8 @@ import { useRecoilValue } from "recoil";
 import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
 
 function Content() {
+    const user_id = parseInt(localStorage.getItem('user_id'));
+    const access_token = localStorage.getItem('access_token');
     const closeState = useRecoilValue(StateAtoms); // bottom 열림, 닫힘 상태
     const contents = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const [scoreList, setScoreList] = useState(false); // 별점순 버튼 상태
@@ -45,6 +48,17 @@ function Content() {
     const prevCloseStateRef = useRef();
     useEffect(() => {
         prevCloseStateRef.current = closeState;
+        console.log(user_id);
+        const fetchDetail = async () => {
+            try {
+                const response = await axios.get(`api/wishlist/${user_id}/Inquire/`);
+                console.log(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+          };
+      
+        fetchDetail(); // 컴포넌트가 마운트될 때 API 호출
     }, [closeState]);
 
     // 이전 상태와 현재 상태를 비교하여 변화 감지

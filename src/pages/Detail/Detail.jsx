@@ -17,6 +17,7 @@ function Detail() {
 
     const { tour_id } = useParams();
     const [detail, setDetail] = useState(null);
+    const user_id = parseInt(localStorage.getItem('user_id'));
 
     // 스크롤 함수
     const scrollToTop = () => {
@@ -38,7 +39,38 @@ function Detail() {
     const [liked, setLiked] = useState(false);
     // 버튼 클릭 시 호출되는 함수: 상태를 토글
     const toggleLike = () => {
+
         setLiked(!liked);
+        console.log(liked);
+
+        if(liked){ // 좋아요 취소를 눌렀을 때
+            const fetchLike = async () => {
+                try {
+                    const response = await axios.delete(`wishlist/${user_id}/toggle/`, {
+                        tour_id: tour_id
+                    });
+                    console.log(response.data);
+                } catch (error) {
+                    console.log(error);
+                }
+              };
+          
+            fetchLike(); // 컴포넌트가 마운트될 때 API 호출
+        }
+        else{ // 좋아요를 눌렀을 때
+            const fetchLike = async () => {
+                try {
+                    const response = await axios.delete(`wishlist/${user_id}/toggle/`, {
+                        tour_id: tour_id
+                    });
+                    console.log(response.data);
+                } catch (error) {
+                    console.log(error);
+                }
+              };
+          
+            fetchLike(); // 컴포넌트가 마운트될 때 API 호출
+        }
     };
 
     useEffect(() => {

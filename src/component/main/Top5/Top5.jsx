@@ -37,8 +37,10 @@ function Top5() {
         return { part1 };
     }
 
-    function onClickBox() {
-        navigate('/detail');
+    // 박스 클릭 시
+    function onClickBox(tour_id) {
+        console.log(tour_id);
+        navigate(`/detail/${tour_id}`);
     }
 
     return (
@@ -47,7 +49,7 @@ function Top5() {
                 const { part1, part2 } = splitLocation(content.tour_location);
 
                 return (
-                    <S.ContentBox key={index} onClick={onClickBox}>
+                    <S.ContentBox key={index} onClick={() => onClickBox(content.tour_id)}>
                         <S.ContentImg src={exampleImage} />
                         <S.ContentNum>{index + 1}</S.ContentNum>
                         <S.ContentInfo>
