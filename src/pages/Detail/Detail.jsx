@@ -41,36 +41,19 @@ function Detail() {
     const toggleLike = () => {
 
         setLiked(!liked);
-        console.log(liked);
 
-        if(liked){ // 좋아요 취소를 눌렀을 때
-            const fetchLike = async () => {
-                try {
-                    const response = await axios.delete(`wishlist/${user_id}/toggle/`, {
-                        tour_id: tour_id
-                    });
-                    console.log(response.data);
-                } catch (error) {
-                    console.log(error);
-                }
-              };
-          
-            fetchLike(); // 컴포넌트가 마운트될 때 API 호출
-        }
-        else{ // 좋아요를 눌렀을 때
-            const fetchLike = async () => {
-                try {
-                    const response = await axios.delete(`wishlist/${user_id}/toggle/`, {
-                        tour_id: tour_id
-                    });
-                    console.log(response.data);
-                } catch (error) {
-                    console.log(error);
-                }
-              };
-          
-            fetchLike(); // 컴포넌트가 마운트될 때 API 호출
-        }
+        const fetchLike = async () => {
+            try {
+                const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
+                    tour_id: tour_id
+                });
+                console.log(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+            };
+        
+        fetchLike(); // 컴포넌트가 마운트될 때 API 호출
     };
 
     useEffect(() => {

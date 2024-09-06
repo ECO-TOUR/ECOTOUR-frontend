@@ -4,8 +4,14 @@ import styled from "styled-components";
 export const Header = styled.div`
     display: flex;
     align-items: center;
-    margin-top: ${(props) => (props.closeState ? "10px" : "80px")};
     padding: 0px 20px;
+`;
+
+export const SubHeader = styled.div`
+    display: flex;
+    padding: 0px 20px;
+    margin-top: 70px;
+    align-items: center;
 `;
 
 // 개수
@@ -50,7 +56,7 @@ export const StateBtn2 = styled.div`
 // 리스트가 없을 때
 export const None = styled.div`
     text-align: center;
-    margin-top: ${(props) => (props.closeState ? "35px" : "250px")};
+    margin-top: 65%;
     font-size: 18px;
     font-weight: 600;
 `;

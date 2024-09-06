@@ -15,7 +15,7 @@ function Content() {
     const user_id = parseInt(localStorage.getItem('user_id'));
     const access_token = localStorage.getItem('access_token');
     const closeState = useRecoilValue(StateAtoms); // bottom 열림, 닫힘 상태
-    const contents = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const [contents, setContents] = useState([]);
     const [scoreList, setScoreList] = useState(false); // 별점순 버튼 상태
     const [viewList, setViewList] = useState(false); // 조회순 버튼 상태
 
@@ -48,11 +48,12 @@ function Content() {
     const prevCloseStateRef = useRef();
     useEffect(() => {
         prevCloseStateRef.current = closeState;
-        console.log(user_id);
+        // 좋아요 목록 조회 API
         const fetchDetail = async () => {
             try {
-                const response = await axios.get(`api/wishlist/${user_id}/Inquire/`);
+                const response = await axios.get(`/tourlike/api/wishlist/${user_id}/Inquire/`);
                 console.log(response.data);
+                setContents(response.data);
             } catch (error) {
                 console.log(error);
             }
@@ -78,17 +79,18 @@ function Content() {
 
     return (
         <>
-            <S.Header closeState={closeState}>
+            <S.Header/>
+            <S.SubHeader>
                 <S.CountNum>{contents.length} 개</S.CountNum>
                 <S.StateBtnComponent>
                     <S.StateBtn1 onClick={onClickScoreListBtn} btnState1={scoreList}>별점순</S.StateBtn1>
                     <S.StateBtn2 onClick={onClickViewListBtn} btnState2={viewList}>조회순</S.StateBtn2>
                 </S.StateBtnComponent>
-            </S.Header>
+            </S.SubHeader>
             {contents.length === 0 ? 
                 (<S.None closeState={closeState}>
-                    현재 조건에 맞는 생태관광지가 없습니다.
-                    <div style={{fontSize:"13px", marginTop:"7px"}}>지도에서 위치를 변경하거나 상세정보를 변경해보세요.</div>
+                    좋아요를 누른 생태관광지가 없습니다.
+                    <div style={{fontSize:"13px", marginTop:"7px"}}>마음에 드는 관광지에 좋아요를 눌러보세요.</div>
                 </S.None>):
                 (<S.ContentComponent closeState={closeState}>
                     {contents.map((content, index) => (
