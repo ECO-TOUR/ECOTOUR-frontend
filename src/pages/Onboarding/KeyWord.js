@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios';
 import './KeyWord.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +10,9 @@ function KeyWord() {
 
     // 선택한 키워드 개수
     const [keywordCount, setKeywordCount] = useState(0);
+
+    // 키워드 배열 정의
+    const keywords = ['섬', '천연기념물', '생태교육', '산', '국립공원', '과학관', '박물관', '바다'];
 
     // 키워드 클릭 시 상태를 토글하는 함수
     const handleButtonClick = (index) => {
@@ -28,8 +32,20 @@ function KeyWord() {
         if(keywordCount === 0){
             alert("키워드를 1개 이상 선택해주세요!");
         }
-        else
-            navigate("/intro");
+        else{
+            axios.post('//accounts/api/preference/', {
+                // headers: {
+                //   'Content-Type': 'text/plain', // 또는 원하는 MIME 타입을 문자열로 지정
+                // },
+              })
+              .then(response => {
+                console.log(response.data);
+                //navigate("/intro");
+              })
+              .catch(error => {
+                console.error('Error fetching data:', error);
+              });
+        }
     }
 
   return (
@@ -50,7 +66,7 @@ function KeyWord() {
                     key={index}
                     onClick={() => handleButtonClick(index)}
                     >
-                    키워드 {index + 1}
+                    {keywords[index]}
                     </div>
                 );
                 })}

@@ -1,6 +1,7 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { GlobalStyle } from './GlobalStyle';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 //page
 import Mypage from './pages/Mypage/Mypage.js';
@@ -17,16 +18,22 @@ import MapSearch from './pages/map/Search/MapSearch.jsx';
 import Home from'./pages/Main/Home'
 import LikeMain from './pages/Like/LikeMain.js'
 import Detail from './pages/Detail/Detail';
+import KakaoRedirect from './pages/Login/KakaoRedirect';
+
+// QueryClient 인스턴스 생성
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
+    <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <GlobalStyle />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/agreement" element={<Agreement />} />
+            <Route path='/auth' element={<KakaoRedirect />} />
             <Route path="/key-word" element={<KeyWord />} />
             <Route path="/intro" element={<Intro />} />
             <Route path="/main" element={<Home />} />
@@ -38,10 +45,11 @@ function App() {
             <Route path="/community/modifyform/:postId" element={<ModifyForm />} />
             <Route path="/community/post/:postId" element={<Post />} />
             <Route path="/like" element={<LikeMain />} />
-            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/:tour_id" element={<Detail />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>
+    </QueryClientProvider>
     </>
   );
 }
