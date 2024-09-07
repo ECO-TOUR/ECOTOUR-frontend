@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 // 최근 검색어 div
 export const Search_div = styled.div`
-    border-bottom: 1px solid #D9D9D9;;
+    border-bottom: 1px solid #D9D9D9;
     display: flex;
     align-items: center;
     padding: 5px 5px 15px 5px;
     margin: 10px 25px;
+    cursor: pointer;
 `;
 
 // 검색어 text
@@ -28,5 +29,13 @@ export const Word_index = styled.div`
     color: #91EB86;
     font-weight: 800;
     font-size: 15px;
+    width: 20px;
     margin: 0px 3px 0px 5px;
+`;
+
+// 최근 검색어 없을 때 text
+export const NoneText = styled.div`
+    margin-left: 10px;
+    color: #333;
+    font-size: 15px;
 `;

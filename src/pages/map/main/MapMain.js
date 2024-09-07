@@ -1,18 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import { Map as KakaoMap, MapMarker } from "react-kakao-maps-sdk";
 import './MapMain.css';
-import BottomSheet from "../buttomSheet/ButtomSheet";
+// component
+import BottomSheet from "../../../component/map/BottomSheet/BottomSheet";
+import Navbar from '../../../component/main/Navbar';
+import Content from "../../../component/map/Content/Content";
+// img
 import LocationBtn from '../../../assets/LocationBtn.svg'; // 현위치 버튼
 import Marker from '../../../assets/Marker.svg'; // 현위치 아이콘
 import debounce from 'lodash/debounce';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../../../component/Main/Navbar';
+// recoil
 import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../../recoil/NavAtoms';
+import { StateAtoms } from '../../../recoil/BottomSheetAtoms';
 
 function MapMain() {
   // Nav 변수 설정
   const [highlightedItem, setHighlightedItem] = useRecoilState(NavAtoms);
+  const [closeState, setCloseState] = useRecoilState(StateAtoms);
 
   // 지도의 중심좌표
   const [center, setCenter] = useState({
@@ -28,6 +34,7 @@ function MapMain() {
 
   useEffect(() => {
     setHighlightedItem("search"); // Nav 변수 설정
+    setCloseState(true);
 
     // 위치 감지
     const handlePosition = (pos) => {
@@ -82,7 +89,7 @@ function MapMain() {
         center={center}
         style={{
           width: "100%",
-          height: "50%",
+          height: "70%",
         }}
         level={4}
         onCenterChanged={updateCenterWhenMapMoved}
@@ -97,7 +104,7 @@ function MapMain() {
       </KakaoMap>
       <img src={LocationBtn} className="location_btn" onClick={setCenterToMyPosition} />
       <BottomSheet>
-        <span>Content</span>
+        <Content/>
       </BottomSheet>
       <Navbar />
     </div>
