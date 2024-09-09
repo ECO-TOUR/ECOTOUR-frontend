@@ -117,6 +117,16 @@ const Modify = styled.button`
   color: #676767;
 `;
 
+const Delete = styled.buttio`
+  margin-left: auto; 
+  margin-right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #676767;
+`
 const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
@@ -175,6 +185,7 @@ const PostDetail = ({post, comments}) => {
               <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
             </Info>
             <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
+            <Delete></Delete>
           </UserArea>
           <PhotoArea img = {post.post_img || exampleImage}/>
           <Like>

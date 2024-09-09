@@ -142,24 +142,10 @@ const Posts = () => {
     <>
       {posts.map(post => (
         <StyledPost onClick={() => moveToPostDetail(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
-            <PhotoArea>
-              <Swiper pagination={{ clickable: true }} modules={[Pagination]}>
-                {(post.post_img && post.post_img.length > 0 ? post.post_img : [exampleImage]).map((img, index) => (
-                  <SwiperSlide key={index}>
-                    <div
-                      style={{
-                        backgroundImage: `url(${img})`,
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center',
-                        width: '100%',
-                        height: '100%',
-                      }}
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </PhotoArea>
+            <img 
+            src={Array.isArray(post.post_img) && post.post_img[0] ? post.post_img[0] : exampleImage} 
+            alt="Post Image"
+            />
             <Like>
                 <LikeButton onClick={(e) => {
                     e.stopPropagation();
