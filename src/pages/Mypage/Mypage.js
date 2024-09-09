@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import Switch from 'react-switch';
-import profileIcon from '../../assets/profile.svg';
 import Header from '../../component/main/Header';
 import Navbar from '../../component/main/Navbar';
 import MyPost from '../../component/Mypage/MyPost';
-
 
 const NameTag = styled.div`
   display: flex;
@@ -17,9 +17,11 @@ const NameTag = styled.div`
 const TextArea = styled.div`
   margin-left: 10px;
 `;
+// 프로필 사진
 const ProfileIcon = styled.img`
   width: 85px;
   height: 85px;
+  border-radius: 50px;
 `;
 const Nickname = styled.span`
   font-size: x-large;
@@ -73,6 +75,11 @@ const Line = styled.div`
   font-size: 19px;
   font-weight: 500;
   margin: 8px 10px 0px 10px;
+  cursor: pointer;
+
+  &:hover{
+    background-color: gray;
+  }
 `;
 const Service = styled.div`
   height: 200px;
@@ -111,18 +118,45 @@ const MypageContainer = styled.div`
 `
 
 const Mypage = (props) => {
+
+  const navigate = useNavigate();
+  const user_id = localStorage.getItem('user_id');
+
+  function onClickLogout(){
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('access_token');
+
+    navigate('/');
+  }
+
+  // 사용자 정보 가져오는 api
+  const [userName, setUserName] = useState();
+  const [userProfile, setUserProfile] = useState();
+  useEffect(() => {
+    console.log(user_id);
+    axios.get(`/mypage/api/${user_id}/inquire`)
+    .then(response => {
+        console.log(response.data.content.user);
+        setUserName(response.data.content.user.username);
+        setUserProfile(response.data.content.user.profile_photo);
+      })
+    .catch(error => {
+    console.error(error);
+    });
+
+  }, []);
+
   return (
     <div>
       <Header pageName = "My Page"/>
       <MypageContainer id="mypage_container">
         <NameTag id='nametag-area'>
-          <ProfileIcon src={profileIcon} alt="icon" />
+          <ProfileIcon src={userProfile}/>
           <TextArea>
             <div>
-              <Nickname>{props.name ? props.name : '000'}님</Nickname>
+              <Nickname>{userName}님</Nickname>
               <FirstLine> 안녕하세요!</FirstLine>
             </div>
-            <SecondLine>내 정보 수정</SecondLine>
           </TextArea>
         </NameTag>
         <PostList id='post-area'>
@@ -148,7 +182,7 @@ const Mypage = (props) => {
           <Title>서비스 관리</Title>
           <Line>공지사항</Line>
           <Line>문의</Line>
-          <Line>로그아웃</Line>
+          <Line onClick={onClickLogout}>로그아웃</Line>
           <Line>회원탈퇴</Line>
         </Service>
       </MypageContainer>

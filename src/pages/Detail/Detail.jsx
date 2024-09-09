@@ -60,7 +60,7 @@ function Detail() {
         // 관광지 정보 가져오기
         const fetchDetail = async () => {
             try {
-              const response = await axios.get(`/place/detail/${tour_id}/`);
+              const response = await axios.get(`/place/detail/${tour_id}/${user_id}`);
               const { tour_name, tour_location, tour_img, website, tour_tel, 
                 tour_telname, restrooms, parking, fees, opening_hours} = response.data.place_detail;
               setTitle(tour_name); // 관광지 이름

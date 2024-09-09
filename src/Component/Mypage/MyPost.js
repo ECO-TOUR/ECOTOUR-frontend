@@ -67,7 +67,7 @@ function Recommend() {
         const getPost = () =>{
             axios.get(`/community/api/mypost/${userId}/`)
             .then(response => {
-                console.log("🚀 ~ getPost ~ response:", response)
+                console.log(response.data);
                 // setPosts(response.data.content); 
               })
             .catch(error => {
