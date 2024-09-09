@@ -125,32 +125,37 @@ const AddForm = () => {
             return;
         }
         const formData = new FormData();
-        const filesArray = [];
-
+    
         formData.append('text', textContent);
         formData.append('date', new Date().toISOString());
         formData.append('score', 4);
         formData.append('hashtag', '#example');
         formData.append('tour_id', 2508605);
         formData.append('user_id', userId);
-        // formData.append(`img`, file);
         
-        uploadedImage.forEach((file) => {
-            filesArray.push(file);
-        });
-        formData.append(`img`, filesArray);
-
-        try{
-            const response = await axios.post('/community/api/postwrite/',formData,{
+        try {
+            // 모든 이미지를 Blob으로 변환하고 filesArray에 저장
+            // const imagePromises = uploadedImage.map((imageSrc) => {
+            //     formData.append('img',imageSrc);
+            // }
+            // );
+            formData.append('img',uploadedImage[0]);
+        
+            // await Promise.all(imagePromises); // 모든 이미지가 변환될 때까지 대기
+            
+            // Log all key-value pairs in FormData
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+            const response = await axios.post('/community/api/postwrite/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log("🚀 ~ handlePost ~ response:", response)
-            
-            if (response.status === 200){
+    
+            if (response.status === 200) {
                 alert("게시글이 성공적으로 등록되었습니다.");
-                navigate('/community/')
+                // navigate('/community/')
             }
         } catch (error) {
             console.error('게시글 등록 실패:', error);
