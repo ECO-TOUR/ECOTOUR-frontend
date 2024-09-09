@@ -90,7 +90,7 @@ const AddForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
     const [textContent, setTextContent] = useState('');
     const fileInputRef = useRef(null);
-    const userId = 5;
+    const userId = localStorage.getItem('user_id');
     const navigate = useNavigate();
 
     const handleFileChange = (e) => {
@@ -119,6 +119,7 @@ const AddForm = () => {
         setUploadedImage(newImages);
     };
 
+    // 게시글 등록 api
     const handlePost = async () => {
         if (uploadedImage.length === 0 || textContent.trim() === '') {
             alert("내용 또는 사진을 추가해 주세요");
@@ -134,11 +135,7 @@ const AddForm = () => {
         formData.append('user_id', userId);
         
         try {
-            // 모든 이미지를 Blob으로 변환하고 filesArray에 저장
-            // const imagePromises = uploadedImage.map((imageSrc) => {
-            //     formData.append('img',imageSrc);
-            // }
-            // );
+
             formData.append('img',uploadedImage[0]);
         
             // await Promise.all(imagePromises); // 모든 이미지가 변환될 때까지 대기
