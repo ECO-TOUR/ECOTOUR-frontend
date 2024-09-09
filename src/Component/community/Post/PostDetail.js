@@ -117,7 +117,7 @@ const Modify = styled.button`
   color: #676767;
 `;
 
-const Delete = styled.buttio`
+const Delete = styled.button`
   margin-left: auto; 
   margin-right: 0;
   background: none;
@@ -127,12 +127,17 @@ const Delete = styled.buttio`
   font-size: 14px;
   color: #676767;
 `
+const Control = styled.div`
+`
+const Span = styled.div`
+  display: flex;
+`
 const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
-  const userId = 1;
+  const userId = localStorage.getItem('user_id');
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if(post) {
       setLiked(post.like === 'yes');
@@ -171,6 +176,15 @@ const PostDetail = ({post, comments}) => {
     })
   }
   
+  const DeletePost = (postId) => {
+    axios.delete(`/community/api/postdelete/${postId}`)
+    .then(response =>{
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
   if (!post){
     return <div>Loading...</div>
   }
@@ -179,13 +193,20 @@ const PostDetail = ({post, comments}) => {
     <>
       <StyledPost id="post-area" width={windowWidth}> 
           <UserArea id="user-area">
-            <ProfileIcon/>
-            <Info>
-              <div>User Id</div>
-              <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
-            </Info>
-            <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
-            <Delete></Delete>
+            <Span>
+              <ProfileIcon/>
+              <Info>
+                <div>User Id</div>
+                <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
+              </Info>  
+            </Span>
+            <Control id='control'>
+              {post.user_id === 5?(
+                <>
+                  <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
+                  <Delete onClick={DeletePost(post.post_id)}>삭제</Delete>
+                </>):(<></>)} 
+            </Control>
           </UserArea>
           <PhotoArea img = {post.post_img || exampleImage}/>
           <Like>
