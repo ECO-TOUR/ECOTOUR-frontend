@@ -117,7 +117,7 @@ const Modify = styled.button`
   color: #676767;
 `;
 
-const Delete = styled.buttio`
+const Delete = styled.button`
   margin-left: auto; 
   margin-right: 0;
   background: none;

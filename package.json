@@ -21,6 +21,7 @@
     "swiper": "^11.1.9",
     "web-vitals": "^2.1.4"
   },
+
   "proxy": "https://43.201.36.236",
 
   "scripts": {
