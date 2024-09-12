@@ -204,7 +204,7 @@ const PostDetail = ({post, comments}) => {
               {post.user_id === 5?(
                 <>
                   <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
-                  <Delete onClick={DeletePost(post.post_id)}>삭제</Delete>
+                  <Delete onClick={() => DeletePost(post.post_id)}>삭제</Delete>
                 </>):(<></>)} 
             </Control>
           </UserArea>

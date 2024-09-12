@@ -100,10 +100,9 @@ const AddForm = () => {
             return;
         }
 
-        const newImageUrls = files.map((file) => URL.createObjectURL(file));
-        setUploadedImage((prevImages) => [...prevImages, ...newImageUrls]);
+        setUploadedImage((prevImages) => [...prevImages, ...files]);
 
-        fileInputRef.current.value = '';
+        fileInputRef.current.value = '';    
     };
 
     const handleButtonClick = () => {
@@ -119,7 +118,6 @@ const AddForm = () => {
         setUploadedImage(newImages);
     };
 
-    // 게시글 등록 api
     const handlePost = async () => {
         if (uploadedImage.length === 0 || textContent.trim() === '') {
             alert("내용 또는 사진을 추가해 주세요");
@@ -135,21 +133,16 @@ const AddForm = () => {
         formData.append('user_id', userId);
         
         try {
-
-            formData.append('img',uploadedImage[0]);
-        
-            // await Promise.all(imagePromises); // 모든 이미지가 변환될 때까지 대기
-            
-            // Log all key-value pairs in FormData
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
-            const response = await axios.post('/community/api/postwrite/', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+            uploadedImage.forEach((file, index) => {
+              formData.append('img', file); // 'img' must match what you're using in your Django view
             });
-    
+      
+            const response = await axios.post('/community/api/postwrite/', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+      
             if (response.status === 200) {
                 alert("게시글이 성공적으로 등록되었습니다.");
                 // navigate('/community/')
