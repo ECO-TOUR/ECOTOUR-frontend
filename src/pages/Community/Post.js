@@ -68,7 +68,7 @@ const SendButton = styled.button`
 
 
 const Post = () => {
-  const userId = 1;
+  const userId = localStorage.getItem('user_id')
   const {postId} = useParams();
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
@@ -76,12 +76,21 @@ const Post = () => {
   const [commentText, setCommentText] = useState('');
 
   const fetchPost = () => {
-    axios.get(`/community/api/postinquire/${userId}/`)
+    axios.get(`/community/api/postinquire/${userId}/`
+      , {
+        headers: {
+          'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
+    )
       .then(response => {
-        setPosts(response.data.content); 
+        setPosts(response.data.content);
+        console.log('Post',response.data.content);
         const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
         setPost(selectedPost);
-        console.log('se',selectedPost);
+        console.log('selectedPost',selectedPost);
       })
       .catch(error => {
         console.error('Error fetching data:', error);

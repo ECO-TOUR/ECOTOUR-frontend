@@ -5,6 +5,7 @@ import exampleImage from '../../../assets/example2.jpg';
 import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
 import Comment from './Comment'
 import { useNavigate } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
 const StyledPost = styled.div`
@@ -28,6 +29,12 @@ const PhotoArea = styled.div`
     justify-content: center;
     align-items: center;
     overflow: hidden; 
+`;
+const SwiperImage = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 `;
 const Like = styled.div`
     margin-top: 5px;
@@ -56,14 +63,14 @@ const LikeIcon = ({ liked }) => (
       width="25"
       height="25"
       viewBox="0 0 25 25"
-      fill={liked ? "#91EB86" : "none"}
-      stroke={liked ? "#91EB86" : "#333"}
+      fill={liked ? "red" : "none"}
+      stroke={liked ? "red" : "#333"}
       strokeWidth="2"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
         d="M22 8.5C22 5.46243 19.5376 3 16.5 3C14.7819 3.05354 13.1586 3.80024 12 5.07C10.8414 3.80024 9.2181 3.05354 7.5 3C4.46243 3 2 5.46243 2 8.5C2 12.42 6.75 16.75 9 19L11.28 21.28C11.4205 21.4207 11.6112 21.4998 11.81 21.5H12.19C12.3888 21.4998 12.5795 21.4207 12.72 21.28L15 19C17.25 16.75 22 12.42 22 8.5Z"
-        fill={liked ? "#91EB86" : "none"}
+        fill={liked ? "red" : "none"}
         stroke="#333"
       />
     </svg>
@@ -136,7 +143,6 @@ const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
   const userId = localStorage.getItem('user_id');
-  console.log("🚀 ~ PostDetail ~ userId:", userId)
   
   const navigate = useNavigate();
 
@@ -212,7 +218,23 @@ const PostDetail = ({post, comments}) => {
                 </>):(<></>)} 
             </Control>
           </UserArea>
-          <PhotoArea img = {post.post_img || exampleImage}/>
+          <PhotoArea>
+            <Swiper
+              pagination={{ clickable: true }}
+              spaceBetween={15}
+              slidesPerView={1}
+              style={{height: '100%'}}
+            >
+              {Array.isArray(post.post_img) && post.post_img.slice(0, 5).map((imgSrc, index) => (
+                <SwiperSlide key={index}>
+                  <SwiperImage 
+                    src={imgSrc || exampleImage} 
+                    alt={`Post Image ${index + 1}`} 
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </PhotoArea>
           <Like>
               <LikeButton onClick={toggleLike}>
                   <LikeIcon liked={liked} />

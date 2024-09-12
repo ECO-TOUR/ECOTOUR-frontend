@@ -61,14 +61,14 @@ const LikeIcon = ({ liked }) => (
       width="25"
       height="25"
       viewBox="0 0 25 25"
-      fill={liked ? "#91EB86" : "none"}
-      stroke={liked ? "#91EB86" : "#333"}
+      fill={liked ? "red" : "none"}
+      stroke={liked ? "red" : "#333"}
       strokeWidth="2"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
         d="M22 8.5C22 5.46243 19.5376 3 16.5 3C14.7819 3.05354 13.1586 3.80024 12 5.07C10.8414 3.80024 9.2181 3.05354 7.5 3C4.46243 3 2 5.46243 2 8.5C2 12.42 6.75 16.75 9 19L11.28 21.28C11.4205 21.4207 11.6112 21.4998 11.81 21.5H12.19C12.3888 21.4998 12.5795 21.4207 12.72 21.28L15 19C17.25 16.75 22 12.42 22 8.5Z"
-        fill={liked === "yes" ? "#91EB86" : "none"}
+        fill={liked === "yes" ? "red" : "none"}
         stroke="#333"
       />
     </svg>
@@ -107,7 +107,7 @@ const LikeHandler = (userId, postId) => {
 const Posts = () => {
     const navigate = useNavigate();
 
-    const moveToPostDetail = (postId) =>{
+    const moveToPost = (postId) =>{
       navigate(`./post/${postId}`);
     };
 
@@ -126,7 +126,15 @@ const Posts = () => {
         window.addEventListener('resize', handleResize);
         
         //게시물 정보 받아오기
-        axios.get(`/community/api/postinquire/${userId}/`)
+        axios.get(`/community/api/postinquire/${userId}/`
+          , {
+          headers: {
+            'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }
+        )
           .then(response => {
             setPosts(response.data.content);
             console.log('Fetched data:', response.data.content);
@@ -152,7 +160,7 @@ const Posts = () => {
   return (
     <>
       {posts.map(post => (
-        <StyledPost onClick={() => moveToPostDetail(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
+        <StyledPost onClick={() => moveToPost(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
           <PhotoArea>
             <Swiper
               pagination={{ clickable: true }}
