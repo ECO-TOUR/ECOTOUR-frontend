@@ -88,6 +88,7 @@ const PostBtn = styled.button`
 
 const AddForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
+    const [uploadedImageUrl, setUploadedImageUrl] = useState([]);
     const [textContent, setTextContent] = useState('');
     const fileInputRef = useRef(null);
     const userId = localStorage.getItem('user_id');
@@ -99,8 +100,10 @@ const AddForm = () => {
             alert("최대 5장의 사진만 업로드 할 수 있습니다.")
             return;
         }
+        const imageUrls = files.map((file) => URL.createObjectURL(file));
 
         setUploadedImage((prevImages) => [...prevImages, ...files]);
+        setUploadedImageUrl((prevImageUrls) => [...prevImageUrls, ...imageUrls]);
 
         fileInputRef.current.value = '';    
     };
@@ -180,7 +183,7 @@ const AddForm = () => {
                         multiple
                         onChange={handleFileChange}
                     />
-                {uploadedImage.map((imageSrc, index) => (
+                {uploadedImageUrl.map((imageSrc, index) => (
                     <AddedPhoto 
                         key={index} 
                         imageSrc={imageSrc} 

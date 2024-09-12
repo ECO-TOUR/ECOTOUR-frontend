@@ -136,7 +136,7 @@ const Mypage = (props) => {
     console.log(user_id);
     axios.get(`/mypage/api/${user_id}/inquire`)
     .then(response => {
-        console.log(response.data.content.user);
+        console.log('user_data',response.data.content.user);
         setUserName(response.data.content.user.username);
         setUserProfile(response.data.content.user.profile_photo);
       })
