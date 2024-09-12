@@ -145,7 +145,7 @@ const AddForm = () => {
       
             if (response.status === 200) {
                 alert("게시글이 성공적으로 등록되었습니다.");
-                // navigate('/community/')
+                navigate('/community/')
             }
         } catch (error) {
             console.error('게시글 등록 실패:', error);

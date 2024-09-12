@@ -136,6 +136,8 @@ const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
   const userId = localStorage.getItem('user_id');
+  console.log("🚀 ~ PostDetail ~ userId:", userId)
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -180,6 +182,8 @@ const PostDetail = ({post, comments}) => {
     axios.delete(`/community/api/postdelete/${postId}`)
     .then(response =>{
       console.log(response)
+      alert("게시글이 삭제되었습니다")
+      navigate('/community')
     })
     .catch(error => {
       console.log(error)
@@ -201,7 +205,7 @@ const PostDetail = ({post, comments}) => {
               </Info>  
             </Span>
             <Control id='control'>
-              {post.user_id === 5?(
+              {parseInt(post.user_id) == userId?(
                 <>
                   <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
                   <Delete onClick={() => DeletePost(post.post_id)}>삭제</Delete>
