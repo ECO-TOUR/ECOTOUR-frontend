@@ -5,6 +5,7 @@ import exampleImage from '../../../assets/example2.jpg';
 import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
 import Comment from './Comment'
 import { useNavigate } from 'react-router-dom';
+import 'swiper/css';
 
 const StyledPost = styled.div`
     width: 100%;
@@ -19,15 +20,14 @@ const StyledPost = styled.div`
     }
 `;
 const PhotoArea = styled.div`
-    background-image: url(${props => props.img});
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    align-self: center;
-    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
     aspect-ratio: 1 / 1;
-    background-color: #333333;
-
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
 `;
 const Like = styled.div`
     margin-top: 5px;

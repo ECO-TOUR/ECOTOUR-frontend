@@ -7,8 +7,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
 
 
 const StyledPost = styled.div`
@@ -22,9 +20,21 @@ const StyledPost = styled.div`
     padding: 10px;
 `;
 const PhotoArea = styled.div`
-    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
     aspect-ratio: 1 / 1;
-    background-color: #333333;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+`;
+
+const SwiperImage = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 `;
 
 const Like = styled.div`
@@ -80,6 +90,7 @@ const SecondLine = styled.div`
     justify-content: space-between;
     align-items: end;
 `; 
+
 const LikeHandler = (userId, postId) => {
   axios.post(`/community/api/postlike/${userId}/`, {
     'post_id':postId, 
@@ -100,7 +111,7 @@ const Posts = () => {
       navigate(`./post/${postId}`);
     };
 
-    const userId = 1;
+    const userId = localStorage.getItem('user_id');
     const [posts, setPosts] = useState([]);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
 
@@ -142,10 +153,23 @@ const Posts = () => {
     <>
       {posts.map(post => (
         <StyledPost onClick={() => moveToPostDetail(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
-            <img 
-            src={Array.isArray(post.post_img) && post.post_img[0] ? post.post_img[0] : exampleImage} 
-            alt="Post Image"
-            />
+          <PhotoArea>
+            <Swiper
+              pagination={{ clickable: true }}
+              spaceBetween={15}
+              slidesPerView={1}
+              style={{height: '100%'}}
+            >
+              {Array.isArray(post.post_img) && post.post_img.slice(0, 5).map((imgSrc, index) => (
+                <SwiperSlide key={index}>
+                  <SwiperImage 
+                    src={imgSrc || exampleImage} 
+                    alt={`Post Image ${index + 1}`} 
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </PhotoArea>
             <Like>
                 <LikeButton onClick={(e) => {
                     e.stopPropagation();

@@ -51,6 +51,7 @@ const AddButtonArea = styled.div`
   height: auto;
   display: flex;
   justify-content: flex-end;
+  z-index: 9999;
 `;
 const AddPostButton = styled.button`
   margin-left: 0;
@@ -79,7 +80,8 @@ const AddPostButton = styled.button`
   white-space: nowrap;
   width: 4rem;
   height: 4rem;
-
+  z-index: 10000; /* z-index를 더 높게 설정 */
+  
   &:focus:not(:focus-visible):not(.focus-visible) {
     box-shadow: none;
     outline: none;
