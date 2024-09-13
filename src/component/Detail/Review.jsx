@@ -1,18 +1,39 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import * as S from './Review.style';
 import ReviewProfile from '../../assets/review_profile.svg';
 import exampleImage from '../../assets/example1.png'; // 이미지 파일을 import
 
 function Review() {
-    const contents = [1, 2, 3];
+    const { tour_id } = useParams(); // URL에서 tour_id 가져오기
+    const [contents, setContents] = useState([]);
+    const [count, setCount] = useState();
+    const [score, setScore] = useState();
     const images = [1, 2, 3];
+
+    useEffect(() => {
+        // 관광지 정보 가져오기
+        const fetchDetail = async () => {
+            try {
+              const response = await axios.get(`/api/postbytour/${tour_id}/`);
+                setCount(response.data.content.avg_score);
+                setScore(response.data.content.count);
+                setContents(response.data.content.data);
+            } catch (error) {
+              console.log(error);
+            }
+          };
+      
+        fetchDetail(); // 컴포넌트가 마운트될 때 API 호출
+    },[]);
   return (
     <div>
         {/* 헤더 */}
         <S.HeaderComponent>
             <S.HeaderTitle>방문자 커뮤니티</S.HeaderTitle>
             <S.ScoreComponent>
-                <S.ScoreIcon/><S.Score>9.6 (100)</S.Score>
+                <S.ScoreIcon/><S.Score>{score} ({count})</S.Score>
             </S.ScoreComponent>
             <S.MoreBtn>더보기</S.MoreBtn>
         </S.HeaderComponent>

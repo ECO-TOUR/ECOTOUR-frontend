@@ -121,6 +121,7 @@ const Mypage = (props) => {
 
   const navigate = useNavigate();
   const user_id = localStorage.getItem('user_id');
+  const access_token = localStorage.getItem('access_token');
 
   function onClickLogout(){
     localStorage.removeItem('user_id');
@@ -134,7 +135,11 @@ const Mypage = (props) => {
   const [userProfile, setUserProfile] = useState();
   useEffect(() => {
     console.log(user_id);
-    axios.get(`/mypage/api/${user_id}/inquire`)
+    axios.get(`/mypage/api/${user_id}/inquire`, {
+      headers: {
+          'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
+      }
+    })
     .then(response => {
         console.log(response.data.content.user);
         setUserName(response.data.content.user.username);

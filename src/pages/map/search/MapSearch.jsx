@@ -9,26 +9,53 @@ import RealTimeSearches from '../../../component/map/Search/RealTimeSearch'; // 
 import Navbar from '../../../component/main/Navbar';
 // img
 import { ReactComponent as BackBtn } from '../../../assets/back_btn.svg';
+import { ReactComponent as SearchIcon } from '../../../assets/search_icon.svg';
+// recoil
+import { useRecoilState } from 'recoil';
+import { recentSearchesState } from '../../../recoil/SearchesAtoms';
+import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
 
 function MapSearch() {
 
-  // 뒤로가기 버튼 클릭 시
   const navigate = useNavigate();
   const userId = localStorage.getItem("user_id");
+  const access_token = localStorage.getItem("access_token");
+  const [searchResult, setSearchResult] = useRecoilState(recentSearchesState); // 검색 결과 저장 변수
+  const [bottomSheet, setBottomSheet] = useRecoilState(StateAtoms); // bottomSheet 상태 변수
   const queryClient = useQueryClient();
   const [searchValue, setSearchValue] = useState('');
-
+  const [searchResults, setSearchResults] = useState([]); // 자동 검색어 결과 상태
   // 입력 상태 없데이트
   const handleInputChange = (event) => {
     setSearchValue(event.target.value);  // 입력된 값으로 상태 업데이트
+    // 입력값이 비어있지 않을 때만 API 호출
+    axios.get(`/autocomplete/?query=${event.target.value}`)
+      .then(response => {
+        //console.log(response.data);
+        setSearchResults(response.data.autocompleteResults || []); // 응답 데이터가 없을 경우 빈 배열로 설정
+      })
+      .catch(error => {
+        console.error(error);
+        setSearchResults([]); // 에러 발생 시 빈 배열로 설정
+      });
   };
+
+  const onClickWord = (result) => {
+    setSearchValue(result);
+    searchMutation.mutate(searchValue);
+  }
 
   // 최근 검색어 검색 기능
   const searchMutation = useMutation(
     async (searchValue) => {
-      const response = await axios.get(`/place`, {
+      const response = await axios.get('/place', {
         params: { search: searchValue },
+        headers: {
+          'Authorization': `Bearer ${access_token}`, // Bearer 토큰 방식으로 추가
+        },
       });
+      setSearchResult(response.data.search_results); //검색 결과 저장
+      setBottomSheet(false); // bottomSheet 상태 변경
       return response.data;
     },
     {
@@ -92,6 +119,21 @@ function MapSearch() {
         value={searchValue}>
       </S.Search_container>
       
+      {/* 검색어 자동완성 */}
+      {searchValue.length === 0 ? <></>:<>
+      <S.SearchWordBox>
+        {Array.isArray(searchResults) && searchResults.length > 0 ? (
+          searchResults.map((result, index) => (
+            <S.SearchWordItem key={index} onClick={() => onClickWord(result)}>
+              <SearchIcon/>
+              <S.SearchText>{result}</S.SearchText>
+            </S.SearchWordItem>
+          ))
+        ) : (
+          <S.SearchWordItem></S.SearchWordItem> // 검색 결과가 없거나 배열이 아닐 때 표시할 내용
+        )}
+      </S.SearchWordBox></>
+      }
       {/* 최근 검색어 */}
       <S.Recent_container>
         <S.Recent_header>

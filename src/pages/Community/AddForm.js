@@ -93,17 +93,19 @@ const AddForm = () => {
     const userId = localStorage.getItem('user_id');
     const navigate = useNavigate();
 
+    // 파일 선택 핸들러
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
-        if (uploadedImage.length + files.length > 5){
-            alert("최대 5장의 사진만 업로드 할 수 있습니다.")
+        
+        // 최대 5장까지 업로드 제한
+        if (uploadedImage.length + files.length > 5) {
+            alert("최대 5장의 사진만 업로드 할 수 있습니다.");
             return;
         }
 
-        const newImageUrls = files.map((file) => URL.createObjectURL(file));
-        setUploadedImage((prevImages) => [...prevImages, ...newImageUrls]);
-
-        fileInputRef.current.value = '';
+        // 파일 자체를 상태에 저장
+        setUploadedImage((prevImages) => [...prevImages, ...files]);
+        fileInputRef.current.value = ''; // 입력 필드 초기화
     };
 
     const handleButtonClick = () => {
@@ -144,16 +146,18 @@ const AddForm = () => {
             for (let pair of formData.entries()) {
                 console.log(pair[0] + ': ' + pair[1]);
             }
-            const response = await axios.post('/community/api/postwrite/', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+
+            console.log(formData);
+            // const response = await axios.post('/community/api/postwrite/', formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data'
+            //     }
+            // });
     
-            if (response.status === 200) {
-                alert("게시글이 성공적으로 등록되었습니다.");
-                // navigate('/community/')
-            }
+            // if (response.status === 200) {
+            //     alert("게시글이 성공적으로 등록되었습니다.");
+            //     // navigate('/community/')
+            // }
         } catch (error) {
             console.error('게시글 등록 실패:', error);
             alert('게시글 등록 중 문제가 발생했습니다.');
