@@ -13,7 +13,7 @@ function RecentSearches() {
     ['recentSearches', userId],
     async () => {
       const response = await axios.get(`/place/log/${userId}`);
-      console.log(response.data);
+      //console.log(response.data);
       return response.data.search_history;
     },
     {

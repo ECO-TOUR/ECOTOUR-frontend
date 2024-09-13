@@ -67,7 +67,7 @@ function Detail() {
               setAddress(tour_location); // 관광지 주소
               setImage(tour_img); // 관광지 이미지
               setDetail(response.data.place_detail);
-              console.log(response.data);
+              //console.log(response.data);
             } catch (error) {
               console.log(error);
             }

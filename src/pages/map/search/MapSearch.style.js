@@ -75,3 +75,28 @@ export const Navbar = styled.div`
   position: sticky;
   bottom: 0;
 `;
+
+// 검색어 자동완성 박스
+export const SearchWordBox = styled.div`
+    position: absolute;
+    width: 380px;
+    z-index: 1;
+    background-color: white;
+    left: 50%;
+    transform: translateX(-50%); /* 가로 중앙 정렬 */
+    border-radius: 10px;
+    margin-top: -10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 (선택 사항) */
+`;
+
+// 검색어 자동완성 div
+export const SearchWordItem = styled.div`
+    padding: 17px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 10px;
+
+    &:hover{
+        background-color: #F5F5F5;
+    }
+`;
