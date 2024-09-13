@@ -126,6 +126,8 @@ export const InfoText = styled.div`
     font-weight: 300;
     padding: 0px 30px 0px 45px;
     line-height: 1.3;
+    width: 215px;
+    word-wrap: break-word;
 `;
 
 export const UpImg = styled.div`
