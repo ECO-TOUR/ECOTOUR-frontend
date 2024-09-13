@@ -1,12 +1,30 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import * as S from './Recommend.style'
+import axios from 'axios';
 import exampleImage from '../../../assets/example1.png'; // 이미지 파일을 import
 import { useNavigate } from 'react-router-dom';
 
 function Recommend() {
 
-  const contents = [1, 2, 3, 4, 5];
+  const user_id = localStorage.getItem('user_id');
+  const [contents, setContents] = useState([]);
   const navigate = useNavigate();
+
+  // API 연결
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`/api/recommend/${user_id}`);
+            setContents(response.data.content);
+            console.log(response);
+        } catch (error) {
+            console.error('데이터를 가져오는 중 오류 발생:', error);
+        }
+    };
+
+    fetchData();
+  }, []);
+
   function onClickBox(){
     navigate('/detail');
   }

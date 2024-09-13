@@ -9,12 +9,17 @@ import RealTimeSearches from '../../../component/map/Search/RealTimeSearch'; // 
 import Navbar from '../../../component/main/Navbar';
 // img
 import { ReactComponent as BackBtn } from '../../../assets/back_btn.svg';
+// recoil
+import { useRecoilState } from 'recoil';
+import { recentSearchesState } from '../../../recoil/SearchesAtoms';
+import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
 
 function MapSearch() {
 
-  // 뒤로가기 버튼 클릭 시
   const navigate = useNavigate();
   const userId = localStorage.getItem("user_id");
+  const [searchResult, setSearchResult] = useRecoilState(recentSearchesState); // 검색 결과 저장 변수
+  const [bottomSheet, setBottomSheet] = useRecoilState(StateAtoms); // bottomSheet 상태 변수
   const queryClient = useQueryClient();
   const [searchValue, setSearchValue] = useState('');
 
@@ -29,6 +34,8 @@ function MapSearch() {
       const response = await axios.get(`/place`, {
         params: { search: searchValue },
       });
+      setSearchResult(response.data.search_results); //검색 결과 저장
+      setBottomSheet(false); // bottomSheet 상태 변경
       return response.data;
     },
     {
