@@ -39,6 +39,11 @@ function MapSearch() {
       });
   };
 
+  const onClickWord = (result) => {
+    setSearchValue(result);
+    searchMutation.mutate(searchValue);
+  }
+
   // 최근 검색어 검색 기능
   const searchMutation = useMutation(
     async (searchValue) => {
@@ -118,7 +123,7 @@ function MapSearch() {
       <S.SearchWordBox>
         {Array.isArray(searchResults) && searchResults.length > 0 ? (
           searchResults.map((result, index) => (
-            <S.SearchWordItem key={index}>
+            <S.SearchWordItem key={index} onClick={() => onClickWord(result)}>
               {result} {/* 검색 결과를 출력 */}
             </S.SearchWordItem>
           ))
