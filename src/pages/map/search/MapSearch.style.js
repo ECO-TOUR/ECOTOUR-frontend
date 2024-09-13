@@ -95,8 +95,13 @@ export const SearchWordItem = styled.div`
     font-size: 13px;
     cursor: pointer;
     border-radius: 10px;
+    display: flex;
 
     &:hover{
         background-color: #F5F5F5;
     }
+`;
+
+export const SearchText = styled.div`
+    margin-left: 10px;
 `;

@@ -9,6 +9,7 @@ import RealTimeSearches from '../../../component/map/Search/RealTimeSearch'; // 
 import Navbar from '../../../component/main/Navbar';
 // img
 import { ReactComponent as BackBtn } from '../../../assets/back_btn.svg';
+import { ReactComponent as SearchIcon } from '../../../assets/search_icon.svg';
 // recoil
 import { useRecoilState } from 'recoil';
 import { recentSearchesState } from '../../../recoil/SearchesAtoms';
@@ -124,7 +125,8 @@ function MapSearch() {
         {Array.isArray(searchResults) && searchResults.length > 0 ? (
           searchResults.map((result, index) => (
             <S.SearchWordItem key={index} onClick={() => onClickWord(result)}>
-              {result} {/* 검색 결과를 출력 */}
+              <SearchIcon/>
+              <S.SearchText>{result}</S.SearchText>
             </S.SearchWordItem>
           ))
         ) : (
