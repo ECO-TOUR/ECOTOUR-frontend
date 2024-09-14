@@ -88,6 +88,7 @@ const PostBtn = styled.button`
 
 const AddForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
+    const [uploadedImageUrl, setUploadedImageUrl] = useState([]);
     const [textContent, setTextContent] = useState('');
     const fileInputRef = useRef(null);
     const userId = localStorage.getItem('user_id');
@@ -102,10 +103,12 @@ const AddForm = () => {
             alert("최대 5장의 사진만 업로드 할 수 있습니다.");
             return;
         }
+        const imageUrls = files.map((file) => URL.createObjectURL(file));
 
-        // 파일 자체를 상태에 저장
         setUploadedImage((prevImages) => [...prevImages, ...files]);
-        fileInputRef.current.value = ''; // 입력 필드 초기화
+        setUploadedImageUrl((prevImageUrls) => [...prevImageUrls, ...imageUrls]);
+
+        fileInputRef.current.value = '';    
     };
 
     const handleButtonClick = () => {
@@ -121,7 +124,6 @@ const AddForm = () => {
         setUploadedImage(newImages);
     };
 
-    // 게시글 등록 api
     const handlePost = async () => {
         if (uploadedImage.length === 0 || textContent.trim() === '') {
             alert("내용 또는 사진을 추가해 주세요");
@@ -137,27 +139,20 @@ const AddForm = () => {
         formData.append('user_id', userId);
         
         try {
-
-            formData.append('img',uploadedImage[0]);
-        
-            // await Promise.all(imagePromises); // 모든 이미지가 변환될 때까지 대기
-            
-            // Log all key-value pairs in FormData
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
+            uploadedImage.forEach((file) => {
+              formData.append('img', file); // 'img' must match what you're using in your Django view
+            });
+      
+            const response = await axios.post('/community/api/postwrite/', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+      
+            if (response.status === 200) {
+                alert("게시글이 성공적으로 등록되었습니다.");
+                navigate('/community/')
             }
-
-            console.log(formData);
-            // const response = await axios.post('/community/api/postwrite/', formData, {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data'
-            //     }
-            // });
-    
-            // if (response.status === 200) {
-            //     alert("게시글이 성공적으로 등록되었습니다.");
-            //     // navigate('/community/')
-            // }
         } catch (error) {
             console.error('게시글 등록 실패:', error);
             alert('게시글 등록 중 문제가 발생했습니다.');
@@ -191,7 +186,7 @@ const AddForm = () => {
                         multiple
                         onChange={handleFileChange}
                     />
-                {uploadedImage.map((imageSrc, index) => (
+                {uploadedImageUrl.map((imageSrc, index) => (
                     <AddedPhoto 
                         key={index} 
                         imageSrc={imageSrc} 

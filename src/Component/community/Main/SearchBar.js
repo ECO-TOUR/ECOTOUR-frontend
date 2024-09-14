@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import axios from 'axios';
 const StyledSearchBar = styled.input`
     width: 100%;
     min-width: calc(var(--mim-width) - 32px);
@@ -16,9 +16,17 @@ const StyledSearchBar = styled.input`
     font-size: 13px;
     box-sizing: border-box;
 `;
-const SearchBar = () => {
+const SearchBar = ({ onSearch }) => {
+  const user_id = localStorage.getItem('user_id')
+
+  const handleKeyDown = (e) => {
+    if(e.key == 'Enter'){
+      onSearch(e.target.value);
+    }
+  }
+
   return (
-    <StyledSearchBar id='community-search' type="text" placeholder="검색" ></StyledSearchBar>
+    <StyledSearchBar id='community-search' type="text" placeholder="검색" onKeyDown={handleKeyDown}></StyledSearchBar>
   )
 }
 

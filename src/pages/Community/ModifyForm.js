@@ -89,18 +89,17 @@ const ModifyForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
     const [textContent, setTextContent] = useState('');
     const fileInputRef = useRef(null);
-    const userId = 1;
+    const userId = localStorage.getItem('user_id')
     const {postId} = useParams();
-    const [post, setPost] = useState(null);
 
     useEffect(() => {
         axios.get(`/community/api/postinquire/${userId}/`)
             .then(response => {
                 const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
-                setPost(selectedPost);
                 console.log('se',selectedPost);
                 if(selectedPost){
                     setTextContent(selectedPost.post_text)
+                    setUploadedImage(selectedPost.post_img);
                 }
             })
             .catch(error => {
@@ -110,12 +109,11 @@ const ModifyForm = () => {
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
-        if (uploadedImage.length + files.length > 5){
+        if (uploadedImage.length + files.length> 5){
             alert("최대 5장의 사진만 업로드 할 수 있습니다.")
             return;
         }
 
-        // const newImageUrls = files.map((file) => URL.createObjectURL(file));
         setUploadedImage((prevImages) => [...prevImages, ...files]);
 
         fileInputRef.current.value = '';
@@ -139,6 +137,7 @@ const ModifyForm = () => {
             alert("내용 또는 사진을 추가해 주세요");
             return;
         }
+
         const formData = new FormData();
         formData.append('post_id', postId);
         formData.append('text', textContent);
@@ -147,23 +146,21 @@ const ModifyForm = () => {
         formData.append('hashtag', '#example');
         formData.append('tour_id', 1);
         formData.append('user_id', userId);
-        // formData.append(`img`, file);
 
-        uploadedImage.forEach((file, index) => {
-            formData.append(`img${index}`, file);
-        });
-
-
-        try{
-            const response = await axios.post('/community/api/postmodify/',formData,{
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+        try {
+            uploadedImage.forEach((file) => {
+              formData.append('img', file); // 'img' must match what you're using in your Django view
             });
-            console.log("🚀 ~ handlePost ~ response:", response)
-            
-            if (response.status === 200){
+      
+            const response = await axios.post('/community/api/postmodify/', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+      
+            if (response.status === 200) {
                 alert("게시글이 성공적으로 등록되었습니다.");
+                // navigate('/community/')
             }
         } catch (error) {
             console.error('게시글 등록 실패:', error);

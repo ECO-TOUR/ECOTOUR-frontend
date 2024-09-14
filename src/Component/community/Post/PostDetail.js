@@ -5,6 +5,8 @@ import exampleImage from '../../../assets/example2.jpg';
 import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
 import Comment from './Comment'
 import { useNavigate } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 const StyledPost = styled.div`
     width: 100%;
@@ -19,15 +21,20 @@ const StyledPost = styled.div`
     }
 `;
 const PhotoArea = styled.div`
-    background-image: url(${props => props.img});
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    align-self: center;
-    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
     aspect-ratio: 1 / 1;
-    background-color: #333333;
-
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+`;
+const SwiperImage = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 `;
 const Like = styled.div`
     margin-top: 5px;
@@ -56,14 +63,14 @@ const LikeIcon = ({ liked }) => (
       width="25"
       height="25"
       viewBox="0 0 25 25"
-      fill={liked ? "#91EB86" : "none"}
-      stroke={liked ? "#91EB86" : "#333"}
+      fill={liked ? "red" : "none"}
+      stroke={liked ? "red" : "#333"}
       strokeWidth="2"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
         d="M22 8.5C22 5.46243 19.5376 3 16.5 3C14.7819 3.05354 13.1586 3.80024 12 5.07C10.8414 3.80024 9.2181 3.05354 7.5 3C4.46243 3 2 5.46243 2 8.5C2 12.42 6.75 16.75 9 19L11.28 21.28C11.4205 21.4207 11.6112 21.4998 11.81 21.5H12.19C12.3888 21.4998 12.5795 21.4207 12.72 21.28L15 19C17.25 16.75 22 12.42 22 8.5Z"
-        fill={liked ? "#91EB86" : "none"}
+        fill={liked ? "red" : "none"}
         stroke="#333"
       />
     </svg>
@@ -127,12 +134,18 @@ const Delete = styled.button`
   font-size: 14px;
   color: #676767;
 `
+const Control = styled.div`
+`
+const Span = styled.div`
+  display: flex;
+`
 const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
-  const userId = 1;
-  const navigate = useNavigate();
+  const userId = localStorage.getItem('user_id');
   
+  const navigate = useNavigate();
+
   useEffect(() => {
     if(post) {
       setLiked(post.like === 'yes');
@@ -171,6 +184,17 @@ const PostDetail = ({post, comments}) => {
     })
   }
   
+  const DeletePost = (postId) => {
+    axios.delete(`/community/api/postdelete/${postId}`)
+    .then(response =>{
+      console.log(response)
+      alert("게시글이 삭제되었습니다")
+      navigate('/community')
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
   if (!post){
     return <div>Loading...</div>
   }
@@ -179,15 +203,38 @@ const PostDetail = ({post, comments}) => {
     <>
       <StyledPost id="post-area" width={windowWidth}> 
           <UserArea id="user-area">
-            <ProfileIcon/>
-            <Info>
-              <div>User Id</div>
-              <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
-            </Info>
-            <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
-            <Delete></Delete>
+            <Span>
+              <ProfileIcon/>
+              <Info>
+                <div>User Id</div>
+                <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
+              </Info>  
+            </Span>
+            <Control id='control'>
+              {parseInt(post.user_id) == userId?(
+                <>
+                  <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
+                  <Delete onClick={() => DeletePost(post.post_id)}>삭제</Delete>
+                </>):(<></>)} 
+            </Control>
           </UserArea>
-          <PhotoArea img = {post.post_img || exampleImage}/>
+          <PhotoArea>
+            <Swiper
+              pagination={{ clickable: true }}
+              spaceBetween={15}
+              slidesPerView={1}
+              style={{height: '100%'}}
+            >
+              {Array.isArray(post.post_img) && post.post_img.slice(0, 5).map((imgSrc, index) => (
+                <SwiperSlide key={index}>
+                  <SwiperImage 
+                    src={imgSrc || exampleImage} 
+                    alt={`Post Image ${index + 1}`} 
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </PhotoArea>
           <Like>
               <LikeButton onClick={toggleLike}>
                   <LikeIcon liked={liked} />

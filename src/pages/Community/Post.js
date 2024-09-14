@@ -68,7 +68,7 @@ const SendButton = styled.button`
 
 
 const Post = () => {
-  const userId = 1;
+  const userId = localStorage.getItem('user_id')
   const {postId} = useParams();
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
@@ -76,17 +76,27 @@ const Post = () => {
   const [commentText, setCommentText] = useState('');
 
   const fetchPost = () => {
-    axios.get(`/community/api/postinquire/${userId}/`)
+    axios.get(`/community/api/postinquire/${userId}/`
+      , {
+        headers: {
+          'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
+    )
       .then(response => {
-        setPosts(response.data.content); 
+        setPosts(response.data.content);
+        console.log('Post',response.data.content);
         const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
         setPost(selectedPost);
-        console.log('se',selectedPost);
+        console.log('selectedPost',selectedPost);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
 
+    console.log("🚀 ~ fetchPost ~ postId:", postId)
       
     //댓글 가져오기
     axios.get(`/community/api/commentinquire/${postId}/`)
@@ -120,9 +130,23 @@ const Post = () => {
     })
 
   };
-
+  const handleKeyDown = (e) =>{
+    if(e.key == 'Enter'){
+      axios.post('/community/api/commentwrite/', {
+        'post_id': postId,
+        'user_id': userId,
+        'comments': commentText,
+      }).then(response => {
+        console.log('댓글 달기 성공:', response.data);
+        setCommentText('');
+        fetchPost();
+        
+      }).catch(error => {
+        console.error("Error submitting comment: ", error);
+      })
+    }
+  }
   
-
   return (
     <>
         <Header pageName="게시판" />
@@ -135,7 +159,8 @@ const Post = () => {
             type="text" 
             placeholder="댓글 입력"
             value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}  
+            onChange={(e) => setCommentText(e.target.value)}
+            onKeyDown={handleKeyDown}
           ></CommentBar>
           <SendButton onClick={handleCommentSubmit}>
             <SendIcon width="24px" height="24px"></SendIcon>
