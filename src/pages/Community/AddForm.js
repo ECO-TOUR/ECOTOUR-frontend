@@ -136,7 +136,7 @@ const AddForm = () => {
         formData.append('user_id', userId);
         
         try {
-            uploadedImage.forEach((file, index) => {
+            uploadedImage.forEach((file) => {
               formData.append('img', file); // 'img' must match what you're using in your Django view
             });
       

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import axios from 'axios';
 const StyledSearchBar = styled.input`
     width: 100%;
     min-width: calc(var(--mim-width) - 32px);
@@ -17,8 +17,20 @@ const StyledSearchBar = styled.input`
     box-sizing: border-box;
 `;
 const SearchBar = () => {
+  const handleKeyDown = (e) => {
+    if(e.key == 'Enter'){
+      axios.get(`/community/api/postsearch/1/${e.target.value}/`)
+      .then(response =>{
+        console.log(response);
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    }
+  }
+
   return (
-    <StyledSearchBar id='community-search' type="text" placeholder="검색" ></StyledSearchBar>
+    <StyledSearchBar id='community-search' type="text" placeholder="검색" onKeyDown={handleKeyDown}></StyledSearchBar>
   )
 }
 

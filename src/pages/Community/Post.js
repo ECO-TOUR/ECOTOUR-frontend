@@ -96,6 +96,7 @@ const Post = () => {
         console.error('Error fetching data:', error);
       });
 
+    console.log("🚀 ~ fetchPost ~ postId:", postId)
       
     //댓글 가져오기
     axios.get(`/community/api/commentinquire/${postId}/`)
@@ -131,7 +132,6 @@ const Post = () => {
   };
 
   
-
   return (
     <>
         <Header pageName="게시판" />
