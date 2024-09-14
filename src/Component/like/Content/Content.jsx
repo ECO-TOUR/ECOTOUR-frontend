@@ -76,7 +76,7 @@ function Content() {
                 const response = await axios.get(`/tourlike/api/wishlist/${user_id}/Inquire/`);
                 //console.log(response.data);
                 setContents(response.data);
-                console.log(response.data);
+                //console.log(response.data);
                 setOriginalContents(response.data);
             } catch (error) {
                 console.log(error);

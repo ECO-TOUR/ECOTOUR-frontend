@@ -20,7 +20,7 @@ function Recommend() {
               }
             });
             setContents(response.data.content);
-            console.log(response);
+            //console.log(response);
         } catch (error) {
             console.log(error);
         }
@@ -52,7 +52,7 @@ function Recommend() {
                 <S.ContentRegion>{regionParsing(content.tour_location)}</S.ContentRegion>
                 <S.ScoreContainer>
                     <S.ScoreIcon/>
-                    <S.ScoreText>9.6 (100)</S.ScoreText>
+                    <S.ScoreText>{content.score}</S.ScoreText>
                 </S.ScoreContainer>
             </S.ContentBox>
         ))}

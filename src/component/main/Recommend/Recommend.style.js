@@ -49,7 +49,7 @@ export const ScoreContainer = styled.div`
     justify-content: flex-end;
     align-items: center;
     gap: 5px;
-    margin-left: 108px;
+    margin-left: 135px;
 `;
 
 export const ScoreIcon = styled.div`
