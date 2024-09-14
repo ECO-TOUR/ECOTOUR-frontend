@@ -133,6 +133,11 @@ const Mypage = (props) => {
   const user_id = localStorage.getItem('user_id');
   const access_token = localStorage.getItem('access_token');
 
+  // 공지사항 클릭 시
+  function onClickNotice(){
+    navigate('/notice');
+  }
+  // 문의 클릭 시
   function onClickQna(){
     window.location.href = 'https://open.kakao.com/o/g0raUSNg';
   }
@@ -177,7 +182,7 @@ const Mypage = (props) => {
   const [userName, setUserName] = useState();
   const [userProfile, setUserProfile] = useState();
   useEffect(() => {
-    //console.log(user_id);
+    console.log(user_id);
     axios.get(`/mypage/api/${user_id}/inquire`, {
       headers: {
           'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
@@ -228,7 +233,7 @@ const Mypage = (props) => {
         </Settings> */}
         <Service>
           <Title>서비스 관리</Title>
-          <Line>공지사항</Line>
+          <Line onClick={onClickNotice}>공지사항</Line>
           <Line onClick={onClickQna}>문의</Line>
           <Line onClick={onClickLogout}>로그아웃</Line>
           <Line onClick={onClickDeleteUser}>회원탈퇴</Line>
