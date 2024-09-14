@@ -32,7 +32,7 @@ function Content() {
     }
 
     // 좋아요 상태 변수
-    const [liked, setLiked] = useState(Array(contents.length).fill(false)); // 각 콘텐츠의 좋아요 상태 관리
+    const [liked, setLiked] = useState(Array(contents.length).fill(true)); // 각 콘텐츠의 좋아요 상태 관리
 
     // 버튼 클릭 시 호출되는 함수: 특정 콘텐츠의 좋아요 상태를 토글
     const toggleLike = (index, event) => {
@@ -52,7 +52,7 @@ function Content() {
         const fetchDetail = async () => {
             try {
                 const response = await axios.get(`/tourlike/api/wishlist/${user_id}/Inquire/`);
-                console.log(response.data);
+                //console.log(response.data);
                 setContents(response.data);
             } catch (error) {
                 console.log(error);
@@ -68,14 +68,19 @@ function Content() {
     };
     
     const navigate = useNavigate();
-    const onClickDetail = (event) => {
-        setTimeout(() => {
-            if (!wasCloseStateChanged()) {
-                navigate('/detail');
-            }
-        }, 300); // 애니메이션 지속 시간과 맞추어야 할 수 있음
+    const onClickDetail = (tour_id) => {
+        navigate(`/detail/${tour_id}`);
     };
-    
+
+    // 지역 길이 파싱
+    const regionParsing = (text) => {
+        const parts = text.split(' ');
+        if (parts.length > 2) {
+            // 두 번째 공백까지의 텍스트를 포함
+            return `${parts[0]} ${parts[1]}`;
+        }
+        return text;
+    };   
 
     return (
         <>
@@ -94,14 +99,14 @@ function Content() {
                 </S.None>):
                 (<S.ContentComponent closeState={closeState}>
                     {contents.map((content, index) => (
-                        <S.ContentBox key={index} onClick={onClickDetail} >
-                            <S.Img src={exampleImage}/>
+                        <S.ContentBox key={index} onClick={() => onClickDetail(content.tour_id)} >
+                            <S.Img src={content.tour_img}/>
                             <S.InfoBox>
-                                <S.Name>순천만습지</S.Name>
-                                <S.Region>전라남도 순천시</S.Region>
+                                <S.Name>{content.tour_name}</S.Name>
+                                <S.Region>{regionParsing(content.tour_location)}</S.Region>
                                 <S.ContentWrap>
                                     <S.ScoreBox>
-                                        <S.ScoreIcon/> 9.6 (100)
+                                        <S.ScoreIcon/>{content.avg_post_score}
                                     </S.ScoreBox>
                                     <S.LikeBtn>
                                         <img src={liked[index] ? FillHeart : EmptyHeart} onClick={(event) => toggleLike(index, event)}/>
