@@ -16,6 +16,7 @@ function Content() {
     const access_token = localStorage.getItem('access_token');
     const closeState = useRecoilValue(StateAtoms); // bottom 열림, 닫힘 상태
     const [contents, setContents] = useState([]);
+    const [originalContents, setOriginalContents] = useState([]); // 원본 데이터를 저장
     const [scoreList, setScoreList] = useState(false); // 별점순 버튼 상태
     const [viewList, setViewList] = useState(false); // 조회순 버튼 상태
 
@@ -23,12 +24,28 @@ function Content() {
     function onClickScoreListBtn(){
         setScoreList(!scoreList);
         setViewList(false);
+
+        if (!scoreList) {
+            const sortedContents = [...contents].sort((a, b) => b.avg_post_score - a.avg_post_score);
+            setContents(sortedContents);
+        } else {
+            // 원래 순서로 돌아가기
+            setContents(originalContents);
+        }
     }
 
     // 조회순 버튼 클릭 시
     function onClickViewListBtn(){
         setViewList(!viewList);
         setScoreList(false);
+
+        if (!viewList) {
+            const sortedContents = [...contents].sort((a, b) => b.tour_viewcnt - a.tour_viewcnt);
+            setContents(sortedContents);
+        } else {
+            // 원래 순서로 돌아가기
+            setContents(originalContents);
+        }
     }
 
     // 좋아요 상태 변수
@@ -38,14 +55,12 @@ function Content() {
     const toggleLike = (event, tour_id) => {
         event.stopPropagation(); // 클릭 이벤트 전파 중단
         alert("좋아요 목록에서 제외됩니다.");
-        console.log(tour_id);
         const fetchLike = async () => {
             try {
                 const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
                     tour_id: tour_id
                 });
                 window.location.reload();
-                console.log(response.data);
             } catch (error) {
                 console.log(error);
             }
@@ -61,6 +76,8 @@ function Content() {
                 const response = await axios.get(`/tourlike/api/wishlist/${user_id}/Inquire/`);
                 //console.log(response.data);
                 setContents(response.data);
+                console.log(response.data);
+                setOriginalContents(response.data);
             } catch (error) {
                 console.log(error);
             }

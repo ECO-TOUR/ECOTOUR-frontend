@@ -53,7 +53,7 @@ function Content() {
         return text;
     };
 
-    // 버튼 클릭 시 정렬
+    // 별점순, 조회순 버튼 클릭 시 정렬
     useEffect(() => {
         let sortedResults = [...initialSearchResults];
 
