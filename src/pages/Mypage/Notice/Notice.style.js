@@ -50,3 +50,32 @@ export const NoticeDate = styled.div`
     color: #676767;
     font-size: 12px;
 `;
+
+// 공지사항 상세페이지 제목
+export const NoticeDetailTitle = styled.div`
+    font-size: 22px;
+    font-weight: 700;
+    padding: 20px 30px;
+    word-wrap: break-word;
+`;
+
+export const NoticeDetailDate = styled.div`
+    color: #676767;
+    font-size: 13px;
+    padding: 0px 30px;
+`;
+
+export const NoticeDetailText = styled.div`
+    font-size: 15px;
+    padding: 50px 30px;
+    word-wrap: break-word;
+`;
+
+export const NoticeDetailBottom = styled.div`
+    padding: 5px 30px;
+    text-align: right;
+    font-size: 13px;
+    color: #676767;
+    cursor: pointer;
+`;
+
