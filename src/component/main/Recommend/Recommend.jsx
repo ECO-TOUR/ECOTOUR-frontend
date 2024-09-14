@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function Recommend() {
 
   const user_id = localStorage.getItem('user_id');
+  const access_token = localStorage.getItem('access_token');
   const [contents, setContents] = useState([]);
   const navigate = useNavigate();
 
@@ -14,11 +15,15 @@ function Recommend() {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await axios.get(`/api/recommend/${user_id}`);
+            const response = await axios.get(`api/recommend/${user_id}/`,{
+              headers: {
+                'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
+              }
+            });
             setContents(response.data.content);
             console.log(response);
         } catch (error) {
-            console.error('데이터를 가져오는 중 오류 발생:', error);
+            console.log(error);
         }
     };
 

@@ -123,11 +123,30 @@ const Mypage = (props) => {
   const user_id = localStorage.getItem('user_id');
   const access_token = localStorage.getItem('access_token');
 
+  // 로그아웃 클릭 시
   function onClickLogout(){
     localStorage.removeItem('user_id');
     localStorage.removeItem('access_token');
 
     navigate('/');
+  }
+
+  // 회원탈퇴 클릭 시
+  function onClickDeleteUser(){
+    console.log(access_token);
+    axios.post(`/accounts/api/oauth/kakao/signout/`, 
+      {},  // 두 번째 인자로 빈 객체를 전송
+      { headers: { 'Authorization': `Bearer ${access_token}` } }  // 세 번째 인자로 headers 전달
+    )
+    .then(response => {
+        console.log(response.data);
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('access_token');
+        navigate('/');
+      })
+    .catch(error => {
+    console.error(error);
+    });
   }
 
   // 사용자 정보 가져오는 api
@@ -188,7 +207,7 @@ const Mypage = (props) => {
           <Line>공지사항</Line>
           <Line>문의</Line>
           <Line onClick={onClickLogout}>로그아웃</Line>
-          <Line>회원탈퇴</Line>
+          <Line onClick={onClickDeleteUser}>회원탈퇴</Line>
         </Service>
       </MypageContainer>
       <Navbar />

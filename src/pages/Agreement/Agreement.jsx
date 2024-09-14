@@ -9,12 +9,6 @@ function Agreement() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = location.state;
-    setToken(token);
-  }, []);
-
-  const [token, setToken] = useState({});
   const [isAllClicked, setIsAllClicked] = useState(false);
   const [isClicked1, setIsClicked1] = useState(false);
   const [isClicked2, setIsClicked2] = useState(false);
@@ -76,17 +70,22 @@ function Agreement() {
     }
   };
 
+  const [token, setToken] = useState({});
+  useEffect(() => {
+    const token = location.state;
+    setToken(token);
+  }, []);
+
   const onClickSignUpBtn = () => {
     // 다 동의했을 경우
     if (isAllClicked === true) {
       axios
         .post('/accounts/api/oauth/kakao/login/', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: token,
         })
         .then((secureResponse) => {
+          localStorage.setItem('user_id', secureResponse.data.content.user.user_id);
+          localStorage.setItem('access_token', secureResponse.data.content.access_token);
           navigate('/key-word');
         })
         .catch((error) => {
