@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react';
 import styled from 'styled-components'
-import axios from 'axios';
+import { ReactComponent as SearchIcon } from '../../../assets/search.svg'
+
 const StyledSearchBar = styled.input`
     width: 100%;
     min-width: calc(var(--mim-width) - 32px);
@@ -16,7 +17,24 @@ const StyledSearchBar = styled.input`
     font-size: 13px;
     box-sizing: border-box;
 `;
+const SearchButton = styled.div`
+  position: absolute;
+  right: 6%;
+  top:7.8%;
+  cursor: pointer;
+  svg{
+    width: 23px;
+    height: 23px;
+  }
+  &:hover {
+    transform: scale(1.05); /* 호버 시 살짝 확대 */
+  }
+  &:active {
+    transform: scale(0.95); /* 클릭 시 살짝 축소 */
+  }
+`
 const SearchBar = ({ onSearch }) => {
+  const [searchValue, setSearchValue] = useState('');
   const user_id = localStorage.getItem('user_id')
 
   const handleKeyDown = (e) => {
@@ -24,9 +42,26 @@ const SearchBar = ({ onSearch }) => {
       onSearch(e.target.value);
     }
   }
+  const handleButtonClick = (e) =>{  
+    onSearch(searchValue)
+  }
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value); // 입력값을 상태로 저장
 
+  };
   return (
-    <StyledSearchBar id='community-search' type="text" placeholder="검색" onKeyDown={handleKeyDown}></StyledSearchBar>
+    <>
+      <StyledSearchBar 
+        id='community-search' 
+        type="text" 
+        placeholder="검색"         
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}>
+      </StyledSearchBar>
+      <SearchButton onClick={handleButtonClick}>
+        <SearchIcon />
+      </SearchButton>
+    </>
   )
 }
 
