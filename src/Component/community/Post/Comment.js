@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg'
+import axios from 'axios';
 
 const CommentContainer = styled.div`
     height: 40px;
@@ -27,7 +28,29 @@ const NoCommets = styled.div`
 `
 
 const Comment = ({comments}) => {
-  return (
+    const [profiles, setProfiles] = useState({});
+
+    useEffect(() => {
+        const fetchProfile = async (userId) => {
+            try{
+                const response = await axios.get(`/mypage/api/${userId}/inquire`);
+                setProfiles((prevProfiles) => ({
+                    ...prevProfiles,
+                    [userId]: response.data.profile_photo,  // 응답 데이터에서 프로필 이미지 URL 추출
+                }));
+            } catch (error) {
+                console.error(`유저 ${userId}의 프로필 이미지를 불러오는 중 오류 발생:`, error);
+            }
+        }
+        comments.forEach((comment) => {
+            // 이미 프로필이 불러와졌는지 확인하고, 없다면 API 요청을 수행
+            if (!profiles[comment.user_id]) {
+                fetchProfile(comment.user_id);
+            }
+        });
+    })
+
+    return (  
     <>
         {comments.length > 0 ? (
             comments.map((comment, index) => (
