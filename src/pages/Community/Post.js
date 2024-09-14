@@ -130,7 +130,22 @@ const Post = () => {
     })
 
   };
-
+  const handleKeyDown = (e) =>{
+    if(e.key == 'Enter'){
+      axios.post('/community/api/commentwrite/', {
+        'post_id': postId,
+        'user_id': userId,
+        'comments': commentText,
+      }).then(response => {
+        console.log('댓글 달기 성공:', response.data);
+        setCommentText('');
+        fetchPost();
+        
+      }).catch(error => {
+        console.error("Error submitting comment: ", error);
+      })
+    }
+  }
   
   return (
     <>
@@ -144,7 +159,8 @@ const Post = () => {
             type="text" 
             placeholder="댓글 입력"
             value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}  
+            onChange={(e) => setCommentText(e.target.value)}
+            onKeyDown={handleKeyDown}
           ></CommentBar>
           <SendButton onClick={handleCommentSubmit}>
             <SendIcon width="24px" height="24px"></SendIcon>

@@ -174,7 +174,7 @@ const Mypage = (props) => {
             {/* <MyPostLarge /> */}
           </MypostArea>          
         </PostList>
-        <Settings id='settings'>
+        {/* <Settings id='settings'>
           <Title id='setting-title'>설정</Title>
           <Line>
             알림 <ToggleSwitch />
@@ -182,7 +182,7 @@ const Mypage = (props) => {
           <Line>
             다크모드 <ToggleSwitch />
           </Line>
-        </Settings>
+        </Settings> */}
         <Service>
           <Title>서비스 관리</Title>
           <Line>공지사항</Line>
