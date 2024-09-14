@@ -4,6 +4,7 @@ import Checkbox  from '../../component/community/AddForm/Checkbox';
 import AddedPhoto from '../../component/community/AddForm/AddedPhoto';
 import Header from '../../component/main/Header'
 import Navbar from '../../component/main/Navbar'
+import { useNavigate  } from 'react-router-dom';
 import {ReactComponent as CameraIcon} from '../../assets/camera_icon.svg'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -88,10 +89,11 @@ const PostBtn = styled.button`
 const ModifyForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
     const [textContent, setTextContent] = useState('');
+    const [tourId, setTourId] = useState(111111);
     const fileInputRef = useRef(null);
     const userId = localStorage.getItem('user_id')
     const {postId} = useParams();
-
+    const navigate = useNavigate();
     useEffect(() => {
         axios.get(`/community/api/postinquire/${userId}/`)
             .then(response => {
@@ -100,6 +102,8 @@ const ModifyForm = () => {
                 if(selectedPost){
                     setTextContent(selectedPost.post_text)
                     setUploadedImage(selectedPost.post_img);
+                    console.log(uploadedImage);
+                    setTourId(selectedPost.tour_id)
                 }
             })
             .catch(error => {
@@ -115,7 +119,7 @@ const ModifyForm = () => {
         }
 
         setUploadedImage((prevImages) => [...prevImages, ...files]);
-
+        console.log(uploadedImage);
         fileInputRef.current.value = '';
     };
 
@@ -144,7 +148,7 @@ const ModifyForm = () => {
         formData.append('likes', 7);
         formData.append('score', 4);
         formData.append('hashtag', '#example');
-        formData.append('tour_id', 1);
+        formData.append('tour_id', tourId);
         formData.append('user_id', userId);
 
         try {
@@ -160,7 +164,7 @@ const ModifyForm = () => {
       
             if (response.status === 200) {
                 alert("게시글이 성공적으로 등록되었습니다.");
-                // navigate('/community/')
+                navigate('/community/')
             }
         } catch (error) {
             console.error('게시글 등록 실패:', error);
