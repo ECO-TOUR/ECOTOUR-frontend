@@ -104,7 +104,7 @@ const LikeHandler = (userId, postId) => {
 }
 
 // Post 컴포넌트 정의
-const Posts = () => {
+const Posts = ({ searchTerm }) => {
     const navigate = useNavigate();
 
     const moveToPost = (postId) =>{
@@ -126,15 +126,33 @@ const Posts = () => {
         window.addEventListener('resize', handleResize);
         
         //게시물 정보 받아오기
-        axios.get(`/community/api/postinquire/${userId}/`
-          , {
-          headers: {
-            'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
-            'Pragma': 'no-cache',
-            'Expires': '0'
-          }
+        if(searchTerm){
+          axios.get(`/community/api/postsearch/1/${searchTerm}/${userId}`
+            , {
+              headers: {
+                'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
+                'Pragma': 'no-cache',
+                'Expires': '0'
+              }
+            }
+          )
+          .then(response =>{
+            setPosts(response.data.content);
+            console.log(response);
+          })
+          .catch(error => {
+            console.error(error);
+          })  
         }
-        )
+        else{
+          axios.get(`/community/api/postinquire/${userId}/`
+            , {
+            headers: {
+              'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
+              'Pragma': 'no-cache',
+              'Expires': '0'
+            }
+          })
           .then(response => {
             setPosts(response.data.content);
             console.log('Fetched data:', response.data.content);
@@ -142,12 +160,13 @@ const Posts = () => {
           .catch(error => {
             console.error('Error fetching data:', error);
           });
-        
+        }
+      
         return () => {
             window.removeEventListener('resize', handleResize);
         };
         
-  }, []); 
+  }, [searchTerm]); 
 
   const toggleLike = (id) => {
     setPosts(prevPosts => 

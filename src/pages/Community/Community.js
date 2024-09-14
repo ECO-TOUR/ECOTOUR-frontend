@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React from 'react';
+import React , { useState , useEffect }from 'react';
 import Header from '../../component/main/Header.js';
 import Navbar from '../../component/main/Navbar.js';
 import Posts from '../../component/community/Main/Posts.js'; 
@@ -30,7 +30,6 @@ const CommunityArea = styled.div`
   width: calc(100% - 32px);
   min-width: calc(var(--mim-width) - 32px);
 `;
-
 
 const PostArea = styled.div`
   min-width: calc(320px - 32px);
@@ -123,15 +122,22 @@ const Community = () => {
     navigate('./addform/')
   }
 
+  const [searchTerm, setSearchTerm] = useState(null);
+  
+  const handleSearch = async (term) => {
+    await setSearchTerm(term); //검색어 업데이트 
+    console.log("🚀 ~ Community ~ updatedSearchTerm:", searchTerm)
+  } 
+
   return (
     <>
       <Header pageName="게시판" />
       <CommunityContainer id='community-container'>
         <CommunityArea id='community-area'>
-          <SearchBar />
+          <SearchBar onSearch={handleSearch}/>
           <PostArea id='post-area'>
-            <PostTitle id='post-title'>전체 게시글</PostTitle>
-            <Posts id='post'/>
+            <PostTitle id='post-title'>{searchTerm?'검색 게시글':'전체 게시글'}</PostTitle>
+            <Posts id='post' searchTerm={searchTerm}/>
           </PostArea>
         </CommunityArea>
       </CommunityContainer>

@@ -16,16 +16,12 @@ const StyledSearchBar = styled.input`
     font-size: 13px;
     box-sizing: border-box;
 `;
-const SearchBar = () => {
+const SearchBar = ({ onSearch }) => {
+  const user_id = localStorage.getItem('user_id')
+
   const handleKeyDown = (e) => {
     if(e.key == 'Enter'){
-      axios.get(`/community/api/postsearch/1/${e.target.value}/`)
-      .then(response =>{
-        console.log(response);
-      })
-      .catch(error => {
-        console.error(error);
-      })
+      onSearch(e.target.value);
     }
   }
 
