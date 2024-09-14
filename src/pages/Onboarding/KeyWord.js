@@ -38,13 +38,12 @@ function KeyWord() {
             alert("키워드를 1개 이상 선택해주세요!");
         }
         else{
-            console.log(access_token);
             axios.post('/accounts/api/preference/', 
                 { preference: selectedKeywords },  // 두 번째 인자는 전송할 데이터
                 { headers: { 'Authorization': `Bearer ${access_token}` } }  // 세 번째 인자는 옵션 (headers 포함)
             )
               .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 navigate("/intro");
               })
               .catch(error => {

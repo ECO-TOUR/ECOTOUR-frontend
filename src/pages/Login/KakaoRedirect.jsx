@@ -21,7 +21,6 @@ function KakaoRedirect() {
   const navigate = useNavigate();
   useEffect(() => {
     const csrfToken = getCookie('csrftoken');
-    console.log(csrfToken);
     axios
       .post(
         'accounts/api/oauth/kakao/usercheck/',

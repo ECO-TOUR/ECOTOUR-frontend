@@ -16,6 +16,7 @@ function Content() {
     const access_token = localStorage.getItem('access_token');
     const closeState = useRecoilValue(StateAtoms); // bottom 열림, 닫힘 상태
     const [contents, setContents] = useState([]);
+    const [originalContents, setOriginalContents] = useState([]); // 원본 데이터를 저장
     const [scoreList, setScoreList] = useState(false); // 별점순 버튼 상태
     const [viewList, setViewList] = useState(false); // 조회순 버튼 상태
 
@@ -23,59 +24,86 @@ function Content() {
     function onClickScoreListBtn(){
         setScoreList(!scoreList);
         setViewList(false);
+
+        if (!scoreList) {
+            const sortedContents = [...contents].sort((a, b) => b.avg_post_score - a.avg_post_score);
+            setContents(sortedContents);
+        } else {
+            // 원래 순서로 돌아가기
+            setContents(originalContents);
+        }
     }
 
     // 조회순 버튼 클릭 시
     function onClickViewListBtn(){
         setViewList(!viewList);
         setScoreList(false);
+
+        if (!viewList) {
+            const sortedContents = [...contents].sort((a, b) => b.tour_viewcnt - a.tour_viewcnt);
+            setContents(sortedContents);
+        } else {
+            // 원래 순서로 돌아가기
+            setContents(originalContents);
+        }
     }
 
     // 좋아요 상태 변수
     const [liked, setLiked] = useState(Array(contents.length).fill(false)); // 각 콘텐츠의 좋아요 상태 관리
 
     // 버튼 클릭 시 호출되는 함수: 특정 콘텐츠의 좋아요 상태를 토글
-    const toggleLike = (index, event) => {
+    const toggleLike = (event, tour_id) => {
         event.stopPropagation(); // 클릭 이벤트 전파 중단
-        setLiked((prevLiked) => {
-            const newLiked = [...prevLiked];
-            newLiked[index] = !newLiked[index];
-            return newLiked;
-        });
+        // eslint-disable-next-line no-restricted-globals
+        const isConfirmed = confirm('좋아요목록에서 삭제하시겠습니까?');
+        if(isConfirmed){
+            const fetchLike = async () => {
+                try {
+                    const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
+                        tour_id: tour_id
+                    });
+                    window.location.reload();
+                } catch (error) {
+                    console.log(error);
+                }
+                };
+            
+            fetchLike(); // 컴포넌트가 마운트될 때 API 호출
+        }
     };
 
-    // 이전 상태를 저장하기 위한 useRef
-    const prevCloseStateRef = useRef();
     useEffect(() => {
-        prevCloseStateRef.current = closeState;
         // 좋아요 목록 조회 API
         const fetchDetail = async () => {
             try {
                 const response = await axios.get(`/tourlike/api/wishlist/${user_id}/Inquire/`);
-                console.log(response.data);
+                //console.log(response.data);
                 setContents(response.data);
+                //console.log(response.data);
+                setOriginalContents(response.data);
             } catch (error) {
                 console.log(error);
             }
           };
       
         fetchDetail(); // 컴포넌트가 마운트될 때 API 호출
-    }, [closeState]);
-
-    // 이전 상태와 현재 상태를 비교하여 변화 감지
-    const wasCloseStateChanged = () => {
-        return prevCloseStateRef.current !== closeState;
-    };
+    }, []);
     
+    // detail클릭 시 페이지 이동
     const navigate = useNavigate();
-    const onClickDetail = (event) => {
-        setTimeout(() => {
-            if (!wasCloseStateChanged()) {
-                navigate('/detail');
-            }
-        }, 300); // 애니메이션 지속 시간과 맞추어야 할 수 있음
+    const onClickDetail = (tour_id) => {
+        navigate(`/detail/${tour_id}`);
     };
-    
+
+    // 지역 길이 파싱
+    const regionParsing = (text) => {
+        const parts = text.split(' ');
+        if (parts.length > 2) {
+            // 두 번째 공백까지의 텍스트를 포함
+            return `${parts[0]} ${parts[1]}`;
+        }
+        return text;
+    };   
 
     return (
         <>
@@ -88,23 +116,23 @@ function Content() {
                 </S.StateBtnComponent>
             </S.SubHeader>
             {contents.length === 0 ? 
-                (<S.None closeState={closeState}>
+                (<S.None>
                     좋아요를 누른 생태관광지가 없습니다.
                     <div style={{fontSize:"13px", marginTop:"7px"}}>마음에 드는 관광지에 좋아요를 눌러보세요.</div>
                 </S.None>):
-                (<S.ContentComponent closeState={closeState}>
+                (<S.ContentComponent>
                     {contents.map((content, index) => (
-                        <S.ContentBox key={index} onClick={onClickDetail} >
-                            <S.Img src={exampleImage}/>
+                        <S.ContentBox key={index} onClick={() => onClickDetail(content.tour_id)} >
+                            <S.Img src={content.tour_img}/>
                             <S.InfoBox>
-                                <S.Name>순천만습지</S.Name>
-                                <S.Region>전라남도 순천시</S.Region>
+                                <S.Name>{content.tour_name}</S.Name>
+                                <S.Region>{regionParsing(content.tour_location)}</S.Region>
                                 <S.ContentWrap>
                                     <S.ScoreBox>
-                                        <S.ScoreIcon/> 9.6 (100)
+                                        <S.ScoreIcon/>{content.avg_post_score}
                                     </S.ScoreBox>
                                     <S.LikeBtn>
-                                        <img src={liked[index] ? FillHeart : EmptyHeart} onClick={(event) => toggleLike(index, event)}/>
+                                        <img src={liked[index] ?  EmptyHeart: FillHeart} onClick={(event) => toggleLike(event, content.tour_id)}/>
                                     </S.LikeBtn>
                                 </S.ContentWrap>
                             </S.InfoBox>

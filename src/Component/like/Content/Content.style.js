@@ -98,6 +98,10 @@ export const InfoBox = styled.div`
 export const Name = styled.div`
     font-size: 17px;
     font-weight: 700;
+    white-space: nowrap;         /* 줄바꿈을 방지합니다 */
+    overflow: hidden;            /* 넘치는 내용 숨기기 */
+    text-overflow: ellipsis;     /* 넘치는 내용을 '...'으로 표시 */
+    max-width: 15ch;             /* 최대 너비를 10자의 폭으로 제한합니다 */
 `;
 
 // 지역
