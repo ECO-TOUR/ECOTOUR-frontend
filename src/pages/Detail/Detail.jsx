@@ -47,7 +47,7 @@ function Detail() {
                 const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
                     tour_id: tour_id
                 });
-                console.log(response.data);
+                //console.log(response.data);
             } catch (error) {
                 console.log(error);
             }

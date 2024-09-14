@@ -17,7 +17,7 @@ function Recommend() {
       console.log(access_token);
       console.log(user_id);
         try {
-            const response = await axios.get(`api/recommend/${user_id}/`,{
+            const response = await axios.get(`mainpage/api/recommend/${user_id}/`,{
               headers: {
                 'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
               }
