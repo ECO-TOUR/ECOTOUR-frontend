@@ -32,22 +32,29 @@ function Content() {
     }
 
     // 좋아요 상태 변수
-    const [liked, setLiked] = useState(Array(contents.length).fill(true)); // 각 콘텐츠의 좋아요 상태 관리
+    const [liked, setLiked] = useState(Array(contents.length).fill(false)); // 각 콘텐츠의 좋아요 상태 관리
 
     // 버튼 클릭 시 호출되는 함수: 특정 콘텐츠의 좋아요 상태를 토글
-    const toggleLike = (index, event) => {
+    const toggleLike = (event, tour_id) => {
         event.stopPropagation(); // 클릭 이벤트 전파 중단
-        setLiked((prevLiked) => {
-            const newLiked = [...prevLiked];
-            newLiked[index] = !newLiked[index];
-            return newLiked;
-        });
+        alert("좋아요 목록에서 제외됩니다.");
+        console.log(tour_id);
+        const fetchLike = async () => {
+            try {
+                const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
+                    tour_id: tour_id
+                });
+                window.location.reload();
+                console.log(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+            };
+        
+        fetchLike(); // 컴포넌트가 마운트될 때 API 호출
     };
 
-    // 이전 상태를 저장하기 위한 useRef
-    const prevCloseStateRef = useRef();
     useEffect(() => {
-        prevCloseStateRef.current = closeState;
         // 좋아요 목록 조회 API
         const fetchDetail = async () => {
             try {
@@ -60,13 +67,9 @@ function Content() {
           };
       
         fetchDetail(); // 컴포넌트가 마운트될 때 API 호출
-    }, [closeState]);
-
-    // 이전 상태와 현재 상태를 비교하여 변화 감지
-    const wasCloseStateChanged = () => {
-        return prevCloseStateRef.current !== closeState;
-    };
+    }, []);
     
+    // detail클릭 시 페이지 이동
     const navigate = useNavigate();
     const onClickDetail = (tour_id) => {
         navigate(`/detail/${tour_id}`);
@@ -93,11 +96,11 @@ function Content() {
                 </S.StateBtnComponent>
             </S.SubHeader>
             {contents.length === 0 ? 
-                (<S.None closeState={closeState}>
+                (<S.None>
                     좋아요를 누른 생태관광지가 없습니다.
                     <div style={{fontSize:"13px", marginTop:"7px"}}>마음에 드는 관광지에 좋아요를 눌러보세요.</div>
                 </S.None>):
-                (<S.ContentComponent closeState={closeState}>
+                (<S.ContentComponent>
                     {contents.map((content, index) => (
                         <S.ContentBox key={index} onClick={() => onClickDetail(content.tour_id)} >
                             <S.Img src={content.tour_img}/>
@@ -109,7 +112,7 @@ function Content() {
                                         <S.ScoreIcon/>{content.avg_post_score}
                                     </S.ScoreBox>
                                     <S.LikeBtn>
-                                        <img src={liked[index] ? FillHeart : EmptyHeart} onClick={(event) => toggleLike(index, event)}/>
+                                        <img src={liked[index] ?  EmptyHeart: FillHeart} onClick={(event) => toggleLike(event, content.tour_id)}/>
                                     </S.LikeBtn>
                                 </S.ContentWrap>
                             </S.InfoBox>

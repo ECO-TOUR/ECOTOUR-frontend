@@ -37,9 +37,8 @@ function Detail() {
 
     // 좋아요 상태 변수
     const [liked, setLiked] = useState(false);
-    // 버튼 클릭 시 호출되는 함수: 상태를 토글
+    // 좋아요 버튼 클릭 시 호출되는 함수: 상태를 토글
     const toggleLike = () => {
-
         setLiked(!liked);
 
         const fetchLike = async () => {
