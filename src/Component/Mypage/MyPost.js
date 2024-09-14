@@ -61,14 +61,14 @@ const ScoreText = styled.div`
 
 function Recommend() {
     const [posts, setPosts] = useState([]);
-    const userId = 5;
+    const userId = localStorage.getItem('user_id')
 
     useEffect(() => {
         const getPost = () =>{
             axios.get(`/community/api/mypost/${userId}/`)
             .then(response => {
                 console.log(response.data);
-                // setPosts(response.data.content); 
+                setPosts(response.data.content); 
               })
             .catch(error => {
             console.error('Error fetching data:', error);
@@ -82,22 +82,24 @@ function Recommend() {
     const navigate = useNavigate();
 
     const onClickBox = (id) => {
-        navigate(`/detail/${id}`);
+        navigate(`/community/post/${id}`);
     };
     
     return (
         <Component id='component'>
-            {/* {contents.map((content) => (
-                <ContentBox key={content.id} onClick={() => onClickBox(content.id)}>
-                    <ContentImage src={exampleImage} />
-                    <ContentName>{content.name}</ContentName>
-                    <ContentRegion>{content.region}</ContentRegion>
-                    <ScoreContainer>
-                        <ScoreIcon />
-                        <ScoreText>{content.score} ({content.reviews})</ScoreText>
-                    </ScoreContainer>
-                </ContentBox>
-            ))} */}
+            {posts.length > 0 ?(
+                posts.map((content) => (
+                    <ContentBox key={content.post_id} onClick={() => onClickBox(content.post_id)}>
+                        <ContentImage src={content.post_img[0]} />
+                        <ContentName>{content.post_text}</ContentName>
+                        <ContentRegion>{content.region}</ContentRegion>
+                        <ScoreContainer>
+                            <ScoreIcon />
+                            <ScoreText>{content.post_score} ({content.reviews})</ScoreText>
+                        </ScoreContainer>
+                    </ContentBox>
+                ))
+            ):(<div>아직 게시글이 없습니다.</div>)}
         </Component>
     );
 }
