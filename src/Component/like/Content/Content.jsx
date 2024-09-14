@@ -54,19 +54,22 @@ function Content() {
     // 버튼 클릭 시 호출되는 함수: 특정 콘텐츠의 좋아요 상태를 토글
     const toggleLike = (event, tour_id) => {
         event.stopPropagation(); // 클릭 이벤트 전파 중단
-        alert("좋아요 목록에서 제외됩니다.");
-        const fetchLike = async () => {
-            try {
-                const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
-                    tour_id: tour_id
-                });
-                window.location.reload();
-            } catch (error) {
-                console.log(error);
-            }
-            };
-        
-        fetchLike(); // 컴포넌트가 마운트될 때 API 호출
+        // eslint-disable-next-line no-restricted-globals
+        const isConfirmed = confirm('좋아요목록에서 삭제하시겠습니까?');
+        if(isConfirmed){
+            const fetchLike = async () => {
+                try {
+                    const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
+                        tour_id: tour_id
+                    });
+                    window.location.reload();
+                } catch (error) {
+                    console.log(error);
+                }
+                };
+            
+            fetchLike(); // 컴포넌트가 마운트될 때 API 호출
+        }
     };
 
     useEffect(() => {
