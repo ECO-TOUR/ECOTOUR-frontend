@@ -201,7 +201,7 @@ const Mypage = (props) => {
 
   return (
     <div>
-      <Header pageName = "마이페이지"/>
+      <Header pageName="마이페이지"/>
       <MypageContainer id="mypage_container">
         <NameTag id='nametag-area'>
           <ProfileIcon src={userProfile}/>
