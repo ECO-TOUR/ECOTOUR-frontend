@@ -14,6 +14,8 @@ function Recommend() {
   // API 연결
   useEffect(() => {
     const fetchData = async () => {
+      console.log(access_token);
+      console.log(user_id);
         try {
             const response = await axios.get(`api/recommend/${user_id}/`,{
               headers: {
