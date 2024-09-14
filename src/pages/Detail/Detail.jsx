@@ -68,6 +68,10 @@ function Detail() {
               setImage(tour_img); // 관광지 이미지
               setDetail(response.data.place_detail);
               //console.log(response.data);
+
+              if(response.data.place_detail.tourspot_liked === "liked"){
+                setLiked(true);
+              }
             } catch (error) {
               console.log(error);
             }
