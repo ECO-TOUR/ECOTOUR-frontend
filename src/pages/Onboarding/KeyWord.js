@@ -11,6 +11,8 @@ function KeyWord() {
     // 선택된 키워드들을 저장하는 state
     const [selectedKeywords, setSelectedKeywords] = useState([]);
 
+    const access_token = localStorage.getItem('access_token');
+
     // 키워드 배열 정의
     const keywords = ['섬', '천연기념물', '생태교육', '산', '국립공원', '과학관', '박물관', '바다'];
 
@@ -36,10 +38,11 @@ function KeyWord() {
             alert("키워드를 1개 이상 선택해주세요!");
         }
         else{
-            console.log(selectedKeywords);
-            axios.post('/accounts/api/preference/', {
-                keywords: selectedKeywords // 선택된 키워드 배열을 전송
-              })
+            console.log(access_token);
+            axios.post('/accounts/api/preference/', 
+                { preference: selectedKeywords },  // 두 번째 인자는 전송할 데이터
+                { headers: { 'Authorization': `Bearer ${access_token}` } }  // 세 번째 인자는 옵션 (headers 포함)
+            )
               .then(response => {
                 console.log(response.data);
                 navigate("/intro");
