@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import exampleImage from '../../assets/example1.png'; // 이미지 파일을 import
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import LikeIcon from '../../assets/heart.svg'
+import CommentIcon from '../../assets/comment.svg'
 
 const Component = styled.div`
     padding-top: 10px;
@@ -44,14 +45,7 @@ const ScoreContainer = styled.div`
     justify-content: flex-end;
     align-items: center;
     gap: 5px;
-    margin-left: 108px;
-`;
-
-const ScoreIcon = styled.div`
-    width: 7px;
-    height: 7px;
-    background-color: #91EB86;
-    border-radius: 30px;
+    width:calc(100% - 9px);
 `;
 
 const ScoreText = styled.div`
@@ -61,43 +55,71 @@ const ScoreText = styled.div`
 
 function Recommend() {
     const [posts, setPosts] = useState([]);
-    const userId = 5;
+    const userId = localStorage.getItem('user_id')
+    const [placeNames, setPlaceNames ]= useState([]);
 
     useEffect(() => {
-        const getPost = () =>{
-            axios.get(`/community/api/mypost/${userId}/`)
-            .then(response => {
-                console.log(response.data);
-                // setPosts(response.data.content); 
-              })
-            .catch(error => {
-            console.error('Error fetching data:', error);
-            });
-        };
-        
-        getPost();
-    }, []);
+        const getPost = async () => {
+            try {
+                const response = await axios.get(`/community/api/mypost/${userId}/`);
+                console.log('API Response:', response.data);
     
+                if (response.data && response.data.content) {
+                    setPosts(response.data.content); // 먼저 posts 상태를 업데이트합니다.
+                } else {
+                    console.error('Error: "content" field is missing in the response.');
+                }
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+            }
+        };
+    
+        getPost();
+
+    }, [userId]);
+
+    useEffect(() => {
+        const getPlaceNames = async () => {
+            const placeNamesArray = await Promise.all(posts.map(async (data) => {
+                try {
+                    const placeResponse = await axios.get(`/place/detail/${data.tour_id}/${userId}/`);
+                    return placeResponse.data.place_detail.tour_name;
+                } catch (error) {
+                    console.error('Error fetching place name:', error);
+                    return 'Unknown place'; // 기본 장소 이름
+                }
+            }));
+            setPlaceNames(placeNamesArray); // placeName 상태 업데이트
+        };
+    
+        if (posts.length > 0) {
+            getPlaceNames(); // posts가 있을 때만 placeName을 가져옵니다.
+        }
+    }, [posts, userId]);
 
     const navigate = useNavigate();
 
     const onClickBox = (id) => {
-        navigate(`/detail/${id}`);
+        navigate(`/community/post/${id}`);
     };
     
     return (
         <Component id='component'>
-            {/* {contents.map((content) => (
-                <ContentBox key={content.id} onClick={() => onClickBox(content.id)}>
-                    <ContentImage src={exampleImage} />
-                    <ContentName>{content.name}</ContentName>
-                    <ContentRegion>{content.region}</ContentRegion>
-                    <ScoreContainer>
-                        <ScoreIcon />
-                        <ScoreText>{content.score} ({content.reviews})</ScoreText>
-                    </ScoreContainer>
-                </ContentBox>
-            ))} */}
+            {posts.length > 0 ?(
+                posts.map((content, index) => (
+                    <ContentBox key={content.post_id} onClick={() => onClickBox(content.post_id)}>
+                        <ContentImage src={content.post_img[0]} />
+                        <ContentName>{content.post_text}</ContentName>
+                        <ContentRegion>{placeNames[index]}</ContentRegion>
+                        <ScoreContainer>
+                            <img src={LikeIcon} alt="like" width="12px" height="12px" color='red'/>
+                            <ScoreText>{content.post_likes}</ScoreText>
+                            <img src={CommentIcon} alt="like" width="12px" height="12px" color='red'/>
+                            <ScoreText>{content.comm_cnt}</ScoreText>
+                        </ScoreContainer>
+                    </ContentBox>
+                ))
+            ):(<div>아직 게시글이 없습니다.</div>)}
         </Component>
     );
 }
