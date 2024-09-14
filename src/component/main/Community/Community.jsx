@@ -14,7 +14,7 @@ function Community() {
         const fetchData = async () => {
             try {
                 const response = await axios.get('/community/api/postbest');
-                console.log(response.data.content);
+                //console.log(response.data.content);
                 setContents(response.data.content);
             } catch (error) {
                 console.error('Error fetching data:', error);

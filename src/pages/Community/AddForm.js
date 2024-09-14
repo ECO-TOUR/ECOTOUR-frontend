@@ -94,10 +94,13 @@ const AddForm = () => {
     const userId = localStorage.getItem('user_id');
     const navigate = useNavigate();
 
+    // 파일 선택 핸들러
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
-        if (uploadedImage.length + files.length > 5){
-            alert("최대 5장의 사진만 업로드 할 수 있습니다.")
+        
+        // 최대 5장까지 업로드 제한
+        if (uploadedImage.length + files.length > 5) {
+            alert("최대 5장의 사진만 업로드 할 수 있습니다.");
             return;
         }
         const imageUrls = files.map((file) => URL.createObjectURL(file));
