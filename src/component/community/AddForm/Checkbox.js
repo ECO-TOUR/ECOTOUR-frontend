@@ -144,7 +144,7 @@ const PopupContent = styled.div`
 
 const ResultArea = styled.div`
   width: 100%;
-  height: 240px;
+  height: calc(100% - 70px);
   overflow-y: scroll;
 `;
 const ButtonArea = styled.div`
