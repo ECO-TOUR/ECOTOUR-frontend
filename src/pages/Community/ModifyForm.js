@@ -161,9 +161,9 @@ const ModifyForm = () => {
         formData.append('user_id', userId);
 
         // 폼 데이터 확인을 위한 로그
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
+        // for (let pair of formData.entries()) {
+        //     console.log(pair[0] + ': ' + pair[1]);
+        // }
         
         try {
             uploadedImage.forEach((file) => {

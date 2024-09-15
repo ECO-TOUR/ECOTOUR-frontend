@@ -53,7 +53,7 @@ const ScoreText = styled.div`
     font-size: 11px;
 `;
 
-function Recommend() {
+function MyPost() {
     const [posts, setPosts] = useState([]);
     const userId = localStorage.getItem('user_id')
     const [placeNames, setPlaceNames ]= useState([]);
@@ -124,4 +124,4 @@ function Recommend() {
     );
 }
 
-export default Recommend;
+export default MyPost;

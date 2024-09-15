@@ -62,13 +62,14 @@ const Title = styled.div`
 `;
 
 // 더보기
-const StyledLink = styled.a`
+const StyledLink = styled.div`
   color: #333;
   text-decoration: none;
   height: 100%;
   font-size: 14px;
   font-weight: 400;
   padding: 0px 30px;
+  cursor: pointer;
 `;
 const Settings = styled.div`
   height: 120px;
@@ -215,11 +216,10 @@ const Mypage = (props) => {
         <PostList id='post-area'>
           <PostTitle id='post-title'>
             <Title>내가 쓴 글</Title>
-            <StyledLink href="#">더보기</StyledLink>
+            <StyledLink onClick={() => navigate('./../myposts')}>더보기</StyledLink>
           </PostTitle>
           <MypostArea>
             <MyPost />
-            {/* <MyPostLarge /> */}
           </MypostArea>          
         </PostList>
         {/* <Settings id='settings'>
