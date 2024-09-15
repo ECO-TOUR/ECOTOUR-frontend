@@ -6,6 +6,7 @@ import Switch from 'react-switch';
 import Header from '../../component/main/Header';
 import Navbar from '../../component/main/Navbar';
 import MyPost from '../../component/Mypage/MyPost';
+import Notice from './Notice/Notice';
 
 const NameTag = styled.div`
   display: flex;
@@ -112,6 +113,7 @@ const ToggleSwitch = () => {
     </div>
   );
 };
+
 const MypageContainer = styled.div`
   padding-top: 60px;
   padding-bottom: 70px;
@@ -128,11 +130,72 @@ const MypageContainer = styled.div`
   min-width: 320px;
 `
 
+// 팝업 스타일
+const PopupContainer = styled.div`
+  display: ${(props) => (props.show ? 'flex' : 'none')};
+  z-index: 1001;
+  position: fixed;  /* 화면에 고정 */
+  top: 50%;         /* 화면 상단에서 50% */
+  left: 50%;        /* 화면 왼쪽에서 50% */
+  transform: translate(-50%, -50%);  /* 팝업을 정확히 중앙으로 */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+`;
+
+//팝업 스타일
+const PopupContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 70%;
+  height: 15%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+`;
+const NotificationText = styled.div`
+  width: 100%;
+  height: calc(100% - 30px);
+  align-content: center;
+  text-align: center;
+`;
+const ButtonArea = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const CloseButton = styled.button`
+  background-color: #f44336;
+  color: white;
+  margin: 5px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
+`;
+const ConfirmButton = styled.button`
+  background-color: #4caf50;
+  color: white;
+  margin: 5px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+
 const Mypage = (props) => {
 
   const navigate = useNavigate();
   const user_id = localStorage.getItem('user_id');
   const access_token = localStorage.getItem('access_token');
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업 상태
+  const [popupType, setPopupType] = useState(''); // 팝업의 타입 ('logout' or 'deleteUser')
 
   // 공지사항 클릭 시
   function onClickNotice(){
@@ -144,40 +207,74 @@ const Mypage = (props) => {
   }
 
   // 로그아웃 클릭 시
-  function onClickLogout(){
-    // eslint-disable-next-line no-restricted-globals
-    const isConfirmed = confirm('정말 로그아웃 하시겠습니까?');
+  // function onClickLogout(){
+  //   // eslint-disable-next-line no-restricted-globals
+  //   const isConfirmed = confirm('정말 로그아웃 하시겠습니까?');
     
-    if (isConfirmed) {
-        localStorage.removeItem('user_id');
-        localStorage.removeItem('access_token');
+  //   if (isConfirmed) {
+  //       localStorage.removeItem('user_id');
+  //       localStorage.removeItem('access_token');
 
-        window.location.href = '/';  // 'navigate' 대신 'window.location.href'로 변경 가능
-    }
-  }
+  //       window.location.href = '/';  // 'navigate' 대신 'window.location.href'로 변경 가능
+  //   }
+  // }
+
+  // 로그아웃 실행 함수
+  const handleLogout = () => {
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('access_token');
+    navigate('/');
+  };
 
   // 회원탈퇴 클릭 시
-  function onClickDeleteUser(){
-    // eslint-disable-next-line no-restricted-globals
-    const isConfirmed = confirm('정말 회원탈퇴를 하시겠습니까?');
+  // function onClickDeleteUser(){
+  //   // eslint-disable-next-line no-restricted-globals
+  //   const isConfirmed = confirm('정말 회원탈퇴를 하시겠습니까?');
 
-    if (isConfirmed) {
-        axios.post(`/accounts/api/oauth/kakao/signout/`, 
-          {},  // 두 번째 인자로 빈 객체를 전송
-          { headers: { 'Authorization': `Bearer ${access_token}` } }  // 세 번째 인자로 headers 전달
-        )
-        .then(response => {
-            //console.log(response.data);
-            localStorage.removeItem('user_id');
-            localStorage.removeItem('access_token');
-            navigate('/');
-          })
-        .catch(error => {
+  //   if (isConfirmed) {
+  //       axios.post(`/accounts/api/oauth/kakao/signout/`, 
+  //         {},  // 두 번째 인자로 빈 객체를 전송
+  //         { headers: { 'Authorization': `Bearer ${access_token}` } }  // 세 번째 인자로 headers 전달
+  //       )
+  //       .then(response => {
+  //           //console.log(response.data);
+  //           localStorage.removeItem('user_id');
+  //           localStorage.removeItem('access_token');
+  //           navigate('/');
+  //         })
+  //       .catch(error => {
+  //       console.error(error);
+  //       });
+  //   }
+  // }
+
+  // 회원탈퇴 실행 함수
+  const handleDeleteUser = () => {
+    axios
+      .post(`/accounts/api/oauth/kakao/signout/`, 
+        {},// 두 번째 인자로 빈 객체를 전송
+        { headers: { Authorization: `Bearer ${access_token}` } }// 세 번째 인자로 headers 전달
+      )
+      .then((response) => {
+        //console.log(response.data);
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('access_token');
+        navigate('/');
+      })
+      .catch((error) => {
         console.error(error);
-        });
-    }
-    
-  }
+      });
+  };
+
+
+  const handleOpenPopup = (type) => {
+    setPopupType(type);
+    setIsPopupOpen(true); // 팝업 열기
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false); // 팝업 닫기
+  };
 
   // 사용자 정보 가져오는 api
   const [userName, setUserName] = useState();
@@ -235,11 +332,28 @@ const Mypage = (props) => {
           <Title>서비스 관리</Title>
           <Line onClick={onClickNotice}>공지사항</Line>
           <Line onClick={onClickQna}>문의</Line>
-          <Line onClick={onClickLogout}>로그아웃</Line>
-          <Line onClick={onClickDeleteUser}>회원탈퇴</Line>
+          <Line onClick={() => handleOpenPopup('logout')}>로그아웃</Line>
+          <Line onClick={() => handleOpenPopup('deleteUser')}>회원탈퇴</Line>
         </Service>
       </MypageContainer>
       <Navbar />
+
+      {/* 팝업창 */}
+      <PopupContainer id='popup-area' show={isPopupOpen} >
+        <PopupContent>
+          <NotificationText>{popupType === 'logout'
+              ? '정말 로그아웃 하시겠습니까?'
+              : '정말 회원탈퇴를 하시겠습니까?'}</NotificationText>
+          <ButtonArea>
+            <ConfirmButton
+              onClick={popupType === 'logout' ? handleLogout : handleDeleteUser}
+            >
+              확인
+            </ConfirmButton>
+            <CloseButton onClick={() => handleClosePopup()}>취소</CloseButton>
+          </ButtonArea>
+        </PopupContent>
+      </PopupContainer>
     </div>
   );
 };
