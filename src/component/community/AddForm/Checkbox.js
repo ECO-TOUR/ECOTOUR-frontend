@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';  // 검색 API 요청에 사용할 라이브러리
 import SearchBar from './PlaceSearchBar';
+import PlaceBox from './PlaceBox';
 
+//체크박스 스타일
 const CheckboxInput = styled.input`
   position: absolute;
   visibility: hidden;
@@ -18,7 +20,7 @@ const CheckboxLabel = styled.label`
   transition: all 0.2s ease;
   display: inline-block;
   height: 37px;
-
+  
   span {
     float: left;
     vertical-align: middle;
@@ -41,12 +43,12 @@ const CheckboxLabel = styled.label`
     top: 6px;
     left: 5px;
     fill: none;
-    stroke: #fff;
+    stroke: ${(props) => (props.selectedPlace ? '#fff' : 'transparent')};
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 16px;
-    stroke-dashoffset: 16px;
+    stroke-dashoffset: ${(props) => (props.selectedPlace ? '0' : '16px')};
     transition: all 0.3s ease;
     transition-delay: 0.1s;
     transform: translate3d(0, 0, 0);
@@ -102,10 +104,10 @@ const CheckboxWrapperStyled = styled.div`
     border-color: #91EB86;
   }
 
-  ${CheckboxInput}:checked + ${CheckboxLabel} span:first-child {
-    background: #91EB86;
-    border-color: #91EB86;
-    animation: wave-4 0.4s ease;
+  ${CheckboxLabel} span:first-child {
+    background: ${(props) => (props.selectedPlace ? '#91EB86' : 'transparent')};
+    border-color: ${(props) => (props.selectedPlace ? '#91EB86' : '#cccfdb')};
+    animation: ${(props) => (props.selectedPlace ? 'wave-4 0.4s ease' : 'none')};
   }
 
   ${CheckboxInput}:checked + ${CheckboxLabel} span:first-child ${CheckboxSvg} {
@@ -118,10 +120,11 @@ const CheckboxWrapperStyled = styled.div`
 // 팝업 스타일
 const PopupContainer = styled.div`
   display: ${(props) => (props.show ? 'flex' : 'none')};
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
+  z-index: 1001;
+  position: fixed;  /* 화면에 고정 */
+  top: 50%;         /* 화면 상단에서 50% */
+  left: 50%;        /* 화면 왼쪽에서 50% */
+  transform: translate(-50%, -50%);  /* 팝업을 정확히 중앙으로 */
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -139,9 +142,22 @@ const PopupContent = styled.div`
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 `;
 
+const ResultArea = styled.div`
+  width: 100%;
+  height: 240px;
+  overflow-y: scroll;
+`;
+const ButtonArea = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const CloseButton = styled.button`
   background-color: #f44336;
   color: white;
+  margin: 5px;
   padding: 8px 16px;
   border: none;
   border-radius: 5px;
@@ -149,65 +165,70 @@ const CloseButton = styled.button`
   float: right;
 `;
 
-const SearchInput = styled.input`
-  width: 100%;
-  height: 20px;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-`;
-
-const SearchButton = styled.button`
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
-`;
-
-const Checkbox = () => {
+const Checkbox = ({ onChange }) => {
   const [isChecked, setIsChecked] = useState(false);  // 체크박스 상태 관리
-  const [searchTerm, setSearchTerm] = useState('');   // 검색어 상태 관리
+  const [searchTerm, setSearchTerm] = useState(null);   // 검색어 상태 관리
   const [searchResult, setSearchResult] = useState([]); // 검색 결과 상태
+  const [isSearchComplete, setIsSearchComplete] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState(null);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked); // 체크박스 클릭 시 팝업 열기/닫기
   };
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(`https://api.example.com/search?q=${searchTerm}`);
-      setSearchResult(response.data);  // 검색 결과를 상태로 저장
-    } catch (error) {
-      console.error("검색 중 오류 발생:", error);
+  const handleSearch = async (value) => {
+    setSearchTerm(value); //검색어 업데이트 
+    setIsSearchComplete(false); 
+  };
+
+  const handleClose = () => {
+    setIsChecked(false); // 팝업 닫기
+  };
+
+  const handleSelectPlace = (place) => {
+    if(place!=null){
+      setSelectedPlace(place.tour_name); // 선택한 장소 정보 업데이트
+      onChange(place.tour_id);
+    }
+    else{
+      setSelectedPlace(null);
+      onChange(null);
     }
   };
 
-  const handleSearchInputChange = (e) => {
-    setSearchTerm(e.target.value); // 검색어 입력 상태 업데이트
-  };
+  useEffect(() => {
+    if (searchTerm) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`/place?search=${searchTerm}`);
+          setSearchResult(response.data);  // 검색 결과를 상태로 저장
+          setIsSearchComplete(true);
+          console.log('search result:', response.data);
+        } catch (error) {
+          console.error('검색 중 오류 발생:', error);
+        }
+      };
+      fetchData();
+    }
+  }, [searchTerm]);
+  
 
   return (
     <>
-      <CheckboxWrapperStyled>
+      <CheckboxWrapperStyled selectedPlace={selectedPlace !== null}>
         <CheckboxInput
           className="inp-cbx"
           id="morning"
           type="checkbox"
           onChange={handleCheckboxChange}
-          // checked={isChecked}
         />
-        <CheckboxLabel className="cbx" htmlFor="morning">
+        <CheckboxLabel className="cbx" htmlFor="morning" selectedPlace={selectedPlace !== null}>
           <span>
             <CheckboxSvg width="12px" height="10px">
               <use xlinkHref="#check-4" />
             </CheckboxSvg>
           </span>
-          <span height='18px'>내 위치 공유하기</span>
+          <span height='18px'>{selectedPlace || '장소 선택하기'}</span>
         </CheckboxLabel>
         <InlineSvg className="inline-svg">
           <symbol id="check-4" viewBox="0 0 12 10">
@@ -217,23 +238,15 @@ const Checkbox = () => {
       </CheckboxWrapperStyled>
 
       {/* 팝업 창 */}
-      <PopupContainer show={isChecked}>
+      <PopupContainer id='popup-area' show={isChecked} >
         <PopupContent>
-          <CloseButton onClick={() => setIsChecked(false)}>닫기</CloseButton>
-          <SearchBar/>
-
-          {/* 검색 결과 표시 */}
-          <div>
-            {searchResult.length > 0 ? (
-              <ul>
-                {searchResult.map((result, index) => (
-                  <li key={index}>{result.name}</li>
-                ))}
-              </ul>
-            ) : (
-              <div>검색 결과가 없습니다.</div>
-            )}
-          </div>
+          <SearchBar onSearch={handleSearch} searchTerm={searchTerm}/>
+          <ResultArea id='search-area'>
+            {isSearchComplete && <PlaceBox contents={searchResult} onSelectPlace={handleSelectPlace} />}
+          </ResultArea>
+          <ButtonArea>
+            <CloseButton onClick={() => handleClose()}>닫기</CloseButton>
+          </ButtonArea>
         </PopupContent>
       </PopupContainer>
     </>

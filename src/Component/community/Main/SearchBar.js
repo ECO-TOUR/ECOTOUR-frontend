@@ -19,7 +19,7 @@ const StyledSearchBar = styled.input`
 `;
 const SearchButton = styled.div`
   position: relative;
-  right: 10%;
+  right: 30px;
   height: 20px;
   width: 0px;
   cursor: pointer;

@@ -19,7 +19,7 @@ const StyledSearchBar = styled.input`
 `;
 const SearchButton = styled.div`
   position: relative;
-  right: 10%;
+  right: 30px;
   height: 20px;
   width: 0px;
   cursor: pointer;
@@ -41,19 +41,17 @@ const SearchBarArea = styled.div`
 
 const PlaceSearchBar = ({ onSearch }) => {
   const [searchValue, setSearchValue] = useState('');
-  const user_id = localStorage.getItem('user_id')
 
   const handleKeyDown = (e) => {
-    if(e.key == 'Enter'){
+    if(e.key === 'Enter'){
       onSearch(e.target.value);
     }
   }
-  const handleButtonClick = (e) =>{  
+  const handleButtonClick = () =>{  
     onSearch(searchValue)
   }
   const handleInputChange = (e) => {
-    setSearchValue(e.target.value); // 입력값을 상태로 저장
-
+    setSearchValue(e.target.value);
   };
   return (
     <>
