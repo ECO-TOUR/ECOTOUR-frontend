@@ -135,6 +135,10 @@ const AddForm = () => {
             alert("내용 또는 사진을 추가해 주세요");
             return;
         }
+        if (tourId === null){
+            alert('관광지를 선택해 주세요');
+            return;
+        }
         const formData = new FormData();
     
         formData.append('text', textContent);
@@ -144,17 +148,20 @@ const AddForm = () => {
         formData.append('tour_id', tourId);
         formData.append('user_id', userId);
         
+                    
+
+
         try {
             uploadedImage.forEach((file) => {
               formData.append('img', file); // 'img' must match what you're using in your Django view
             });
-      
+
             const response = await axios.post('/community/api/postwrite/', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
             });
-      
+            
             if (response.status === 200) {
                 alert("게시글이 성공적으로 등록되었습니다.");
                 navigate('/community/')
@@ -168,7 +175,7 @@ const AddForm = () => {
 
     return (
     <>
-        <Header pageName={'게시글 작성'}/>
+        <Header pageName='게시글 작성'/>
         <AddFormArea id='add-form-area'>
             <TextArea 
                 id='text-area' 
@@ -178,7 +185,7 @@ const AddForm = () => {
                 onChange={(e) => setTextContent(e.target.value)}
             ></TextArea>
             <LocArea id='loc-check-area'>
-                <Checkbox onChange={handleSearch}></Checkbox>
+                <Checkbox onChange={handleSearch} initalValue={null}></Checkbox>
             </LocArea>
             <AddPhotoArea id='add-photo-area'>
                 <AddPhotoBtn onClick={handleButtonClick}>

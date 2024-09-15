@@ -89,11 +89,14 @@ const PostBtn = styled.button`
 const ModifyForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
     const [textContent, setTextContent] = useState('');
-    const [tourId, setTourId] = useState(111111);
+    const [tourId, setTourId] = useState(null);
+    const [likes, setLikes] = useState(0);
     const fileInputRef = useRef(null);
+    const [isTourIdLoaded, setIsTourIdLoaded] = useState(false);
     const userId = localStorage.getItem('user_id')
     const {postId} = useParams();
     const navigate = useNavigate();
+
     useEffect(() => {
         axios.get(`/community/api/postinquire/${userId}/`)
             .then(response => {
@@ -103,7 +106,9 @@ const ModifyForm = () => {
                     setTextContent(selectedPost.post_text)
                     setUploadedImage(selectedPost.post_img);
                     console.log(uploadedImage);
-                    setTourId(selectedPost.tour_id)
+                    setTourId(selectedPost.tour_id);
+                    setLikes(selectedPost.post_likes);
+                    setIsTourIdLoaded(true);
                 }
             })
             .catch(error => {
@@ -119,7 +124,6 @@ const ModifyForm = () => {
         }
 
         setUploadedImage((prevImages) => [...prevImages, ...files]);
-        console.log(uploadedImage);
         fileInputRef.current.value = '';
     };
 
@@ -136,6 +140,11 @@ const ModifyForm = () => {
         setUploadedImage(newImages);
     };
 
+    const handleSearch = (value) => {
+        setTourId(value);
+        console.log('tour id changed:', value);
+    }
+
     const handlePost = async () => {
         if (uploadedImage.length === 0 || textContent.trim() === '') {
             alert("내용 또는 사진을 추가해 주세요");
@@ -145,12 +154,17 @@ const ModifyForm = () => {
         const formData = new FormData();
         formData.append('post_id', postId);
         formData.append('text', textContent);
-        formData.append('likes', 7);
+        formData.append('likes', likes);
         formData.append('score', 4);
         formData.append('hashtag', '#example');
         formData.append('tour_id', tourId);
         formData.append('user_id', userId);
 
+        // 폼 데이터 확인을 위한 로그
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+        
         try {
             uploadedImage.forEach((file) => {
               formData.append('img', file); // 'img' must match what you're using in your Django view
@@ -163,7 +177,7 @@ const ModifyForm = () => {
             });
       
             if (response.status === 200) {
-                alert("게시글이 성공적으로 등록되었습니다.");
+                alert("게시글이 성공적으로 수정되었습니다.");
                 navigate('/community/')
             }
         } catch (error) {
@@ -172,10 +186,13 @@ const ModifyForm = () => {
         }
     };
 
+    if (!isTourIdLoaded) {
+        return <div>Loading...</div>;  // tourId가 로드될 때까지 로딩 메시지 표시
+    }
 
     return (
     <>
-        <Header pageName='게시글'/>
+        <Header pageName='게시글 수정'/>
         <AddFormArea id='add-form-area'>
             <TextArea 
                 id='text-area' 
@@ -185,7 +202,7 @@ const ModifyForm = () => {
                 onChange={(e) => setTextContent(e.target.value)}
             ></TextArea>
             <LocArea id='loc-check-area'>
-                <Checkbox></Checkbox>
+                <Checkbox onChange={handleSearch} initalValue={tourId}></Checkbox>
             </LocArea>
             <AddPhotoArea id='add-photo-area'>
                 <AddPhotoBtn onClick={handleButtonClick}>

@@ -165,12 +165,13 @@ const CloseButton = styled.button`
   float: right;
 `;
 
-const Checkbox = ({ onChange }) => {
+const Checkbox = ({ onChange, initalValue }) => {
   const [isChecked, setIsChecked] = useState(false);  // 체크박스 상태 관리
   const [searchTerm, setSearchTerm] = useState(null);   // 검색어 상태 관리
   const [searchResult, setSearchResult] = useState([]); // 검색 결과 상태
   const [isSearchComplete, setIsSearchComplete] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const userId = localStorage.getItem('user_id');
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked); // 체크박스 클릭 시 팝업 열기/닫기
@@ -212,6 +213,18 @@ const Checkbox = ({ onChange }) => {
     }
   }, [searchTerm]);
   
+  useEffect(() => {
+    if(initalValue){ 
+      axios.get(`/place/detail/${initalValue}/${userId}/`)
+      .then(response=> {
+        console.log('초기값', response.data);
+        setSelectedPlace(response.data.place_detail.tour_name);
+      })
+      .catch(error => {
+        console.error('초기설정에러',error);
+      })
+    }
+  }, []);
 
   return (
     <>
@@ -228,7 +241,7 @@ const Checkbox = ({ onChange }) => {
               <use xlinkHref="#check-4" />
             </CheckboxSvg>
           </span>
-          <span height='18px'>{selectedPlace || '장소 선택하기'}</span>
+          <span height='18px'>{selectedPlace || '관광지 선택하기'}</span>
         </CheckboxLabel>
         <InlineSvg className="inline-svg">
           <symbol id="check-4" viewBox="0 0 12 10">
