@@ -21,7 +21,7 @@ import Home from'./pages/Main/Home'
 import LikeMain from './pages/Like/LikeMain.js'
 import Detail from './pages/Detail/Detail';
 import KakaoRedirect from './pages/Login/KakaoRedirect';
-
+import MyPosts from './pages/Mypage/MyPosts.js'
 // QueryClient 인스턴스 생성
 const queryClient = new QueryClient();
 
@@ -50,6 +50,7 @@ function App() {
             <Route path="/detail/:tour_id" element={<Detail />} />
             <Route path="/notice" element={<Notice />} />
             <Route path="/notice/:notice_id" element={<NoticeDetail />} />
+            <Route path="/myposts" element={<MyPosts />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>

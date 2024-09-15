@@ -178,43 +178,53 @@ const Posts = ({ searchTerm }) => {
 
   return (
     <>
-      {posts.map(post => (
-        <StyledPost onClick={() => moveToPost(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
-          <PhotoArea>
-            <Swiper
-              pagination={{ clickable: true }}
-              spaceBetween={15}
-              slidesPerView={1}
-              style={{height: '100%'}}
-            >
-              {Array.isArray(post.post_img) && post.post_img.slice(0, 5).map((imgSrc, index) => (
-                <SwiperSlide key={index}>
-                  <SwiperImage 
-                    src={imgSrc || exampleImage} 
-                    alt={`Post Image ${index + 1}`} 
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </PhotoArea>
-            <Like>
-                <LikeButton onClick={(e) => {
-                    e.stopPropagation();
-                    toggleLike(post.post_id);
-                    LikeHandler(userId, post.post_id);
-                  }}>
-                    <LikeIcon liked={post.like} />
-                </LikeButton>
-            </Like>
-            <FirstLine>
-                {post.post_text}
-            </FirstLine>
-            <SecondLine>
-                <div>댓글 {post.comm_cnt?post.comm_cnt:'0'}개</div>
-                <div>{post.last_modified?formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
-            </SecondLine>
-        </StyledPost>
-      ))}
+      {posts.length>0?(
+        posts.map(post => (
+          <StyledPost onClick={() => moveToPost(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
+            <PhotoArea>
+              <Swiper
+                pagination={{ clickable: true }}
+                spaceBetween={15}
+                slidesPerView={1}
+                style={{height: '100%'}}
+              >
+                {Array.isArray(post.post_img) && post.post_img.slice(0, 5).map((imgSrc, index) => (
+                  <SwiperSlide key={index}>
+                    <SwiperImage 
+                      src={imgSrc || exampleImage} 
+                      alt={`Post Image ${index + 1}`} 
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </PhotoArea>
+              <Like>
+                  <LikeButton onClick={(e) => {
+                      e.stopPropagation();
+                      toggleLike(post.post_id);
+                      LikeHandler(userId, post.post_id);
+                    }}>
+                      <LikeIcon liked={post.like} />
+                  </LikeButton>
+              </Like>
+              <FirstLine>
+                  {post.post_text}
+              </FirstLine>
+              <SecondLine>
+                  <div>댓글 {post.comm_cnt?post.comm_cnt:'0'}개</div>
+                  <div>{post.last_modified?formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
+              </SecondLine>
+          </StyledPost>
+        ))
+      ):(
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100px",
+          textAlign: "center" 
+      }}>게시물이 없습니다</div>
+      )}
     </>
   );  
 }

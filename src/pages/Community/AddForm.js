@@ -90,6 +90,7 @@ const AddForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
     const [uploadedImageUrl, setUploadedImageUrl] = useState([]);
     const [textContent, setTextContent] = useState('');
+    const [tourId ,setTourId] = useState(null);
     const fileInputRef = useRef(null);
     const userId = localStorage.getItem('user_id');
     const navigate = useNavigate();
@@ -124,9 +125,18 @@ const AddForm = () => {
         setUploadedImage(newImages);
     };
 
+    const handleSearch = (value) => {
+        setTourId(value);
+        console.log('tour id changed:', value);
+    }
+
     const handlePost = async () => {
         if (uploadedImage.length === 0 || textContent.trim() === '') {
             alert("내용 또는 사진을 추가해 주세요");
+            return;
+        }
+        if (tourId === null){
+            alert('관광지를 선택해 주세요');
             return;
         }
         const formData = new FormData();
@@ -135,20 +145,23 @@ const AddForm = () => {
         formData.append('date', new Date().toISOString());
         formData.append('score', 4);
         formData.append('hashtag', '#example');
-        formData.append('tour_id', 2508605);
+        formData.append('tour_id', tourId);
         formData.append('user_id', userId);
         
+                    
+
+
         try {
             uploadedImage.forEach((file) => {
               formData.append('img', file); // 'img' must match what you're using in your Django view
             });
-      
+
             const response = await axios.post('/community/api/postwrite/', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
             });
-      
+            
             if (response.status === 200) {
                 alert("게시글이 성공적으로 등록되었습니다.");
                 navigate('/community/')
@@ -162,7 +175,7 @@ const AddForm = () => {
 
     return (
     <>
-        <Header/>
+        <Header pageName='게시글 작성'/>
         <AddFormArea id='add-form-area'>
             <TextArea 
                 id='text-area' 
@@ -172,7 +185,7 @@ const AddForm = () => {
                 onChange={(e) => setTextContent(e.target.value)}
             ></TextArea>
             <LocArea id='loc-check-area'>
-                <Checkbox></Checkbox>
+                <Checkbox onChange={handleSearch} initalValue={null}></Checkbox>
             </LocArea>
             <AddPhotoArea id='add-photo-area'>
                 <AddPhotoBtn onClick={handleButtonClick}>

@@ -42,7 +42,6 @@ const PostTitle = styled.div`
   margin-bottom: 10px;
 `;
 
-
 const AddButtonArea = styled.div`
   position: fixed;
   bottom: 80px;

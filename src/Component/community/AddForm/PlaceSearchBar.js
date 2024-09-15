@@ -38,38 +38,37 @@ const SearchBarArea = styled.div`
   display: flex;
   align-items: center;
 `
-const SearchBar = ({ onSearch }) => {
+
+const PlaceSearchBar = ({ onSearch }) => {
   const [searchValue, setSearchValue] = useState('');
-  const user_id = localStorage.getItem('user_id')
 
   const handleKeyDown = (e) => {
-    if(e.key == 'Enter'){
+    if(e.key === 'Enter'){
       onSearch(e.target.value);
     }
   }
-  const handleButtonClick = (e) =>{  
+  const handleButtonClick = () =>{  
     onSearch(searchValue)
   }
   const handleInputChange = (e) => {
-    setSearchValue(e.target.value); // 입력값을 상태로 저장
-
+    setSearchValue(e.target.value);
   };
   return (
     <>
-    <SearchBarArea id='searchBarArea'>
-      <StyledSearchBar 
-        id='community-search' 
-        type="text" 
-        placeholder="검색"         
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}>
-      </StyledSearchBar>
-      <SearchButton onClick={handleButtonClick}>
-        <SearchIcon />
-      </SearchButton>
-    </SearchBarArea>
+      <SearchBarArea id='searchBarArea'>
+        <StyledSearchBar 
+          id='community-search' 
+          type="text" 
+          placeholder="검색"         
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}>
+        </StyledSearchBar>
+        <SearchButton onClick={handleButtonClick}>
+          <SearchIcon />
+        </SearchButton>
+      </SearchBarArea>
     </>
   )
 }
 
-export default SearchBar
+export default PlaceSearchBar

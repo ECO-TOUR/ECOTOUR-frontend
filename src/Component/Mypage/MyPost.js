@@ -53,7 +53,7 @@ const ScoreText = styled.div`
     font-size: 11px;
 `;
 
-function Recommend() {
+function MyPost() {
     const [posts, setPosts] = useState([]);
     const userId = localStorage.getItem('user_id')
     const [placeNames, setPlaceNames ]= useState([]);
@@ -62,7 +62,7 @@ function Recommend() {
         const getPost = async () => {
             try {
                 const response = await axios.get(`/community/api/mypost/${userId}/`);
-                console.log('API Response:', response.data);
+                console.log('내 게시글 목록:', response.data);
     
                 if (response.data && response.data.content) {
                     setPosts(response.data.content); // 먼저 posts 상태를 업데이트합니다.
@@ -70,7 +70,7 @@ function Recommend() {
                     console.error('Error: "content" field is missing in the response.');
                 }
             } catch (error) {
-                console.error('Error fetching posts:', error);
+                console.error('Error 내 게시글 목록:', error);
             }
         };
     
@@ -124,4 +124,4 @@ function Recommend() {
     );
 }
 
-export default Recommend;
+export default MyPost;

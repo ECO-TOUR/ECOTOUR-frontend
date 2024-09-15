@@ -107,6 +107,7 @@ const Post = () => {
       .catch(error => {
         console.error('Error fetching data(comments):', error)
       })
+
     
   };
   
