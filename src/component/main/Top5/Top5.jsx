@@ -15,6 +15,7 @@ function Top5() {
             try {
                 const response = await axios.get('/mainpage/api/best/');
                 setContents(response.data.content);
+                //console.log(response.data.content);
             } catch (error) {
                 console.error('데이터를 가져오는 중 오류 발생:', error);
             }
@@ -50,7 +51,7 @@ function Top5() {
 
                 return (
                     <S.ContentBox key={index} onClick={() => onClickBox(content.tour_id)}>
-                        <S.ContentImg src={exampleImage} />
+                        <S.ContentImg src={content.tour_img} />
                         <S.ContentNum>{index + 1}</S.ContentNum>
                         <S.ContentInfo>
                             <S.ContentName>{content.tour_name}</S.ContentName>

@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 //page
 import Mypage from './pages/Mypage/Mypage.js';
+import Notice from './pages/Mypage/Notice/Notice';
+import NoticeDetail from './pages/Mypage/Notice/NoticeDetail';
 import Community from './pages/Community/Community.js';
 import AddForm  from './pages/Community/AddForm.js';
 import ModifyForm from './pages/Community/ModifyForm.js';
@@ -46,6 +48,8 @@ function App() {
             <Route path="/community/post/:postId" element={<Post />} />
             <Route path="/like" element={<LikeMain />} />
             <Route path="/detail/:tour_id" element={<Detail />} />
+            <Route path="/notice" element={<Notice />} />
+            <Route path="/notice/:notice_id" element={<NoticeDetail />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>

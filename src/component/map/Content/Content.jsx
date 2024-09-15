@@ -33,7 +33,7 @@ function Content() {
     // 좋아요 상태 변수
     const [liked, setLiked] = useState(Array(searchResults.length).fill(false)); // 각 콘텐츠의 좋아요 상태 관리
 
-    // 버튼 클릭 시 호출되는 함수: 특정 콘텐츠의 좋아요 상태를 토글
+    // 좋아요 버튼 클릭 시 호출되는 함수: 특정 콘텐츠의 좋아요 상태를 토글
     const toggleLike = (index, event) => {
         event.stopPropagation(); // 클릭 이벤트 전파 중단
         setLiked((prevLiked) => {
@@ -53,7 +53,7 @@ function Content() {
         return text;
     };
 
-    // 버튼 클릭 시 정렬
+    // 별점순, 조회순 버튼 클릭 시 정렬
     useEffect(() => {
         let sortedResults = [...initialSearchResults];
 

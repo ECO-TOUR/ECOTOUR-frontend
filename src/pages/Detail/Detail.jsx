@@ -37,9 +37,8 @@ function Detail() {
 
     // 좋아요 상태 변수
     const [liked, setLiked] = useState(false);
-    // 버튼 클릭 시 호출되는 함수: 상태를 토글
+    // 좋아요 버튼 클릭 시 호출되는 함수: 상태를 토글
     const toggleLike = () => {
-
         setLiked(!liked);
 
         const fetchLike = async () => {
@@ -47,7 +46,7 @@ function Detail() {
                 const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
                     tour_id: tour_id
                 });
-                console.log(response.data);
+                //console.log(response.data);
             } catch (error) {
                 console.log(error);
             }
@@ -68,6 +67,10 @@ function Detail() {
               setImage(tour_img); // 관광지 이미지
               setDetail(response.data.place_detail);
               //console.log(response.data);
+
+              if(response.data.place_detail.tourspot_liked === "liked"){
+                setLiked(true);
+              }
             } catch (error) {
               console.log(error);
             }

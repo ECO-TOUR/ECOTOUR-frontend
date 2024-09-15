@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import * as S from './Recommend.style'
 import axios from 'axios';
-import exampleImage from '../../../assets/example1.png'; // 이미지 파일을 import
 import { useNavigate } from 'react-router-dom';
 
 function Recommend() {
@@ -15,13 +14,13 @@ function Recommend() {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await axios.get(`api/recommend/${user_id}/`,{
+            const response = await axios.get(`mainpage/api/recommend/${user_id}/`,{
               headers: {
                 'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
               }
             });
             setContents(response.data.content);
-            console.log(response);
+            //console.log(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -30,20 +29,30 @@ function Recommend() {
     fetchData();
   }, []);
 
-  function onClickBox(){
-    navigate('/detail');
+  function onClickBox(tour_id){
+    navigate(`/detail/${tour_id}`);
   }
+
+  // 지역 길이 파싱
+  const regionParsing = (text) => {
+    const parts = text.split(' ');
+    if (parts.length > 2) {
+        // 두 번째 공백까지의 텍스트를 포함
+        return `${parts[0]} ${parts[1]}`;
+    }
+    return text;
+  };
   
   return (
     <S.Component>
         {contents.map((content, index) => (
-            <S.ContentBox onClick={onClickBox}>
-                <S.ContentImage src={exampleImage}/>
-                <S.ContentName>순천만습지</S.ContentName>
-                <S.ContentRegion>전라남도 순천시</S.ContentRegion>
+            <S.ContentBox onClick={() => onClickBox(content.tour_id)}>
+                <S.ContentImage src={content.tour_img}/>
+                <S.ContentName>{content.tour_name}</S.ContentName>
+                <S.ContentRegion>{regionParsing(content.tour_location)}</S.ContentRegion>
                 <S.ScoreContainer>
                     <S.ScoreIcon/>
-                    <S.ScoreText>9.6 (100)</S.ScoreText>
+                    <S.ScoreText>{content.score}</S.ScoreText>
                 </S.ScoreContainer>
             </S.ContentBox>
         ))}

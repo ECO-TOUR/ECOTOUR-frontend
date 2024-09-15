@@ -6,7 +6,7 @@ import LikeIcon from '../../assets/heart.svg'
 import CommentIcon from '../../assets/comment.svg'
 
 const Component = styled.div`
-    padding-top: 10px;
+    padding: 10px 30px;
     display: flex;
     overflow-x: auto;
 `;
