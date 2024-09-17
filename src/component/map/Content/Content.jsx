@@ -39,7 +39,6 @@ function Content() {
         // 초기 좋아요 상태 설정: 서버에서 받은 tourspot_liked 값을 기반으로 liked 배열 초기화
         const initialLikedState = initialSearchResults.map(content => content.tourspot_liked === "liked");
         setLiked(initialLikedState);
-        console.log(liked);
     }, [initialSearchResults]);
 
     // 좋아요 버튼 클릭 시 호출되는 함수: 특정 콘텐츠의 좋아요 상태를 토글
@@ -102,7 +101,7 @@ function Content() {
     const prevCloseStateRef = useRef();
     useEffect(() => {
         prevCloseStateRef.current = closeState;
-        console.log(searchResults);
+        //console.log(searchResults);
     }, [closeState]);
 
     // 이전 상태와 현재 상태를 비교하여 변화 감지

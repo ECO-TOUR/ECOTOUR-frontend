@@ -206,47 +206,12 @@ const Mypage = (props) => {
     window.location.href = 'https://open.kakao.com/o/g0raUSNg';
   }
 
-  // 로그아웃 클릭 시
-  // function onClickLogout(){
-  //   // eslint-disable-next-line no-restricted-globals
-  //   const isConfirmed = confirm('정말 로그아웃 하시겠습니까?');
-    
-  //   if (isConfirmed) {
-  //       localStorage.removeItem('user_id');
-  //       localStorage.removeItem('access_token');
-
-  //       window.location.href = '/';  // 'navigate' 대신 'window.location.href'로 변경 가능
-  //   }
-  // }
-
   // 로그아웃 실행 함수
   const handleLogout = () => {
     localStorage.removeItem('user_id');
     localStorage.removeItem('access_token');
     navigate('/');
   };
-
-  // 회원탈퇴 클릭 시
-  // function onClickDeleteUser(){
-  //   // eslint-disable-next-line no-restricted-globals
-  //   const isConfirmed = confirm('정말 회원탈퇴를 하시겠습니까?');
-
-  //   if (isConfirmed) {
-  //       axios.post(`/accounts/api/oauth/kakao/signout/`, 
-  //         {},  // 두 번째 인자로 빈 객체를 전송
-  //         { headers: { 'Authorization': `Bearer ${access_token}` } }  // 세 번째 인자로 headers 전달
-  //       )
-  //       .then(response => {
-  //           //console.log(response.data);
-  //           localStorage.removeItem('user_id');
-  //           localStorage.removeItem('access_token');
-  //           navigate('/');
-  //         })
-  //       .catch(error => {
-  //       console.error(error);
-  //       });
-  //   }
-  // }
 
   // 회원탈퇴 실행 함수
   const handleDeleteUser = () => {
@@ -280,7 +245,7 @@ const Mypage = (props) => {
   const [userName, setUserName] = useState();
   const [userProfile, setUserProfile] = useState();
   useEffect(() => {
-    console.log(user_id);
+
     axios.get(`/mypage/api/${user_id}/inquire`, {
       headers: {
           'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
