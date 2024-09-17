@@ -115,7 +115,7 @@ function Content() {
                                         <S.ScoreIcon/> {content.avg_score}
                                     </S.ScoreBox>
                                     <S.LikeBtn>
-                                        <img src={liked[index] ? FillHeart : EmptyHeart} onClick={(event) => toggleLike(index, event)}/>
+                                        <img src={content.tourspot_liked === "liked"? FillHeart : EmptyHeart} onClick={(event) => toggleLike(index, event)}/>
                                     </S.LikeBtn>
                                 </S.ContentWrap>
                             </S.InfoBox>

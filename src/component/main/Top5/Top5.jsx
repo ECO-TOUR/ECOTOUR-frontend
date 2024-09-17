@@ -15,7 +15,7 @@ function Top5() {
             try {
                 const response = await axios.get('/mainpage/api/best/');
                 setContents(response.data.content);
-                //console.log(response.data.content);
+                console.log(response.data.content);
             } catch (error) {
                 console.error('데이터를 가져오는 중 오류 발생:', error);
             }
