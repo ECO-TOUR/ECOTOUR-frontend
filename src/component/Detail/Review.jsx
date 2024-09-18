@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import * as S from './Review.style';
-import ReviewProfile from '../../assets/review_profile.svg';
 import exampleImage from '../../assets/example1.png'; // 이미지 파일을 import
 
 function Review() {
@@ -38,25 +37,17 @@ function Review() {
         return `${year}.${month}.${day} ${ampm} ${hours}:${minutes}`;
     }
 
-    // 데이터 변환 함수(이미지가 배열 문자열로 변환되는 문제 해결 함수)
-    function transformData(response) {
-        return response.data.map(item => ({
-            ...item,
-            post_img: JSON.parse(item.post_img) // 이미지 문자열 변수를 배열로 변환
-        }));
-    }
-
     useEffect(() => {
 
-        // 관광지 정보 가져오기
+        // 방문자 커뮤니티 가져오기
         const fetchDetail = async () => {
             try {
               const response = await axios.get(`/api/postbytour/${tour_id}/`);
-                const transformedData = transformData(response.data.content); // 데이터 변환
+                //const transformedData = transformData(response.data.content); // 데이터 변환
                 setCount(response.data.content.count);
                 setScore(response.data.content.avg_score);
-                setContents(transformedData);
-                console.log(response.data.content);
+                setContents(response.data.content.data);
+                console.log(response.data.content.data);
             } catch (error) {
               console.log(error);
             }
@@ -72,7 +63,6 @@ function Review() {
             <S.ScoreComponent>
                 <S.ScoreIcon/><S.Score>{score} ({count})</S.Score>
             </S.ScoreComponent>
-            <S.MoreBtn>더보기</S.MoreBtn>
         </S.HeaderComponent>
 
         {contents.length === 0 ? (<S.None>아직 작성된 방문 리뷰가 없습니다!</S.None>):(
@@ -81,10 +71,10 @@ function Review() {
                 <S.ReviewComponent>
                     {/* 헤더 */}
                     <S.ReviewHeader>
-                        <img src={ReviewProfile}/>
+                        <S.Profile src={content.profile_photo}/>
                         <div>
                             <S.ReviewHeaderWrap>
-                                <S.Writer>닉네임</S.Writer>
+                                <S.Writer>{content.nickname}</S.Writer>
                                 <S.ScoreComponent>
                                     <S.ScoreIcon/><S.Score>{content.post_score}</S.Score>
                                 </S.ScoreComponent>

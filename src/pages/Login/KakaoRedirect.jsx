@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+// 컴포넌트
+import LoadingPage from '../Loading/Loading';
 // Function to get the CSRF token from the cookie
 function getCookie(name) {
   let cookieValue = null;
@@ -44,7 +46,6 @@ function KakaoRedirect() {
           });
         // 기존 회원이라면 메인으로 이동
         else {
-          console.log(secureResponse.data.content);
           axios
             .post('/accounts/api/oauth/kakao/login/', {
               body: secureResponse.data.content.response_token,
@@ -71,6 +72,6 @@ function KakaoRedirect() {
         console.error(error);
       });
   }, [code, navigate]);
-  return <div>로딩중</div>;
+  return <div><LoadingPage/></div>;
 }
 export default KakaoRedirect;

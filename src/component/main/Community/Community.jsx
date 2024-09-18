@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as S from './Community.style';
 import exampleImage from '../../../assets/example1.png'; // 이미지 파일을 import
@@ -8,6 +9,7 @@ import ChatIcon from '../../../assets/white_chat.svg'; // 이미지 파일을 im
 function Community() {
 
     const [contents, setContents] = useState([]);
+    const navigate = useNavigate();
 
     // API연결 완료
     useEffect(() => {
@@ -23,10 +25,14 @@ function Community() {
     
         fetchData();
     }, []);
+
+    function onClickContent(post_id){
+        navigate(`/community/post/${post_id}`);
+    }
   return (
     <S.Component>
         {contents.map((content, index) => (
-            <S.ContentBox>
+            <S.ContentBox onClick={() => onClickContent(content.post_id)}>
                 <S.ContentImage src={content.post_img || exampleImage}/>
                 <S.ContentDiv>
                     <S.ContentTitle>{content.post_text}</S.ContentTitle>
