@@ -72,6 +72,6 @@ function KakaoRedirect() {
         console.error(error);
       });
   }, [code, navigate]);
-  return <div><LoadingPage text1="로그인 중입니다." text2= "잠시만 기다려 주세요."/></div>;
+  return <div><LoadingPage text="로그인 중입니다."/></div>;
 }
 export default KakaoRedirect;

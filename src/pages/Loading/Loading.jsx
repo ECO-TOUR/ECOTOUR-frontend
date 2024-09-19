@@ -40,11 +40,11 @@ export const Leaf = styled.div`
     animation: ${floatAnimation} 1.5s ease-in-out infinite; /* 애니메이션 적용 */
 `;
 
-function LoadingPage({ text1, text2 }) {
+function LoadingPage({ text }) {
   return (
     <LoaderContainer>
-        <Loading_txt>{text1}</Loading_txt>
-        <Loading_txt>{text2}</Loading_txt>
+        <Loading_txt>{text}</Loading_txt>
+        <Loading_txt>잠시만 기다려 주세요.</Loading_txt>
         <Leaf><img src={leaf_src}/></Leaf>
     </LoaderContainer>
   );
