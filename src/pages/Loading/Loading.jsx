@@ -36,7 +36,7 @@ const floatAnimation = keyframes`
 export const Leaf = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: -30px;
     animation: ${floatAnimation} 1.5s ease-in-out infinite; /* 애니메이션 적용 */
 `;
 
