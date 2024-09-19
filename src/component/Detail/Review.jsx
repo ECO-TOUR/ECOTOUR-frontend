@@ -6,10 +6,6 @@ import exampleImage from '../../assets/example1.png'; // 이미지 파일을 imp
 
 function Review() {
     const { tour_id } = useParams(); // URL에서 tour_id 가져오기
-    //const user_id = localStorage.getItem('user_id');
-    const access_token = localStorage.getItem('access_token');
-    const [user_name, setUserName] = useState();
-    const [user_profile, setUserProfile] = useState();
     const [contents, setContents] = useState([]);
     const [count, setCount] = useState();
     const [score, setScore] = useState();
@@ -43,11 +39,10 @@ function Review() {
         const fetchDetail = async () => {
             try {
               const response = await axios.get(`/api/postbytour/${tour_id}/`);
-                //const transformedData = transformData(response.data.content); // 데이터 변환
                 setCount(response.data.content.count);
                 setScore(response.data.content.avg_score);
                 setContents(response.data.content.data);
-                console.log(response.data.content.data);
+                //console.log(response.data.content.data);
             } catch (error) {
               console.log(error);
             }

@@ -47,11 +47,7 @@ const LoaderContainer = styled.div`
 function LoadingPage() {
   return (
     <LoaderContainer>
-        <Emoji>🌳</Emoji>
-        <Emoji>🚵🏻‍♀️</Emoji>
-        <Emoji>🌸</Emoji>
-        <Emoji>🏞️</Emoji>
-        <Emoji>🍃</Emoji>
+
     </LoaderContainer>
   );
 }
