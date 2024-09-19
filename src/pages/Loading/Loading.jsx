@@ -1,53 +1,51 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-
-// 이모지 애니메이션 정의
-const emojiAnimation = keyframes`
-    0% { opacity: 0; transform: scale(0.5); }
-    20% { opacity: 1; transform: scale(1); }
-    80% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.5); }
-`;
-
-// 이모지 스타일 정의
-const Emoji = styled.div`
-    font-size: 2rem;
-    position: absolute;
-    animation: ${emojiAnimation} 5s ease-in-out infinite;
-    opacity: 0;
-    
-    // 애니메이션 지연을 통해 이모지가 순서대로 등장하도록 설정
-    &:nth-child(1) {
-        animation-delay: 0s;
-    }
-    &:nth-child(2) {
-        animation-delay: 1s;
-    }
-    &:nth-child(3) {
-        animation-delay: 2s;
-    }
-    &:nth-child(4) {
-        animation-delay: 3s;
-    }
-    &:nth-child(5) {
-        animation-delay: 4s;
-    }
-`;
+import leaf_src from '../../assets/Leaf.svg';
 
 // 로딩페이지 스타일 정의
 const LoaderContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     background-color: white;
-    position: relative;
+    padding: 100px 0px;
 `;
 
-function LoadingPage() {
+/* 문구*/
+export const Loading_txt = styled.div`
+    padding: 10px 0px 0px 0px;
+    color: #333333;
+    font-weight: 700;
+    font-size: 28px;
+    text-align: center;
+    line-height: 1.5;
+`;
+
+// 위아래로 움직이는 애니메이션 정의
+const floatAnimation = keyframes`
+  0% {
+    transform: translateY(0);  /* 초기 위치 */
+  }
+  50% {
+    transform: translateY(-10px);  /* 위로 10px 이동 */
+  }
+  100% {
+    transform: translateY(0);  /* 다시 초기 위치로 */
+  }
+`;
+
+// 나뭇잎 svg
+export const Leaf = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    animation: ${floatAnimation} 1.5s ease-in-out infinite; /* 애니메이션 적용 */
+`;
+
+function LoadingPage({ text1, text2 }) {
   return (
     <LoaderContainer>
-
+        <Loading_txt>{text1}</Loading_txt>
+        <Loading_txt>{text2}</Loading_txt>
+        <Leaf><img src={leaf_src}/></Leaf>
     </LoaderContainer>
   );
 }
