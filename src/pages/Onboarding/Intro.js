@@ -1,6 +1,6 @@
 import React from 'react'
 import './Intro.css';
-import MockUpImage from '../../assets/MockUpImage.svg';
+import MockUpImage from '../../assets/MockUpImage.png';
 import { useNavigate } from 'react-router-dom';
 
 function Intro() {
@@ -19,7 +19,7 @@ function Intro() {
             지금 바로 여러분만의<br/>
             맞춤형 생태관광 여행을 계획해보세요!
         </div>
-        <div class="mockup"><object data={MockUpImage} type="image/svg+xml" width="390" hegiht="390"/></div>
+        <div class="mockup"><img src={MockUpImage}/></div>
         <div id="start_btn" onClick={onClickStartBtn}>시작하기</div>
     </div>
   )

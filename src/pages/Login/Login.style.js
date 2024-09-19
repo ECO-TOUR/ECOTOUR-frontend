@@ -46,7 +46,7 @@ export const Service_text = styled.div`
 export const MockUp = styled.div`
     display: flex;
     justify-content: right;
-    top: 15%;
+    top: 30%;
     position: fixed;
     z-index: 0;
     width: 100%;

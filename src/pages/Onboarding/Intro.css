@@ -8,7 +8,7 @@
 .mockup{
     display: flex;
     justify-content: right;
-    top: 15%;
+    top: 30%;
     position: fixed;
     z-index: 0;
     width: 100%;
