@@ -172,6 +172,7 @@ const Checkbox = ({ onChange, initalValue }) => {
   const [isSearchComplete, setIsSearchComplete] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const userId = localStorage.getItem('user_id');
+  const access_token = localStorage.getItem('access_token');
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked); // 체크박스 클릭 시 팝업 열기/닫기
@@ -201,7 +202,11 @@ const Checkbox = ({ onChange, initalValue }) => {
     if (searchTerm) {
       const fetchData = async () => {
         try {
-          const response = await axios.get(`/place?search=${searchTerm}`);
+          const response = await axios.get(`/place?search=${searchTerm}`, {
+            headers: {
+                'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
+            }
+          });
           setSearchResult(response.data);  // 검색 결과를 상태로 저장
           setIsSearchComplete(true);
           console.log('search result:', response.data);

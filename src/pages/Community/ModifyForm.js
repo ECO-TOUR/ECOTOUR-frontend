@@ -105,7 +105,6 @@ const ModifyForm = () => {
                 if(selectedPost){
                     setTextContent(selectedPost.post_text)
                     setUploadedImage(selectedPost.post_img);
-                    console.log(uploadedImage);
                     setTourId(selectedPost.tour_id);
                     setLikes(selectedPost.post_likes);
                     setIsTourIdLoaded(true);
@@ -116,6 +115,7 @@ const ModifyForm = () => {
             });
     },[postId]);
 
+    //이미지 업로드
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
         if (uploadedImage.length + files.length> 5){
@@ -125,19 +125,23 @@ const ModifyForm = () => {
 
         setUploadedImage((prevImages) => [...prevImages, ...files]);
         fileInputRef.current.value = '';
+        console.log('업로드 수정',uploadedImage);
     };
 
+    //버튼 클릭 시 파일 입력 하는거 나옴 
     const handleButtonClick = () => {
         if (uploadedImage.length >= 5){
             alert("최대 5장의 사진만 업로드 할 수 있습니다.")
             return;
         }
-        fileInputRef.current.click(); // 버튼 클릭 시 파일 입력을 클릭하도록 트리거
+        fileInputRef.current.click(); 
     };
 
+    //이미지 삭제
     const imageDelete = (index) => {
         const newImages =uploadedImage.filter((_, i) => i !== index);
         setUploadedImage(newImages);
+        console.log('삭제',uploadedImage);
     };
 
     const handleSearch = (value) => {
@@ -160,16 +164,23 @@ const ModifyForm = () => {
         formData.append('tour_id', tourId);
         formData.append('user_id', userId);
 
-        // 폼 데이터 확인을 위한 로그
-        // for (let pair of formData.entries()) {
-        //     console.log(pair[0] + ': ' + pair[1]);
-        // }
         
         try {
             uploadedImage.forEach((file) => {
-              formData.append('img', file); // 'img' must match what you're using in your Django view
-            });
-      
+                if (file instanceof File) {
+                    // 파일인 경우에만 'img'로 FormData에 추가
+                    formData.append('img', file);
+                  } else if (typeof file === 'string' && file.startsWith('http')) {
+                    // URL인 경우에만 'old_img'로 FormData에 추가
+                    formData.append('old_img', file);
+                  }
+                });
+            
+                
+            // 폼 데이터 확인을 위한 로그
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
             const response = await axios.post('/community/api/postmodify/', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
