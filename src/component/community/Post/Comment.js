@@ -26,17 +26,28 @@ const NoCommets = styled.div`
     font-size: 14px;
     padding-left: 5px;
 `
-
+const ProfilePhoto = styled.img`
+    width: 26px;
+    height: 26px;
+    border-radius: 15px;
+`
 const Comment = ({comments}) => {
     const [profiles, setProfiles] = useState({});
-
+    const access_token = localStorage.getItem('access_token');
     useEffect(() => {
         const fetchProfile = async (userId) => {
             try{
-                const response = await axios.get(`/mypage/api/${userId}/inquire`);
+                const response = await axios.get(`/mypage/api/${userId}/inquire`
+                //     , {
+                //     headers: {
+                //         'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
+                //     }
+                //   }
+                );
+                console.log('프로필 받은 데이터', response.data)
                 setProfiles((prevProfiles) => ({
                     ...prevProfiles,
-                    [userId]: response.data.profile_photo,  // 응답 데이터에서 프로필 이미지 URL 추출
+                    [userId]: response.data.content.user.profile_photo,  // 응답 데이터에서 프로필 이미지 URL 추출
                 }));
             } catch (error) {
                 console.error(`유저 ${userId}의 프로필 이미지를 불러오는 중 오류 발생:`, error);
@@ -48,6 +59,7 @@ const Comment = ({comments}) => {
                 fetchProfile(comment.user_id);
             }
         });
+        console.log('프로필',profiles)
     })
 
     return (  
@@ -55,7 +67,11 @@ const Comment = ({comments}) => {
         {comments.length > 0 ? (
             comments.map((comment, index) => (
                 <CommentContainer key ={index}>
-                    <ProfileIcon />
+                    {profiles[comment.user_id]?(
+                        <ProfilePhoto src={profiles[comment.user_id]} />
+                    ):(
+                        <ProfileIcon />
+                    )}
                     <CommentText>{comment.comments}</CommentText>
                 </CommentContainer>
             ))

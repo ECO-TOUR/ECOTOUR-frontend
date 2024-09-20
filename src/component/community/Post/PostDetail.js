@@ -139,10 +139,18 @@ const Control = styled.div`
 const Span = styled.div`
   display: flex;
 `
+const ProfilePhoto = styled.img`
+    width: 26px;
+    height: 26px;
+    border-radius: 15px;
+`
+
 const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
+  const [profile, setProfile] = useState(null);
   const userId = localStorage.getItem('user_id');
+  const access_token = localStorage.getItem('access_token');
   
   const navigate = useNavigate();
 
@@ -151,6 +159,7 @@ const PostDetail = ({post, comments}) => {
       setLiked(post.like === 'yes');
     }
   },[post]);
+
 
   useEffect(() => {
       //사이즈에 따라 게시물 크기 변경
@@ -204,7 +213,7 @@ const PostDetail = ({post, comments}) => {
       <StyledPost id="post-area" width={windowWidth}> 
           <UserArea id="user-area">
             <Span>
-              <ProfileIcon/>
+              {profile?(<ProfilePhoto src={profile}></ProfilePhoto>):(<ProfileIcon/>)}
               <Info>
                 <div>User Id</div>
                 <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
