@@ -128,18 +128,20 @@ const ModifyForm = () => {
         console.log('업로드 수정',uploadedImage);
     };
 
-    //이미지 삭제
+    //버튼 클릭 시 파일 입력 하는거 나옴 
     const handleButtonClick = () => {
         if (uploadedImage.length >= 5){
             alert("최대 5장의 사진만 업로드 할 수 있습니다.")
             return;
         }
-        fileInputRef.current.click(); // 버튼 클릭 시 파일 입력을 클릭하도록 트리거
+        fileInputRef.current.click(); 
     };
 
+    //이미지 삭제
     const imageDelete = (index) => {
         const newImages =uploadedImage.filter((_, i) => i !== index);
         setUploadedImage(newImages);
+        console.log('삭제',uploadedImage);
     };
 
     const handleSearch = (value) => {
