@@ -25,10 +25,11 @@ function MapSearch() {
   const queryClient = useQueryClient();
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]); // 자동 검색어 결과 상태
+
   // 입력 상태 없데이트
   const handleInputChange = (event) => {
     setSearchValue(event.target.value);  // 입력된 값으로 상태 업데이트
-    // 입력값이 비어있지 않을 때만 API 호출
+    // 입력값이 비어있지 않을 때만 자동완성API 호출
     axios.get(`/autocomplete/?query=${event.target.value}`)
       .then(response => {
         //console.log(response.data);
@@ -45,7 +46,7 @@ function MapSearch() {
     searchMutation.mutate(searchValue);
   }
 
-  // 최근 검색어 검색 기능
+  // 검색 기능 및 결과 조회
   const searchMutation = useMutation(
     async (searchValue) => {
       const response = await axios.get('/place', {

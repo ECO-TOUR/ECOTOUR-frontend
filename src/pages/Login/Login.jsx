@@ -1,7 +1,6 @@
 import React from 'react';
 import * as S from './Login.style';
-import Ellipse41 from '../../assets/Ellipse 41.svg';
-import Ellipse42 from '../../assets/Ellipse 42.svg';
+import MockUpImage from '../../assets/MockUpImage.png';
 import KakaoLoginBtn from '../../assets/kakao_login_medium_wide.svg';
 
 function Login() {
@@ -16,11 +15,11 @@ function Login() {
 
   return (
     <S.Login_container>
-      <S.Login_txt>자연과<br/>함께하는 여행</S.Login_txt>
+      <S.Login_txt>자연으로<br/>떠나는 여행</S.Login_txt>
       <S.Logo>ECO TOUR</S.Logo>
+      <S.Service_text>자연으로 떠나고 싶은 사람들을 위한<br/>생태 관광 플랫폼</S.Service_text>
+      <S.MockUp><img src={MockUpImage} /></S.MockUp>
       <S.Login_btn src={KakaoLoginBtn} onClick={onclickLoginBtn}/>
-      <S.E41 src={Ellipse41}/>
-      <S.E42 src={Ellipse42}/>
     </S.Login_container>
   );
 }

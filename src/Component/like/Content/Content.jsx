@@ -55,7 +55,7 @@ function Content() {
     const toggleLike = (event, tour_id) => {
         event.stopPropagation(); // 클릭 이벤트 전파 중단
         // eslint-disable-next-line no-restricted-globals
-        const isConfirmed = confirm('좋아요목록에서 삭제하시겠습니까?');
+        const isConfirmed = confirm('좋아요 목록에서 삭제하시겠습니까?');
         if(isConfirmed){
             const fetchLike = async () => {
                 try {

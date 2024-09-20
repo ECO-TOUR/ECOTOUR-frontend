@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import * as S from './Content.style';
 
 // img
@@ -12,6 +13,7 @@ import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
 import { recentSearchesState } from '../../../recoil/SearchesAtoms';
 
 function Content() {
+    const user_id = localStorage.getItem('user_id');
     const closeState = useRecoilValue(StateAtoms); // bottom 열림, 닫힘 상태
     const initialSearchResults = useRecoilValue(recentSearchesState); // 초기 상태를 저장
     const [searchResults, setSearchResults] = useState(initialSearchResults); // 상태를 복사하여 관리
@@ -31,16 +33,34 @@ function Content() {
     }
 
     // 좋아요 상태 변수
-    const [liked, setLiked] = useState(Array(searchResults.length).fill(false)); // 각 콘텐츠의 좋아요 상태 관리
+    const [liked, setLiked] = useState([]); // 각 콘텐츠의 좋아요 상태 관리
+    // 좋아요 상태 초기화
+    useEffect(() => {
+        // 초기 좋아요 상태 설정: 서버에서 받은 tourspot_liked 값을 기반으로 liked 배열 초기화
+        const initialLikedState = initialSearchResults.map(content => content.tourspot_liked === "liked");
+        setLiked(initialLikedState);
+    }, [initialSearchResults]);
 
     // 좋아요 버튼 클릭 시 호출되는 함수: 특정 콘텐츠의 좋아요 상태를 토글
-    const toggleLike = (index, event) => {
+    const toggleLike = (tour_id, index, event) => {
         event.stopPropagation(); // 클릭 이벤트 전파 중단
-        setLiked((prevLiked) => {
-            const newLiked = [...prevLiked];
-            newLiked[index] = !newLiked[index];
-            return newLiked;
-        });
+
+        const fetchLike = async () => {
+            try {
+                const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
+                    tour_id: tour_id
+                });
+                setLiked((prevLiked) => {
+                    const newLiked = [...prevLiked];
+                    newLiked[index] = !newLiked[index]; // 좋아요 상태 토글
+                    return newLiked;
+                });
+            } catch (error) {
+                console.log(error);
+            }
+            };
+        
+        fetchLike(); // 컴포넌트가 마운트될 때 API 호출
     };
 
     // 지역 길이 파싱
@@ -81,7 +101,7 @@ function Content() {
     const prevCloseStateRef = useRef();
     useEffect(() => {
         prevCloseStateRef.current = closeState;
-        console.log(searchResults);
+        //console.log(searchResults);
     }, [closeState]);
 
     // 이전 상태와 현재 상태를 비교하여 변화 감지
@@ -115,7 +135,7 @@ function Content() {
                                         <S.ScoreIcon/> {content.avg_score}
                                     </S.ScoreBox>
                                     <S.LikeBtn>
-                                        <img src={liked[index] ? FillHeart : EmptyHeart} onClick={(event) => toggleLike(index, event)}/>
+                                        <img src={liked[index] ? FillHeart : EmptyHeart} onClick={(event) => toggleLike(content.tour_id, index, event)}/>
                                     </S.LikeBtn>
                                 </S.ContentWrap>
                             </S.InfoBox>

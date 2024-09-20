@@ -72,6 +72,13 @@ export const Writer = styled.div`
     font-size: 16px;
 `;
 
+// 프로필
+export const Profile = styled.img`
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+`;
+
 // 작성일
 export const Date = styled.div`
     color: #676767;
