@@ -147,6 +147,7 @@ const ResultArea = styled.div`
   height: calc(100% - 70px);
   overflow-y: scroll;
 `;
+
 const ButtonArea = styled.div`
   width: 100%;
   height: 30px;
@@ -154,8 +155,10 @@ const ButtonArea = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+// 팝업 닫기 버튼
 const CloseButton = styled.button`
-  background-color: #f44336;
+  background-color: #333;
   color: white;
   margin: 5px;
   padding: 8px 16px;
@@ -163,37 +166,48 @@ const CloseButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   float: right;
+  transition: background-color 0.3s;
+
+  &:hover{
+      background-color: #555;
+  }
 `;
 
 const Checkbox = ({ onChange, initalValue }) => {
   const [isChecked, setIsChecked] = useState(false);  // 체크박스 상태 관리
   const [searchTerm, setSearchTerm] = useState(null);   // 검색어 상태 관리
-  const [searchResult, setSearchResult] = useState([]); // 검색 결과 상태
-  const [isSearchComplete, setIsSearchComplete] = useState(false);
+  const [searchResult, setSearchResult] = useState([]); // 검색 결과 리스트
+  const [isSearchComplete, setIsSearchComplete] = useState(false); // 검색 결과 상태
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null); // 클릭된 박스의 인덱스 상태 추가
   const userId = localStorage.getItem('user_id');
   const access_token = localStorage.getItem('access_token');
 
+  // 체크icon handle함수
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked); // 체크박스 클릭 시 팝업 열기/닫기
   };
 
   const handleSearch = async (value) => {
-    setSearchTerm(value); //검색어 업데이트 
+    setSearchTerm(value); // 검색어 업데이트 
     setIsSearchComplete(false); 
   };
 
+  // 팝업 닫기 버튼 클릭 시
   const handleClose = () => {
-    setIsChecked(false); // 팝업 닫기
+    setIsChecked(false);  // 팝업 닫기
+    setSelectedIndex(null);  // 팝업이 닫힐 때 선택된 인덱스 초기화
   };
 
   const handleSelectPlace = (place) => {
-    if(place!=null){
+    if (place != null) {
       setSelectedPlace(place.tour_name); // 선택한 장소 정보 업데이트
+      setSelectedIndex(null); // 선택된 항목 초기화
       onChange(place.tour_id);
-    }
-    else{
+      handleClose(); // 선택 후 팝업 닫기
+    } else {
       setSelectedPlace(null);
+      setSelectedIndex(null); // 선택된 항목 초기화
       onChange(null);
     }
   };
@@ -204,12 +218,11 @@ const Checkbox = ({ onChange, initalValue }) => {
         try {
           const response = await axios.get(`/place?search=${searchTerm}`, {
             headers: {
-                'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
-            }
+              Authorization: `Bearer ${access_token}`, // 헤더에 access_token 추가
+            },
           });
-          setSearchResult(response.data);  // 검색 결과를 상태로 저장
+          setSearchResult(response.data); // 검색 결과를 상태로 저장
           setIsSearchComplete(true);
-          console.log('search result:', response.data);
         } catch (error) {
           console.error('검색 중 오류 발생:', error);
         }
@@ -217,17 +230,17 @@ const Checkbox = ({ onChange, initalValue }) => {
       fetchData();
     }
   }, [searchTerm]);
-  
+
   useEffect(() => {
-    if(initalValue){ 
-      axios.get(`/place/detail/${initalValue}/${userId}/`)
-      .then(response=> {
-        console.log('초기값', response.data);
-        setSelectedPlace(response.data.place_detail.tour_name);
-      })
-      .catch(error => {
-        console.error('초기설정에러',error);
-      })
+    if (initalValue) {
+      axios
+        .get(`/place/detail/${initalValue}/${userId}/`)
+        .then((response) => {
+          setSelectedPlace(response.data.place_detail.tour_name);
+        })
+        .catch((error) => {
+          console.error('초기설정에러', error);
+        });
     }
   }, []);
 
@@ -235,7 +248,6 @@ const Checkbox = ({ onChange, initalValue }) => {
     <>
       <CheckboxWrapperStyled selectedPlace={selectedPlace !== null}>
         <CheckboxInput
-          className="inp-cbx"
           id="morning"
           type="checkbox"
           onChange={handleCheckboxChange}
@@ -246,7 +258,7 @@ const Checkbox = ({ onChange, initalValue }) => {
               <use xlinkHref="#check-4" />
             </CheckboxSvg>
           </span>
-          <span height='18px'>{selectedPlace || '관광지 선택하기'}</span>
+          <span>{selectedPlace || '관광지 선택하기'}</span>
         </CheckboxLabel>
         <InlineSvg className="inline-svg">
           <symbol id="check-4" viewBox="0 0 12 10">
@@ -256,14 +268,15 @@ const Checkbox = ({ onChange, initalValue }) => {
       </CheckboxWrapperStyled>
 
       {/* 팝업 창 */}
-      <PopupContainer id='popup-area' show={isChecked} >
+      <PopupContainer show={isChecked}>
         <PopupContent>
-          <SearchBar onSearch={handleSearch} searchTerm={searchTerm}/>
-          <ResultArea id='search-area'>
+          {/* 검색어 입력 input */}
+          <SearchBar onSearch={handleSearch} />
+          <ResultArea>
             {isSearchComplete && <PlaceBox contents={searchResult} onSelectPlace={handleSelectPlace} />}
           </ResultArea>
           <ButtonArea>
-            <CloseButton onClick={() => handleClose()}>닫기</CloseButton>
+            <CloseButton onClick={handleClose}>닫기</CloseButton>
           </ButtonArea>
         </PopupContent>
       </PopupContainer>

@@ -26,23 +26,26 @@ const AddFormArea = styled.div`
     max-width: 430px;
     min-width: 320px;
 `;
+
+// 게시글 입력 input
 const TextArea = styled.textarea`
-    border: 1px solid #ccc;
-    height: calc(100%  - 40px - 66px - 75px);
+    border: 1px solid #D9D9D9;
+    height: 450px;
     width: calc(100% - 32px);
     padding: 12px;
-    margin: 10px 16px 0 16px;
+    margin: 20px 16px 0 16px;
     resize: none;
-    font-family: 'Pretendard';
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 400;
     border-radius: 5px;
+    font-family: 'Pretendard';
+    line-height: 1.5;
 `;
+
+// 관광지 선택하기 div
 const LocArea = styled.div`
-    width: calc(100% - 32px);
-    margin: 0 16px;
+    margin: 5px 16px;
     padding: 0;
-    height: 40px;
 `;
 const AddPhotoArea = styled.div`
     height: 66px;
@@ -52,35 +55,36 @@ const AddPhotoArea = styled.div`
     display: flex;
     overflow-x: auto;
     white-space: nowrap; /* 이미지들이 한 줄에 나열되도록 설정 */
-
 `;
+
+// 사진 추가 버튼
 const AddPhotoBtn = styled.button`
     height: 66px;
-    border: 1px solid gray;
+    background-color: white;
+    border: 1px solid #D9D9D9;
     border-radius: 10px;
     margin-right: 10px;
     margin-left: 0px;
     padding: 0;
     width: 60px;
-    flex-shrink: 0; 
     cursor: pointer;
-    &:hover {
-        background-color: #ccc;
-        text-decoration: none;
-        transition-duration: 0.1s;
-    }    
 `;
+
+// 게시글 등록 버튼
 const PostBtn = styled.button`
     width: calc(100% - 32px);
-    margin: 10px 16px 0px 16px;
+    margin: 12px 16px 0px 16px;
     height: 45px;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 10px;
-    background-color: #91EB86;
+    background-color: #333333;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 500;
+    color: white;
+    transition: background-color 0.3s;
+
     &:hover{
-        border: 1px solid black;
+        background-color: #555;
     }
 `;
 const BackBtn = styled.div`
@@ -201,16 +205,15 @@ const AddForm = () => {
         </BackBtn>
         <AddFormArea id='add-form-area'>
             <TextArea 
-                id='text-area' 
                 type='text' 
-                placeholder='내용을 입력해 주세요'
+                placeholder='방문한 관광지에 대한 리뷰와 연결됩니다. 방문 후기, 느낀 점 등을 작성해 주세요!'
                 value={textContent}
                 onChange={(e) => setTextContent(e.target.value)}
             ></TextArea>
-            <LocArea id='loc-check-area'>
+            <LocArea>
                 <Checkbox onChange={handleSearch} initalValue={null}></Checkbox>
             </LocArea>
-            <AddPhotoArea id='add-photo-area'>
+            <AddPhotoArea>
                 <AddPhotoBtn onClick={handleButtonClick}>
                     <CameraIcon />
                 </AddPhotoBtn>
