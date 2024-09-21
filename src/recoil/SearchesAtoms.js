@@ -4,3 +4,8 @@ export const recentSearchesState = atom({
   key: 'recentSearchesState', // 유일한 ID
   default: [], // 기본값은 빈 배열
 });
+
+export const communitySearchValue = atom({
+  key: 'communitySearchValue',
+  default: '',
+});

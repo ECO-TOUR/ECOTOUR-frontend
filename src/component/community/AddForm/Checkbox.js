@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';  // 검색 API 요청에 사용할 라이브러리
+import axios from 'axios';
+// component
 import SearchBar from './PlaceSearchBar';
 import PlaceBox from './PlaceBox';
 
@@ -160,13 +161,13 @@ const ButtonArea = styled.div`
 const CloseButton = styled.button`
   background-color: #333;
   color: white;
-  margin: 5px;
   padding: 8px 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   float: right;
   transition: background-color 0.3s;
+  margin-top: -555px;
 
   &:hover{
       background-color: #555;
@@ -175,11 +176,7 @@ const CloseButton = styled.button`
 
 const Checkbox = ({ onChange, initalValue }) => {
   const [isChecked, setIsChecked] = useState(false);  // 체크박스 상태 관리
-  const [searchTerm, setSearchTerm] = useState(null);   // 검색어 상태 관리
-  const [searchResult, setSearchResult] = useState([]); // 검색 결과 리스트
-  const [isSearchComplete, setIsSearchComplete] = useState(false); // 검색 결과 상태
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null); // 클릭된 박스의 인덱스 상태 추가
+  const [searchTerm, setSearchTerm] = useState('');   // 검색어 상태 관리
   const userId = localStorage.getItem('user_id');
   const access_token = localStorage.getItem('access_token');
 
@@ -188,77 +185,46 @@ const Checkbox = ({ onChange, initalValue }) => {
     setIsChecked(!isChecked); // 체크박스 클릭 시 팝업 열기/닫기
   };
 
-  const handleSearch = async (value) => {
-    setSearchTerm(value); // 검색어 업데이트 
-    setIsSearchComplete(false); 
-  };
+  // 선택한 관광지 변수 값 가져오기
+  const handleValueChange = (newValue) => {
+    setSearchTerm(newValue);
 
-  // 팝업 닫기 버튼 클릭 시
-  const handleClose = () => {
-    setIsChecked(false);  // 팝업 닫기
-    setSelectedIndex(null);  // 팝업이 닫힐 때 선택된 인덱스 초기화
-  };
-
-  const handleSelectPlace = (place) => {
-    if (place != null) {
-      setSelectedPlace(place.tour_name); // 선택한 장소 정보 업데이트
-      setSelectedIndex(null); // 선택된 항목 초기화
-      onChange(place.tour_id);
-      handleClose(); // 선택 후 팝업 닫기
-    } else {
-      setSelectedPlace(null);
-      setSelectedIndex(null); // 선택된 항목 초기화
-      onChange(null);
-    }
-  };
-
-  useEffect(() => {
-    if (searchTerm) {
+    // 선택한 관광지 결과 값 가져오기
+    if (newValue !== null) {
       const fetchData = async () => {
         try {
-          const response = await axios.get(`/place?search=${searchTerm}`, {
-            headers: {
-              Authorization: `Bearer ${access_token}`, // 헤더에 access_token 추가
-            },
+          const response = await axios.get(`/Post/place/search/${userId}/`, {
+            params: { tour_name: newValue },
           });
-          setSearchResult(response.data); // 검색 결과를 상태로 저장
-          setIsSearchComplete(true);
+          setIsChecked(false); // 팝업 닫기
         } catch (error) {
           console.error('검색 중 오류 발생:', error);
         }
       };
       fetchData();
     }
-  }, [searchTerm]);
+  };
 
-  useEffect(() => {
-    if (initalValue) {
-      axios
-        .get(`/place/detail/${initalValue}/${userId}/`)
-        .then((response) => {
-          setSelectedPlace(response.data.place_detail.tour_name);
-        })
-        .catch((error) => {
-          console.error('초기설정에러', error);
-        });
-    }
-  }, []);
+  // 팝업 닫기 버튼 클릭 시
+  const handleClose = () => {
+    setIsChecked(false);  // 팝업 닫기
+  };
 
   return (
     <>
-      <CheckboxWrapperStyled selectedPlace={selectedPlace !== null}>
+      <CheckboxWrapperStyled selectedPlace={searchTerm !== ''}>
         <CheckboxInput
           id="morning"
           type="checkbox"
           onChange={handleCheckboxChange}
         />
-        <CheckboxLabel className="cbx" htmlFor="morning" selectedPlace={selectedPlace !== null}>
+        <CheckboxLabel className="cbx" htmlFor="morning" selectedPlace={searchTerm !== ''}>
           <span>
             <CheckboxSvg width="12px" height="10px">
               <use xlinkHref="#check-4" />
             </CheckboxSvg>
           </span>
-          <span>{selectedPlace || '관광지 선택하기'}</span>
+          <span>{searchTerm || '관광지 선택하기'}</span>
         </CheckboxLabel>
         <InlineSvg className="inline-svg">
           <symbol id="check-4" viewBox="0 0 12 10">
@@ -271,10 +237,8 @@ const Checkbox = ({ onChange, initalValue }) => {
       <PopupContainer show={isChecked}>
         <PopupContent>
           {/* 검색어 입력 input */}
-          <SearchBar onSearch={handleSearch} />
-          <ResultArea>
-            {isSearchComplete && <PlaceBox contents={searchResult} onSelectPlace={handleSelectPlace} />}
-          </ResultArea>
+          <SearchBar onValueChange={handleValueChange}/>
+          <ResultArea/>
           <ButtonArea>
             <CloseButton onClick={handleClose}>닫기</CloseButton>
           </ButtonArea>
