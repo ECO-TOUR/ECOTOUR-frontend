@@ -246,11 +246,7 @@ const Mypage = (props) => {
   const [userProfile, setUserProfile] = useState();
   useEffect(() => {
 
-    axios.get(`/mypage/api/${user_id}/inquire`, {
-      headers: {
-          'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
-      }
-    })
+    axios.get(`/mypage/api/${user_id}/inquire`)
     .then(response => {
         //console.log('user_data',response.data.content.user);
         setUserName(response.data.content.user.username);
