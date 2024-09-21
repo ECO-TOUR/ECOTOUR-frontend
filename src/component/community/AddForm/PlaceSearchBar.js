@@ -88,12 +88,13 @@ const CloseButton = styled.button`
 
 const PlaceSearchBar = ({ onSearch }) => {
   const [searchValue, setSearchValue] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState([]); // 자동완성 저장 배열
 
   // 엔터 클릭 시
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       onSearch(e.target.value);
+      setSearchResults([]);
     }
   };
 
@@ -114,7 +115,6 @@ const PlaceSearchBar = ({ onSearch }) => {
         })
         .catch((error) => {
           console.error(error);
-          setSearchResults([]); // 에러 발생 시 빈 배열 설정
         });
     } else {
       setSearchResults([]); // 입력값이 없으면 리스트 초기화
@@ -133,12 +133,20 @@ const PlaceSearchBar = ({ onSearch }) => {
     setSearchResults([]);
   };
 
+  // input 클릭 시 값 초기화
+  const handleInputFocus = () => {
+    setSearchValue('');
+    setSearchResults([]);
+  };
+
   return (
     <>
       <SearchBarArea>
         <StyledSearchBar 
           type="text" 
           placeholder="검색"         
+          value={searchValue} // 입력된 값을 보여주기 위해 value 바인딩
+          onFocus={handleInputFocus} // 포커스 시 값 초기화
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}>
         </StyledSearchBar>
@@ -165,4 +173,4 @@ const PlaceSearchBar = ({ onSearch }) => {
   )
 }
 
-export default PlaceSearchBar
+export default PlaceSearchBar;

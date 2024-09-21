@@ -66,11 +66,6 @@ const AddPhotoBtn = styled.button`
     padding: 0;
     width: 60px;
     cursor: pointer;
-    &:hover {
-        background-color: #ccc;
-        text-decoration: none;
-        transition-duration: 0.1s;
-    }    
 `;
 
 // 게시글 등록 버튼
