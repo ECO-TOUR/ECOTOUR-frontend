@@ -3,7 +3,22 @@ import styled from 'styled-components';
 export const Component = styled.div`
     padding: 28px 15px;
     display: flex;
-    overflow-x: auto; /* 좌우 스크롤 가능하게 설정 */
+    overflow-x: scroll; /* 좌우 스크롤바 항상 보이게 설정 */
+
+    /* 크롬, 엣지, 사파리에서 스크롤바 스타일링 */
+    &::-webkit-scrollbar {
+        height: 7px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #D9D9D9; /* 스크롤바 색상 */
+        border-radius: 10px; /* 스크롤바 모서리 둥글게 */
+        width: 20%;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: #cfcfcf; /* 마우스 오버 시 색상 변경 (선택 사항) */
+    }
 `;
 
 // content 박스
