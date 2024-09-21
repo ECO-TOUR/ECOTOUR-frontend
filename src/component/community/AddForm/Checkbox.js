@@ -174,7 +174,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const Checkbox = ({ onChange, initalValue }) => {
+const Checkbox = ({ onChange }) => {
   const [isChecked, setIsChecked] = useState(false);  // 체크박스 상태 관리
   const [searchTerm, setSearchTerm] = useState('');   // 검색어 상태 관리
   const userId = localStorage.getItem('user_id');
@@ -197,6 +197,7 @@ const Checkbox = ({ onChange, initalValue }) => {
             params: { tour_name: newValue },
           });
           setIsChecked(false); // 팝업 닫기
+          onChange(response.data.tour_id);
         } catch (error) {
           console.error('검색 중 오류 발생:', error);
         }

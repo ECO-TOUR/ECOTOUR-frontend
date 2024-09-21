@@ -190,7 +190,7 @@ const AddForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
     const [uploadedImageUrl, setUploadedImageUrl] = useState([]);
     const [textContent, setTextContent] = useState('');
-    const [tourId, setTourId] = useState(null);
+    const [tourId, setTourId] = useState('');
     const [isRatingModalOpen, setIsRatingModalOpen] = useState(false); // 별점 팝업 상태
     const [rating, setRating] = useState(0); // 별점 상태
     const fileInputRef = useRef(null);
@@ -233,9 +233,9 @@ const AddForm = () => {
       setUploadedImage(newImages);
   };
 
+  // 등록된 관광지 값 가져오기
   const handleSearch = (value) => {
       setTourId(value);
-      console.log('tour id changed:', value);
   }
 
   // 게시글 등록 버튼 클릭 시
@@ -244,20 +244,26 @@ const AddForm = () => {
       alert('내용 또는 사진을 추가해 주세요');
       return;
     }
-    if (tourId === null) {
+    if (tourId === '') {
       alert('관광지를 선택해 주세요');
       return;
     } 
     // 게시글 등록 전에 별점 팝업 열기
     setIsRatingModalOpen(true); 
   };
+
+  // 별 클릭 시 점수 값 변경 함수
+  const handleStarClick = (index) => {
+    setRating(index + 1);
+  };
   
+  // 별점 팝업에서 게시글 등록 버튼 클릭 시 
   const submitRating = async () => {
     if (rating === 0) {
       alert('별점을 선택해 주세요');
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('text', textContent);
     formData.append('date', new Date().toISOString());
@@ -268,29 +274,24 @@ const AddForm = () => {
   
     try {
       uploadedImage.forEach((file) => {
-        formData.append('img', file);
+        formData.append('img', file); // 'img' must match what you're using in your Django view
       });
-  
+
       const response = await axios.post('/community/api/postwrite/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
+      
       if (response.status === 200) {
-        alert('게시글이 성공적으로 등록되었습니다.');
-        setIsRatingModalOpen(false);
-        navigate('/community/');
+          alert("게시글이 성공적으로 등록되었습니다.");
+          navigate('/community/')
       }
     } catch (error) {
-      console.error('게시글 등록 실패:', error);
-      alert('게시글 등록 중 문제가 발생했습니다.');
+        console.error('게시글 등록 실패:', error);
+        alert('게시글 등록 중 문제가 발생했습니다.');
     }
 
-  };
-
-  const handleStarClick = (index) => {
-    setRating(index + 1);
   };
 
   //뒤로가기
@@ -311,8 +312,9 @@ const AddForm = () => {
                 value={textContent}
                 onChange={(e) => setTextContent(e.target.value)}
             ></TextArea>
+            {/* 관광지 선택 컴포넌트 */}
             <LocArea>
-                <Checkbox onChange={handleSearch} initalValue={null}></Checkbox>
+                <Checkbox onChange={handleSearch}></Checkbox>
             </LocArea>
             <AddPhotoArea>
                 <AddPhotoBtn onClick={handleButtonClick}>
@@ -334,10 +336,11 @@ const AddForm = () => {
                 ))}
             </AddPhotoArea>
             <PostBtn id='post-button' onClick={handlePost}>
-                게시글 등록
+                게시글 작성 완료
             </PostBtn>
         </AddFormArea>
         <Navbar/>
+
         {/* 별점 팝업 */}
         <Overlay isOpen={isRatingModalOpen} onClick={() => setIsRatingModalOpen(false)} />
         <RatingModal isOpen={isRatingModalOpen}>
@@ -350,7 +353,7 @@ const AddForm = () => {
             ))}
           </RatingStars>
           <ButtonWrapper>
-            <SubmitRatingButton onClick={submitRating}>제출</SubmitRatingButton>
+            <SubmitRatingButton onClick={submitRating}>게시글 등록</SubmitRatingButton>
           </ButtonWrapper>
         </RatingModal>
     </>
