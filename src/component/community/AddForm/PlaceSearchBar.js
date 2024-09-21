@@ -90,16 +90,19 @@ const PlaceSearchBar = ({ onSearch }) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
+  // 엔터 클릭 시
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       onSearch(e.target.value);
     }
   };
 
+  // 돋보기 icon 클릭 시
   const handleButtonClick = () => {
     onSearch(searchValue);
   };
 
+  // 자동 완성 함수
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
     if (e.target.value) {
@@ -118,6 +121,7 @@ const PlaceSearchBar = ({ onSearch }) => {
     }
   };
 
+  // 자동 완성 단어 클릭 시
   const handleAutocompleteClick = (result) => {
     setSearchValue(result); // 클릭한 값을 입력란에 설정
     setSearchResults([]); // 자동완성 목록 닫기
