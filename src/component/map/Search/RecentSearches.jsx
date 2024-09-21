@@ -4,7 +4,7 @@ import axios from 'axios';
 import * as S from './Searches.style';
 import { ReactComponent as ClockIcon } from "../../../assets/search_clock.svg";
 
-function RecentSearches() {
+function RecentSearches({ onClickRecentWord }) {
   const queryClient = useQueryClient();
   const userId = localStorage.getItem("user_id"); // 사용자 id
 
@@ -13,7 +13,6 @@ function RecentSearches() {
     ['recentSearches', userId],
     async () => {
       const response = await axios.get(`/place/log/${userId}`);
-      //console.log(response.data);
       return response.data.search_history;
     },
     {
@@ -22,8 +21,13 @@ function RecentSearches() {
     }
   );
 
+  // 중복 검색어 제거
+  const filteredSearches = recentSearches
+    ? Array.from(new Set(recentSearches.map(search => search.search_text)))
+      .map(searchText => recentSearches.find(search => search.search_text === searchText))
+    : [];
+
   // 삭제 기능
-  // React에서는 React Hook을 반드시 함수 컴포넌트나 커스텀 Hook의 최상위에서 호출해야 합니다. 따라서 useMutation을 클릭 이벤트 핸들러 내부에 직접 호출하는 것은 규칙에 어긋남
   const mutation = useMutation(
     async (logId) => {
       await axios.delete(`/place/log/${userId}/${logId}/delete`);
@@ -45,18 +49,18 @@ function RecentSearches() {
 
   return (
     <div>
-      {recentSearches && recentSearches.length > 0 ? (
-        recentSearches.map((search, index) => (
-          <S.Search_div key={index}>
+      {filteredSearches && filteredSearches.length > 0 ? (
+        filteredSearches.map((search, index) => (
+          <S.Search_div key={index} onClick={() => onClickRecentWord(search.search_text)}>
             <ClockIcon />
             <S.Word_text>{search.search_text}</S.Word_text>
             <S.Word_del onClick={() => onClickDelete(search.log_id)}>X</S.Word_del>
           </S.Search_div>
         ))
       ) : (
-          <S.Search_div>
-            <S.NoneText>최근 검색어가 없습니다.</S.NoneText>
-          </S.Search_div>
+        <S.Search_div>
+          <S.NoneText>최근 검색어가 없습니다.</S.NoneText>
+        </S.Search_div>
       )}
     </div>
   );

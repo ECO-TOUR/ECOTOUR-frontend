@@ -41,9 +41,15 @@ function MapSearch() {
       });
   };
 
+  // 자동완성된 단어 클릭 시
   const onClickWord = (result) => {
     setSearchValue(result);
-    searchMutation.mutate(searchValue);
+    searchMutation.mutate(result);
+  }
+
+  // 최근 검색어 단어 클릭 시
+  const onClickRecentWord = (result) => {
+    searchMutation.mutate(result);
   }
 
   // 검색 기능 및 결과 조회
@@ -142,7 +148,7 @@ function MapSearch() {
           <S.Delete_btn onClick={deleteAllSearchLogs}>전체 삭제</S.Delete_btn>
         </S.Recent_header>
         {/* 최근 검색어 리스트 컴포넌트 */}
-        <RecentSearches />
+        <RecentSearches onClickRecentWord={onClickRecentWord}/>
       </S.Recent_container>
 
       {/* 실시간 검색어 */}
