@@ -4,9 +4,14 @@ import Checkbox from '../../component/community/AddForm/Checkbox';
 import AddedPhoto from '../../component/community/AddForm/AddedPhoto';
 import Header from '../../component/main/Header';
 import Navbar from '../../component/main/Navbar';
-import { ReactComponent as CameraIcon } from '../../assets/camera_icon.svg';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { NavAtoms } from '../../recoil/NavAtoms.js';
+// img
+import { ReactComponent as BackBtnIcon } from '../../assets/back_btn.svg';
+import { ReactComponent as CameraIcon } from '../../assets/camera_icon.svg';
+import { ReactComponent as StarIcon } from '../../assets/star.svg';
 
 const AddFormArea = styled.div`
   padding-top: 60px;
@@ -85,54 +90,94 @@ const PostBtn = styled.button`
   }
 `;
 
+// 별점 팝업 뒷 overlay
+const Overlay = styled.div`
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};  /* 상태에 따라 오버레이 표시 여부 결정 */
+  position: fixed;
+  transform: translate(-50%, 0%);
+  top: 0;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);  /* 반투명 검정색 배경 */
+  z-index: 1000;
+`;
+
 // 별점 팝업 스타일
-const RatingModal = styled(Modal)`
-  position: absolute;  /* 위치를 절대값으로 설정 */
-  left: 50%;  /* 부모의 가로 너비 기준으로 50% 이동 */
-  transform: translateX(-50%);  /* 자신의 너비 기준으로 가운데로 이동 */
-  width: 348px;
-  max-height: 300px;  /* 높이를 고정 */
-  overflow-y: auto;  /* 내용이 넘칠 경우 세로 스크롤 사용 */
-  z-index: 1;
+const RatingModal = styled.div`
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};  /* 상태에 따라 표시 여부 결정 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  /* 팝업을 화면 중앙에 위치 */
   background-color: white;
+  padding: 15px;  /* 내부 여백 줄임 */
   border-radius: 10px;
-  margin-top: 5px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 (선택 사항) */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 300px;  /* 가로 크기 작게 설정 */
+  height: 200px;  /* 높이 제한 */
+`;
+
+const RatingText = styled.div`
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    padding: 10px 0px;
 `;
 
 // 별점 표시 스타일
 const RatingStars = styled.div`
   display: flex;
   justify-content: center;
-  margin: 10px 0;
+  padding: 25px 0 15px 0;
 `;
 
-const Star = styled.span`
-  font-size: 2rem;
+// Star 컴포넌트 수정
+const Star = styled.div`
   cursor: pointer;
-  color: ${({ active }) => (active ? '#FFD700' : '#D9D9D9')}; // 별점 활성화 색
   margin: 0 5px;
+`;
+
+// 별 아이콘
+const CustomStarIcon = styled(StarIcon)`
+  width: 2rem;
+  height: 2rem;
+  fill: ${({ active }) => (active ? '#91EB86' : '#D9D9D9')};
+  cursor: pointer;
+  margin: 0 5px;
+`;
+
+// 버튼을 감싸는 부모 div 스타일
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;  /* 버튼을 수평 가운데로 정렬 */
+  margin-top: 25px;  /* 상단에 약간의 여백 추가 */
 `;
 
 // 별점 제출 버튼 스타일
 const SubmitRatingButton = styled.button`
-  padding: 10px 20px;
+  padding: 10px 70px;  /* padding 값을 줄여서 버튼의 크기를 적절히 조정 */
   background-color: #333333;
   color: white;
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  font-size: 14px;
+
   &:hover {
     background-color: #555;
   }
 `;
+
+// 뒤로가기 버튼
 const BackBtn = styled.div`
     position: absolute;
     top: 21px;
     left: 20px;
     color: #D9D9D9;
     cursor: pointer;
-    z-index: 1001;
+    z-index: 1000;
     
     svg{
       width: 13px;
@@ -141,96 +186,125 @@ const BackBtn = styled.div`
 `;
 
 const AddForm = () => {
+
     const [uploadedImage, setUploadedImage] = useState([]);
     const [uploadedImageUrl, setUploadedImageUrl] = useState([]);
     const [textContent, setTextContent] = useState('');
-    const [tourId ,setTourId] = useState(null);
+    const [tourId, setTourId] = useState(null);
+    const [isRatingModalOpen, setIsRatingModalOpen] = useState(false); // 별점 팝업 상태
+    const [rating, setRating] = useState(0); // 별점 상태
     const fileInputRef = useRef(null);
     const userId = localStorage.getItem('user_id');
     const navigate = useNavigate();
+    const [, setHighlightedItem] = useRecoilState(NavAtoms);
 
-    // 파일 선택 핸들러
+    //Nav 변수변경
+    setHighlightedItem('chat')
+
+    // 파일 업로드 시 데이터 처리
     const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        
-        // 최대 5장까지 업로드 제한
-        if (uploadedImage.length + files.length > 5) {
-            alert("최대 5장의 사진만 업로드 할 수 있습니다.");
-            return;
-        }
-        const imageUrls = files.map((file) => URL.createObjectURL(file));
+      const files = Array.from(e.target.files);
+      
+      // 최대 5장까지 업로드 제한
+      if (uploadedImage.length + files.length > 5) {
+          alert("최대 5장의 사진만 업로드 할 수 있습니다.");
+          return;
+      }
+      const imageUrls = files.map((file) => URL.createObjectURL(file));
 
-        setUploadedImage((prevImages) => [...prevImages, ...files]);
-        setUploadedImageUrl((prevImageUrls) => [...prevImageUrls, ...imageUrls]);
+      setUploadedImage((prevImages) => [...prevImages, ...files]);
+      setUploadedImageUrl((prevImageUrls) => [...prevImageUrls, ...imageUrls]);
 
-        fileInputRef.current.value = '';    
-    };
-
-    const handleButtonClick = () => {
-        if (uploadedImage.length >= 5){
-            alert("최대 5장의 사진만 업로드 할 수 있습니다.")
-            return;
-        }
-        fileInputRef.current.click(); // 버튼 클릭 시 파일 입력을 클릭하도록 트리거
-    };
-
-    const imageDelete = (index) => {
-        const newImages =uploadedImage.filter((_, i) => i !== index);
-        setUploadedImage(newImages);
-    };
-
-  const handleSearch = (value) => {
-    setTourId(value);
-    console.log('tour id changed:', value);
+      fileInputRef.current.value = '';    
   };
 
-    const handlePost = async () => {
-        if (uploadedImage.length === 0 || textContent.trim() === '') {
-            alert("내용 또는 사진을 추가해 주세요");
-            return;
-        }
-        if (tourId === null){
-            alert('관광지를 선택해 주세요');
-            return;
-        }
-        const formData = new FormData();
-    
-        formData.append('text', textContent);
-        formData.append('date', new Date().toISOString());
-        formData.append('score', 4);
-        formData.append('hashtag', '#example');
-        formData.append('tour_id', tourId);
-        formData.append('user_id', userId);
-        
-                    
+  //사진 추가 버튼
+  const handleButtonClick = () => {
+    if (uploadedImage.length >= 5){
+        alert("최대 5장의 사진만 업로드 할 수 있습니다.")
+        return;
+    }
+    fileInputRef.current.click(); // 버튼 클릭 시 파일 입력을 클릭하도록 트리거
+  };
 
+  //사진 삭제
+  const imageDelete = (index) => {
+      const newImages =uploadedImage.filter((_, i) => i !== index);
+      setUploadedImage(newImages);
+  };
 
-        try {
-            uploadedImage.forEach((file) => {
-              formData.append('img', file); // 'img' must match what you're using in your Django view
-            });
+  const handleSearch = (value) => {
+      setTourId(value);
+      console.log('tour id changed:', value);
+  }
 
-            const response = await axios.post('/community/api/postwrite/', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            });
-            
-            if (response.status === 200) {
-                alert("게시글이 성공적으로 등록되었습니다.");
-                navigate('/community/')
-            }
-        } catch (error) {
-            console.error('게시글 등록 실패:', error);
-            alert('게시글 등록 중 문제가 발생했습니다.');
-        }
-    };
+  // 게시글 등록 버튼 클릭 시
+  const handlePost = async () => {
+    if (uploadedImage.length === 0 || textContent.trim() === '') {
+      alert('내용 또는 사진을 추가해 주세요');
+      return;
+    }
+    if (tourId === null) {
+      alert('관광지를 선택해 주세요');
+      return;
+    } 
+    // 게시글 등록 전에 별점 팝업 열기
+    setIsRatingModalOpen(true); 
+  };
+  
+  const submitRating = async () => {
+    if (rating === 0) {
+      alert('별점을 선택해 주세요');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('text', textContent);
+    formData.append('date', new Date().toISOString());
+    formData.append('score', rating); // 선택된 별점 사용
+    formData.append('hashtag', '#example');
+    formData.append('tour_id', tourId);
+    formData.append('user_id', userId);
+  
+    try {
+      uploadedImage.forEach((file) => {
+        formData.append('img', file);
+      });
+  
+      const response = await axios.post('/community/api/postwrite/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      if (response.status === 200) {
+        alert('게시글이 성공적으로 등록되었습니다.');
+        setIsRatingModalOpen(false);
+        navigate('/community/');
+      }
+    } catch (error) {
+      console.error('게시글 등록 실패:', error);
+      alert('게시글 등록 중 문제가 발생했습니다.');
+    }
 
+  };
+
+  const handleStarClick = (index) => {
+    setRating(index + 1);
+  };
+
+  //뒤로가기
+  const onClickBackBtn = () => {
+      navigate('/community');
+  };
 
   return (
     <>
         <Header pageName='게시글 작성'/>
-        <AddFormArea>
+        <BackBtn onClick={onClickBackBtn}>
+          <BackBtnIcon />
+        </BackBtn>
+        <AddFormArea id='add-form-area'>
             <TextArea 
                 type='text' 
                 placeholder='방문한 관광지에 대한 리뷰와 연결됩니다. 방문 후기, 느낀 점 등을 작성해 주세요!'
@@ -264,8 +338,23 @@ const AddForm = () => {
             </PostBtn>
         </AddFormArea>
         <Navbar/>
+        {/* 별점 팝업 */}
+        <Overlay isOpen={isRatingModalOpen} onClick={() => setIsRatingModalOpen(false)} />
+        <RatingModal isOpen={isRatingModalOpen}>
+          <RatingText>관광지에 대한 별점을 남겨주세요!</RatingText>
+          <RatingStars>
+            {[...Array(5)].map((_, index) => (
+            <Star key={index} onClick={() => handleStarClick(index)}>
+              <CustomStarIcon active={index < rating} />
+            </Star>
+            ))}
+          </RatingStars>
+          <ButtonWrapper>
+            <SubmitRatingButton onClick={submitRating}>제출</SubmitRatingButton>
+          </ButtonWrapper>
+        </RatingModal>
     </>
-    )
-}
+  );
+};
 
 export default AddForm;
