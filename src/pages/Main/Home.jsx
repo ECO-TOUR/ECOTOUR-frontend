@@ -60,7 +60,7 @@ function Home() {
 
       {/* 추천 생태관광지 */}
       <S.ContentHeader>ECO TOUR 추천 생태관광지</S.ContentHeader>
-      <S.ContentText>ECO TOUR가 000님에게 추천하는 생태관광지를 확인해 보세요</S.ContentText>
+      <S.ContentText>ECO TOUR가 {localStorage.getItem('nickname')}님에게 추천하는 생태관광지를 확인해 보세요</S.ContentText>
       <Recommend/>
 
       {/* top5 생태관광지 */}

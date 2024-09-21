@@ -64,6 +64,7 @@ function KakaoRedirect() {
                 'access_token',
                 res.data.content.access_token // Correct way to access the access token
               );
+              localStorage.setItem('nickname', res.data.content.user.nickname);
               navigate('/main');
             });
         }
