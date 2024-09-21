@@ -58,7 +58,7 @@ function Content() {
             } catch (error) {
                 console.log(error);
             }
-            };
+        };
         
         fetchLike(); // 컴포넌트가 마운트될 때 API 호출
     };
