@@ -201,6 +201,7 @@ const AddForm = () => {
     //Nav 변수변경
     setHighlightedItem('chat')
 
+
     // 파일 업로드 시 데이터 처리
     const handleFileChange = (e) => {
       const files = Array.from(e.target.files);
@@ -216,81 +217,81 @@ const AddForm = () => {
       setUploadedImageUrl((prevImageUrls) => [...prevImageUrls, ...imageUrls]);
 
       fileInputRef.current.value = '';    
-  };
+    };
 
-  //사진 추가 버튼
-  const handleButtonClick = () => {
-    if (uploadedImage.length >= 5){
-        alert("최대 5장의 사진만 업로드 할 수 있습니다.")
-        return;
-    }
-    fileInputRef.current.click(); // 버튼 클릭 시 파일 입력을 클릭하도록 트리거
-  };
-
-  //사진 삭제
-  const imageDelete = (index) => {
-      const newImages =uploadedImage.filter((_, i) => i !== index);
-      setUploadedImage(newImages);
-  };
-
-  // 등록된 관광지 값 가져오기
-  const handleSearch = (value) => {
-      setTourId(value);
-  }
-
-  // 게시글 등록 버튼 클릭 시
-  const handlePost = async () => {
-    if (uploadedImage.length === 0 || textContent.trim() === '') {
-      alert('내용 또는 사진을 추가해 주세요');
-      return;
-    }
-    if (tourId === '') {
-      alert('관광지를 선택해 주세요');
-      return;
-    } 
-    // 게시글 등록 전에 별점 팝업 열기
-    setIsRatingModalOpen(true); 
-  };
-
-  // 별 클릭 시 점수 값 변경 함수
-  const handleStarClick = (index) => {
-    setRating(index + 1);
-  };
-  
-  // 별점 팝업에서 게시글 등록 버튼 클릭 시 
-  const submitRating = async () => {
-    if (rating === 0) {
-      alert('별점을 선택해 주세요');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('text', textContent);
-    formData.append('date', new Date().toISOString());
-    formData.append('score', rating); // 선택된 별점 사용
-    formData.append('hashtag', '#example');
-    formData.append('tour_id', tourId);
-    formData.append('user_id', userId);
-  
-    try {
-      uploadedImage.forEach((file) => {
-        formData.append('img', file); // 'img' must match what you're using in your Django view
-      });
-
-      const response = await axios.post('/community/api/postwrite/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      
-      if (response.status === 200) {
-          alert("게시글이 성공적으로 등록되었습니다.");
-          navigate('/community/')
+    //사진 추가 버튼
+    const handleButtonClick = () => {
+      if (uploadedImage.length >= 5){
+          alert("최대 5장의 사진만 업로드 할 수 있습니다.")
+          return;
       }
-    } catch (error) {
-        console.error('게시글 등록 실패:', error);
-        alert('게시글 등록 중 문제가 발생했습니다.');
+      fileInputRef.current.click(); // 버튼 클릭 시 파일 입력을 클릭하도록 트리거
+    };
+
+    //사진 삭제
+    const imageDelete = (index) => {
+        const newImages =uploadedImage.filter((_, i) => i !== index);
+        setUploadedImage(newImages);
+    };
+
+    // 등록된 관광지 값 가져오기
+    const handleSearch = (value) => {
+        setTourId(value);
     }
+
+    // 게시글 등록 버튼 클릭 시
+    const handlePost = async () => {
+      if (uploadedImage.length === 0 || textContent.trim() === '') {
+        alert('내용 또는 사진을 추가해 주세요');
+        return;
+      }
+      if (tourId === '') {
+        alert('관광지를 선택해 주세요');
+        return;
+      } 
+      // 게시글 등록 전에 별점 팝업 열기
+      setIsRatingModalOpen(true); 
+    };
+
+    // 별 클릭 시 점수 값 변경 함수
+    const handleStarClick = (index) => {
+      setRating(index + 1);
+    };
+    
+    // 별점 팝업에서 게시글 등록 버튼 클릭 시 
+    const submitRating = async () => {
+      if (rating === 0) {
+        alert('별점을 선택해 주세요');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('text', textContent);
+      formData.append('date', new Date().toISOString());
+      formData.append('score', rating); // 선택된 별점 사용
+      formData.append('hashtag', '#example');
+      formData.append('tour_id', tourId);
+      formData.append('user_id', userId);
+  
+      try {
+        uploadedImage.forEach((file) => {
+          formData.append('img', file); // 'img' must match what you're using in your Django view
+        });
+
+        const response = await axios.post('/community/api/postwrite/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        
+        if (response.status === 200) {
+            alert("게시글이 성공적으로 등록되었습니다.");
+            navigate('/community/')
+        }
+      } catch (error) {
+          console.error('게시글 등록 실패:', error);
+          alert('게시글 등록 중 문제가 발생했습니다.');
+      }
 
   };
 
