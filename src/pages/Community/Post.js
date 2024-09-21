@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components'
 import axios from 'axios';
@@ -73,61 +73,64 @@ const SendButton = styled.button`
 const Post = () => {
   const userId = localStorage.getItem('user_id')
   const {postId} = useParams();
-  const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [post, setPost] = useState(null);
   const [commentText, setCommentText] = useState('');
   const [profile, setProfile] = useRecoilState(UserProfile);
 
-  const fetchPost = async () => {
-
-    try{
-      const postResponse = await axios.get(`/community/api/postinquire/${userId}/`, {
-        headers: {
-          'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        }
-      });
-      setPosts(postResponse.data.content);
-      const selectedPost = postResponse.data.content.find(p => p.post_id === Number(postId));
-      setPost(selectedPost);
-      
-      console.log("🚀 ~ selectedPost:", selectedPost)
-      
-      //댓글 가져오기
-      const commentsResponse = await axios.get(`/community/api/commentinquire/${postId}/`)
-      setComments(commentsResponse.data.content);
-      
-      await fetchUserProfile(selectedPost.user_id);
-      console.log(profile);
-    }
-    catch(error){
-        console.error('Error fetching data:', error);
-    }
-  };
-  
-  const fetchUserProfile = async (userId) => {
+  //유저정보 요청
+  const fetchUserProfile = useCallback(async (userId) => {
     try{
       const response = await axios.get(`/mypage/api/${userId}/inquire`)
       const userProfileData =  response.data.content.user;
-      console.log("🚀 ~ fetchUserProfile ~ userProfileData:", userProfileData)
+      // console.log("🚀 ~ fetchUserProfile ~ userProfileData:", userProfileData)
       
       setProfile((prevProfiles) => [
           ...prevProfiles,
           {
-          user_id: userProfileData.user_id,
-          nickname: userProfileData.nickname,
-          profilePhoto: userProfileData.profile_photo
+            userId: userProfileData.user_id,
+            nickname: userProfileData.nickname,
+            profilePhoto: userProfileData.profile_photo,
         }]);
     } catch(error) {
       console.error('프로필 업데이트 에러', error);
     }
-  };
+  },[setProfile]);
+
+  const fetchPost = useCallback(async () => {
+    try {
+      //게시글 및 댓글 불러오기
+      const [postResponse, commentsResponse] = await Promise.all([
+        axios.get(`/community/api/postinquire/${userId}/`, {
+          headers: {
+            'Cache-Control': 'no-cache', // 서버나 브라우저에 캐시를 사용하지 않도록 요청
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        }),
+        axios.get(`/community/api/commentinquire/${postId}/`)
+      ]);
+      
+      //게시글 및 댓글 반영
+      const selectedPost = postResponse.data.content.find(p => p.post_id === Number(postId));
+      setPost(selectedPost);
+      setComments(commentsResponse.data.content);
+  
+      //유저정보 불러오기
+      if (!profile.some((user) => user.userId === selectedPost.user_id)) {
+        await fetchUserProfile(selectedPost.user_id);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }, [postId, userId, profile, fetchUserProfile]);
+  
 
   useEffect(() => {
     fetchPost();  // 컴포넌트 마운트 시 데이터 가져오기
-  }, [postId, userId]);
+  }, [fetchPost]);
+
+
 
   //댓글 달기
   const handleCommentSubmit = () => {
@@ -143,22 +146,10 @@ const Post = () => {
     }).catch(error => {
       console.error("Error submitting comment: ", error);
     })
-
   };
   const handleKeyDown = (e) =>{
-    if(e.key == 'Enter'){
-      axios.post('/community/api/commentwrite/', {
-        'post_id': postId,
-        'user_id': userId,
-        'comments': commentText,
-      }).then(response => {
-        console.log('댓글 달기 성공:', response.data);
-        setCommentText('');
-        fetchPost();
-        
-      }).catch(error => {
-        console.error("Error submitting comment: ", error);
-      })
+    if(e.key === 'Enter'){
+      handleCommentSubmit();
     }
   }
   

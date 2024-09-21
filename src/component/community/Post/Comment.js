@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg'
 import axios from 'axios';
@@ -33,7 +33,6 @@ const ProfilePhoto = styled.img`
     border-radius: 15px;
 `;
 
-
 const Comment = ({comments}) => {
     const [profiles, setProfiles] = useRecoilState(UserProfile);
 
@@ -48,9 +47,9 @@ const Comment = ({comments}) => {
                 setProfiles((prevProfiles) => [
                     ...prevProfiles,
                     {
-                        user_id: userProfileData.user_id,
+                        userId: userProfileData.user_id,
                         nickname: userProfileData.nickname,
-                        profilephoto: userProfileData.profile_photo,
+                        profilePhoto: userProfileData.profile_photo,
                     },
                 ]);
             } catch (error) {
@@ -60,7 +59,7 @@ const Comment = ({comments}) => {
 
         // 댓글을 작성한 유저의 프로필 정보가 profiles에 없을 때만 API 호출
         comments.forEach((comment) => {
-            const userProfileExists = profiles.some((profile) => profile.user_id === comment.user_id);
+            const userProfileExists = profiles.some((profile) => profile.userId === comment.user_id);
             if (!userProfileExists) {
                 fetchProfile(comment.user_id);
             }
@@ -70,11 +69,11 @@ const Comment = ({comments}) => {
     <>
         {comments.length > 0 ? (
             comments.map((comment, index) => {
-                const userProfile = profiles.find((profile) => profile.user_id === comment.user_id)
+                const userProfile = profiles.find((profile) => profile.userId === comment.user_id)
                 return (
                     <CommentContainer key ={index}>
                         {userProfile?(
-                            <ProfilePhoto src={userProfile.profilephoto} />
+                            <ProfilePhoto src={userProfile.profilePhoto} />
                         ):(
                             <ProfileIcon />
                         )}

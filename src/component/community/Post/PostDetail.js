@@ -160,15 +160,15 @@ const PostDetail = ({post, comments}) => {
   useEffect(() => {
     if(post) {
       setLiked(post.like === 'yes');
-      const foundData = profile.find((user) => user.user_id === parseInt(post.user_id))
+      const foundData = profile.find((user) => user.userId === parseInt(post.user_id))
       setUserData(foundData);
-      console.log("🚀 ~ useEffect ~ foundData:", foundData)
+      // console.log("🚀 ~ useEffect ~ foundData:", foundData)
     }
   },[post, profile]);
 
 
+  //사이즈에 따라 게시물 크기 변경
   useEffect(() => {
-      //사이즈에 따라 게시물 크기 변경
       const handleResize = () =>{
           const updateWidth = window.innerWidth > 430 ? 430 : window.innerWidth;
           setWindowWidth(updateWidth);
@@ -181,12 +181,13 @@ const PostDetail = ({post, comments}) => {
       };
   }); 
 
+  //좋아요 토글
   const toggleLike = () => {
       setLiked(prevLiked => !prevLiked);
       LikeHandler(userId, post.post_id);
   };
 
-  //좋아요 기능
+  //좋아요 정보 요청
   const LikeHandler = (userId, postId) => {
     axios.post(`/community/api/postlike/${userId}/`, {
       'post_id':postId, 
@@ -199,6 +200,7 @@ const PostDetail = ({post, comments}) => {
     })
   }
   
+  //포스트 삭제 요청
   const DeletePost = (postId) => {
     axios.delete(`/community/api/postdelete/${postId}`)
     .then(response =>{
@@ -210,6 +212,9 @@ const PostDetail = ({post, comments}) => {
       console.log(error)
     })
   }
+
+
+  //포스트 정보 없을 때 로딩
   if (!post){
     return <div>Loading...</div>
   }
@@ -238,7 +243,7 @@ const PostDetail = ({post, comments}) => {
               )}
                </Span>
             <Control id='control'>
-              {parseInt(post.user_id) == userId?(
+              {parseInt(post.user_id) === userId?(
                 <>
                   <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
                   <Delete onClick={() => DeletePost(post.post_id)}>삭제</Delete>
