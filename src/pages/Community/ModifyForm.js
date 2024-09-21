@@ -8,6 +8,8 @@ import { useNavigate  } from 'react-router-dom';
 import {ReactComponent as CameraIcon} from '../../assets/camera_icon.svg'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+
+
 const AddFormArea = styled.div`
     padding-top: 60px;
     padding-bottom: 70px;
@@ -115,7 +117,7 @@ const ModifyForm = () => {
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
-    },[postId]);
+    },[postId, userId]);
 
     //이미지 업로드
     const handleFileChange = (e) => {

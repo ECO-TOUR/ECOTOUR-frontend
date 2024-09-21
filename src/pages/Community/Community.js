@@ -1,12 +1,13 @@
 import styled from 'styled-components';
-import React , { useState , useEffect }from 'react';
+import React , { useState }from 'react';
 import Header from '../../component/main/Header.js';
 import Navbar from '../../component/main/Navbar.js';
 import Posts from '../../component/community/Main/Posts.js'; 
 import SearchBar from '../../component/community/Main/SearchBar.js'
 import { ReactComponent as WriteIcon } from '../../assets/write.svg';
 import { useNavigate } from 'react-router-dom';
-
+import { useRecoilState } from 'recoil';
+import { NavAtoms } from '../../recoil/NavAtoms.js';
 const CommunityContainer = styled.div`
   padding-top: 60px;
   padding-bottom: 70px;
@@ -22,7 +23,6 @@ const CommunityContainer = styled.div`
   max-width: 430px;
   min-width: 320px;
 `;
-
 const CommunityArea = styled.div`
   margin: 6px 16px;
   display: flex;
@@ -30,18 +30,15 @@ const CommunityArea = styled.div`
   width: calc(100% - 32px);
   min-width: calc(var(--mim-width) - 32px);
 `;
-
 const PostArea = styled.div`
   min-width: calc(320px - 32px);
   width: 100%;
   margin-top: 16px;
   font-weight: bold;
 `;
-
 const PostTitle = styled.div`
   margin-bottom: 10px;
 `;
-
 const AddButtonArea = styled.div`
   position: fixed;
   bottom: 80px;
@@ -115,6 +112,9 @@ const AddPostButton = styled.button`
  
 
 const Community = () => {
+  const [, setHighlightedItem] = useRecoilState(NavAtoms);
+
+  setHighlightedItem('chat')
   const navigate = useNavigate();
 
   const moveToAddForm = () =>{

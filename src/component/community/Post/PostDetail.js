@@ -243,7 +243,7 @@ const PostDetail = ({post, comments}) => {
               )}
                </Span>
             <Control id='control'>
-              {parseInt(post.user_id) === userId?(
+              {parseInt(post.user_id) === parseInt(userId)?(
                 <>
                   <Modify onClick={() => navigate(`/community/modifyform/${post.post_id}`)}>수정</Modify>
                   <Delete onClick={() => DeletePost(post.post_id)}>삭제</Delete>

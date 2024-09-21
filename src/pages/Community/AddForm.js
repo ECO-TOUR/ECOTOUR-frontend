@@ -7,6 +7,8 @@ import Navbar from '../../component/main/Navbar'
 import {ReactComponent as CameraIcon} from '../../assets/camera_icon.svg'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { NavAtoms } from '../../recoil/NavAtoms.js';
 
 const AddFormArea = styled.div`
     padding-top: 60px;
@@ -94,7 +96,10 @@ const AddForm = () => {
     const fileInputRef = useRef(null);
     const userId = localStorage.getItem('user_id');
     const navigate = useNavigate();
+    const [, setHighlightedItem] = useRecoilState(NavAtoms);
 
+    //Nav 변수변경
+    setHighlightedItem('chat')
     // 파일 선택 핸들러
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);

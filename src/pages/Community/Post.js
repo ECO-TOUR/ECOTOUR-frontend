@@ -8,7 +8,7 @@ import PostDetail from '../../component/community/Post/PostDetail.js'
 import {ReactComponent as SendIcon} from '../../assets/send.svg'
 import { useRecoilState } from 'recoil';
 import { UserProfile } from '../../recoil/UserProfileAtoms.js';
-
+import { NavAtoms } from '../../recoil/NavAtoms.js';
 
 const PostContainer = styled.div`
   padding-top: 60px;
@@ -77,6 +77,10 @@ const Post = () => {
   const [post, setPost] = useState(null);
   const [commentText, setCommentText] = useState('');
   const [profile, setProfile] = useRecoilState(UserProfile);
+  const [, setHighlightedItem] = useRecoilState(NavAtoms);
+
+  //Nav 변수변경
+  setHighlightedItem('chat')
 
   //유저정보 요청
   const fetchUserProfile = useCallback(async (userId) => {
