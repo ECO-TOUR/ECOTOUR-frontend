@@ -6,7 +6,6 @@ import Switch from 'react-switch';
 import Header from '../../component/main/Header';
 import Navbar from '../../component/main/Navbar';
 import MyPost from '../../component/Mypage/MyPost';
-import Notice from './Notice/Notice';
 
 const NameTag = styled.div`
   display: flex;
@@ -33,13 +32,6 @@ const FirstLine = styled.span`
   font-size: 19px;
   font-style: normal;
   font-weight: 600;
-`;
-const SecondLine = styled.div`
-  margin-top: 6px;
-  color: #676767;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
 `;
 
 // 내가 쓴 글 container
@@ -246,11 +238,7 @@ const Mypage = (props) => {
   const [userProfile, setUserProfile] = useState();
   useEffect(() => {
 
-    axios.get(`/mypage/api/${user_id}/inquire`, {
-      headers: {
-          'Authorization': `Bearer ${access_token}` // 헤더에 access_token 추가
-      }
-    })
+    axios.get(`/mypage/api/${user_id}/inquire`)
     .then(response => {
         //console.log('user_data',response.data.content.user);
         setUserName(response.data.content.user.username);
@@ -260,7 +248,7 @@ const Mypage = (props) => {
     console.error(error);
     });
 
-  }, []);
+  }, [user_id]);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { ReactComponent as SearchIcon } from '../../../assets/search.svg'
 
@@ -38,22 +38,30 @@ const SearchBarArea = styled.div`
   display: flex;
   align-items: center;
 `
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, reset}) => {
   const [searchValue, setSearchValue] = useState('');
-  const user_id = localStorage.getItem('user_id')
 
+  //검색어 부모로 보냄
   const handleKeyDown = (e) => {
-    if(e.key == 'Enter'){
+    if(e.key === 'Enter'){
       onSearch(e.target.value);
     }
   }
   const handleButtonClick = (e) =>{  
     onSearch(searchValue)
   }
+  
+  // 입력값을 상태로 저장
   const handleInputChange = (e) => {
-    setSearchValue(e.target.value); // 입력값을 상태로 저장
-
+    setSearchValue(e.target.value); 
   };
+
+  useEffect(() => {
+    if(reset){
+      setSearchValue('');
+    }
+  }, [reset])
+
   return (
     <>
     <SearchBarArea id='searchBarArea'>
@@ -61,6 +69,7 @@ const SearchBar = ({ onSearch }) => {
         id='community-search' 
         type="text" 
         placeholder="검색"         
+        value={searchValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}>
       </StyledSearchBar>

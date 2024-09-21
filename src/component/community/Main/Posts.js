@@ -166,7 +166,7 @@ const Posts = ({ searchTerm }) => {
             window.removeEventListener('resize', handleResize);
         };
         
-  }, [searchTerm]); 
+  }, [searchTerm, userId]); 
 
   const toggleLike = (id) => {
     setPosts(prevPosts => 

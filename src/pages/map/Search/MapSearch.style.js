@@ -23,6 +23,7 @@ export const BackBtn = styled.div`
     position: absolute;
     color: #D9D9D9;
     cursor: pointer;
+    z-index: 1002;
 `;
 
 /* 검색 컴포넌트 */
