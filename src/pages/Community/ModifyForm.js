@@ -88,6 +88,7 @@ const PostBtn = styled.button`
 
 const ModifyForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
+    const [ImageUrl, setImageUrl] = useState([]);
     const [textContent, setTextContent] = useState('');
     const [tourId, setTourId] = useState(null);
     const [likes, setLikes] = useState(0);
@@ -103,8 +104,9 @@ const ModifyForm = () => {
                 const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
                 console.log('se',selectedPost);
                 if(selectedPost){
-                    setTextContent(selectedPost.post_text)
+                    setTextContent(selectedPost.post_text);
                     setUploadedImage(selectedPost.post_img);
+                    setImageUrl(selectedPost.post_img);
                     setTourId(selectedPost.tour_id);
                     setLikes(selectedPost.post_likes);
                     setIsTourIdLoaded(true);
@@ -124,6 +126,18 @@ const ModifyForm = () => {
         }
 
         setUploadedImage((prevImages) => [...prevImages, ...files]);
+
+        const newImageUrls = [];
+        files.forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                newImageUrls.push(event.target.result); // 미리보기 URL을 생성하여 추가
+                if (newImageUrls.length === files.length) {
+                    setImageUrl((prevImageUrl) => [...prevImageUrl, ...newImageUrls]); // 새로 생성된 URL들을 기존 URL에 추가
+                }
+            };
+            reader.readAsDataURL(file);
+        });
         fileInputRef.current.value = '';
         console.log('업로드 수정',uploadedImage);
     };
@@ -141,6 +155,7 @@ const ModifyForm = () => {
     const imageDelete = (index) => {
         const newImages =uploadedImage.filter((_, i) => i !== index);
         setUploadedImage(newImages);
+        setImageUrl(newImages)
         console.log('삭제',uploadedImage);
     };
 
@@ -227,7 +242,7 @@ const ModifyForm = () => {
                         multiple
                         onChange={handleFileChange}
                     />
-                {uploadedImage.map((imageSrc, index) => (
+                {ImageUrl.map((imageSrc, index) => (
                     <AddedPhoto 
                         key={index} 
                         imageSrc={imageSrc} 

@@ -6,6 +6,8 @@ import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
 import Comment from './Comment'
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useRecoilState } from 'recoil';
+import { UserProfile } from '../../../recoil/UserProfileAtoms';
 import 'swiper/css';
 
 const StyledPost = styled.div`
@@ -140,25 +142,29 @@ const Span = styled.div`
   display: flex;
 `
 const ProfilePhoto = styled.img`
-    width: 26px;
-    height: 26px;
-    border-radius: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
 `
 
 const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
-  const [profile, setProfile] = useState(null);
   const userId = localStorage.getItem('user_id');
-  const access_token = localStorage.getItem('access_token');
-  
+  const [profile] = useRecoilState(UserProfile);
+  const [userData, setUserData] = useState(null);
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
     if(post) {
       setLiked(post.like === 'yes');
+      const foundData = profile.find((user) => user.user_id === parseInt(post.user_id))
+      setUserData(foundData);
+      console.log("🚀 ~ useEffect ~ foundData:", foundData)
     }
-  },[post]);
+  },[post, profile]);
 
 
   useEffect(() => {
@@ -213,12 +219,24 @@ const PostDetail = ({post, comments}) => {
       <StyledPost id="post-area" width={windowWidth}> 
           <UserArea id="user-area">
             <Span>
-              {profile?(<ProfilePhoto src={profile}></ProfilePhoto>):(<ProfileIcon/>)}
-              <Info>
-                <div>User Id</div>
-                <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
-              </Info>  
-            </Span>
+              {userData?(
+                <>
+                  <ProfilePhoto src={userData.profilePhoto}></ProfilePhoto>
+                  <Info>
+                    <div>{userData.nickname}</div>
+                    <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
+                  </Info>
+                </>  
+                ):(
+                <>
+                  <ProfileIcon/>
+                  <Info>
+                    <div>User Id</div>
+                    <div>{post.last_modified? formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
+                  </Info>
+                </>  
+              )}
+               </Span>
             <Control id='control'>
               {parseInt(post.user_id) == userId?(
                 <>

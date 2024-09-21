@@ -6,6 +6,9 @@ import Header from '../../component/main/Header.js';
 import Navbar from '../../component/main/Navbar.js';
 import PostDetail from '../../component/community/Post/PostDetail.js'
 import {ReactComponent as SendIcon} from '../../assets/send.svg'
+import { useRecoilState } from 'recoil';
+import { UserProfile } from '../../recoil/UserProfileAtoms.js';
+
 
 const PostContainer = styled.div`
   padding-top: 60px;
@@ -74,43 +77,54 @@ const Post = () => {
   const [comments, setComments] = useState([]);
   const [post, setPost] = useState(null);
   const [commentText, setCommentText] = useState('');
+  const [profile, setProfile] = useRecoilState(UserProfile);
 
-  const fetchPost = () => {
-    axios.get(`/community/api/postinquire/${userId}/`
-      , {
+  const fetchPost = async () => {
+
+    try{
+      const postResponse = await axios.get(`/community/api/postinquire/${userId}/`, {
         headers: {
           'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
           'Pragma': 'no-cache',
           'Expires': '0'
         }
-      }
-    )
-      .then(response => {
-        setPosts(response.data.content);
-        console.log('Post',response.data.content);
-        const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
-        setPost(selectedPost);
-        console.log('selectedPost',selectedPost);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
       });
-
-    console.log("🚀 ~ fetchPost ~ postId:", postId)
+      setPosts(postResponse.data.content);
+      const selectedPost = postResponse.data.content.find(p => p.post_id === Number(postId));
+      setPost(selectedPost);
       
-    //댓글 가져오기
-    axios.get(`/community/api/commentinquire/${postId}/`)
-      .then(response => {
-        setComments(response.data.content);
-        console.log('받은 댓글',response.data.content)
-      })
-      .catch(error => {
-        console.error('Error fetching data(comments):', error)
-      })
-
-    
+      console.log("🚀 ~ selectedPost:", selectedPost)
+      
+      //댓글 가져오기
+      const commentsResponse = await axios.get(`/community/api/commentinquire/${postId}/`)
+      setComments(commentsResponse.data.content);
+      
+      await fetchUserProfile(selectedPost.user_id);
+      console.log(profile);
+    }
+    catch(error){
+        console.error('Error fetching data:', error);
+    }
   };
   
+  const fetchUserProfile = async (userId) => {
+    try{
+      const response = await axios.get(`/mypage/api/${userId}/inquire`)
+      const userProfileData =  response.data.content.user;
+      console.log("🚀 ~ fetchUserProfile ~ userProfileData:", userProfileData)
+      
+      setProfile((prevProfiles) => [
+          ...prevProfiles,
+          {
+          user_id: userProfileData.user_id,
+          nickname: userProfileData.nickname,
+          profilePhoto: userProfileData.profile_photo
+        }]);
+    } catch(error) {
+      console.error('프로필 업데이트 에러', error);
+    }
+  };
+
   useEffect(() => {
     fetchPost();  // 컴포넌트 마운트 시 데이터 가져오기
   }, [postId, userId]);
