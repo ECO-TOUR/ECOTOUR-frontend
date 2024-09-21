@@ -147,6 +147,7 @@ const ResultArea = styled.div`
   height: calc(100% - 70px);
   overflow-y: scroll;
 `;
+
 const ButtonArea = styled.div`
   width: 100%;
   height: 30px;
@@ -154,8 +155,10 @@ const ButtonArea = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+// 팝업 닫기 버튼
 const CloseButton = styled.button`
-  background-color: #f44336;
+  background-color: #333;
   color: white;
   margin: 5px;
   padding: 8px 16px;
@@ -163,6 +166,11 @@ const CloseButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   float: right;
+  transition: background-color 0.3s;
+
+  &:hover{
+      background-color: #555;
+  }
 `;
 
 const Checkbox = ({ onChange, initalValue }) => {

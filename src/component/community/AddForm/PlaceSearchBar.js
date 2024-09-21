@@ -10,22 +10,24 @@ const StyledSearchBar = styled.input`
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
-    padding-left: 15px;
+    padding-left: 17px;
     padding-right: 15px;
     color: #333333;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 13px;
     box-sizing: border-box;
 `;
+
+// 검색 버튼
 const SearchButton = styled.div`
   position: relative;
-  right: 30px;
+  right: 35px;
   height: 20px;
   width: 0px;
   cursor: pointer;
   svg{
-    width: 23px;
-    height: 23px;
+    width: 22px;
+    height: 22px;
   }
   &:hover {
     transform: scale(1.05); /* 호버 시 살짝 확대 */
@@ -57,7 +59,6 @@ const PlaceSearchBar = ({ onSearch }) => {
     <>
       <SearchBarArea id='searchBarArea'>
         <StyledSearchBar 
-          id='community-search' 
           type="text" 
           placeholder="검색"         
           onChange={handleInputChange}
