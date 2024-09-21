@@ -26,7 +26,7 @@ function MapSearch() {
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]); // 자동 검색어 결과 상태
 
-  // 입력 상태 없데이트
+  // 자동 입력 입력 상태 없데이트
   const handleInputChange = (event) => {
     setSearchValue(event.target.value);  // 입력된 값으로 상태 업데이트
     // 입력값이 비어있지 않을 때만 자동완성API 호출
