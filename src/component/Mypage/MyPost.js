@@ -6,6 +6,7 @@ import LikeIcon from '../../assets/heart.svg'
 import CommentIcon from '../../assets/comment.svg'
 
 const Component = styled.div`
+    height: 182px;
     margin: 10px 30px;
     padding-bottom: 10px;
     display: flex;
