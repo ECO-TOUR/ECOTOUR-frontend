@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import React , { useState , useEffect }from 'react';
+import React from 'react';
 import Header from '../../component/main/Header.js';
 import Navbar from '../../component/main/Navbar.js';
-import { useNavigate } from 'react-router-dom';
 import MyPost from '../../component/Mypage/MyPostLarge.js';
+import { useRecoilState } from 'recoil';
+import { NavAtoms } from '../../recoil/NavAtoms.js';
 
 const CommunityContainer = styled.div`
   padding-top: 60px;
@@ -41,10 +42,12 @@ const PostTitle = styled.div`
 `;
 
  
-const Community = () => {
-  const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState(null);
-  
+const Community = () => {  
+  const [, setHighlightedItem] = useRecoilState(NavAtoms);
+
+  //Nav 변수변경
+  setHighlightedItem('account')
+
   return (
     <>
       <Header pageName="내가 쓴 글" />

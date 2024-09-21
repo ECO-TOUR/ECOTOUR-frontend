@@ -248,7 +248,7 @@ const Mypage = (props) => {
     console.error(error);
     });
 
-  }, []);
+  }, [user_id]);
 
   return (
     <div>

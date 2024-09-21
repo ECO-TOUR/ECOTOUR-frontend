@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import Header from '../../component/main/Header'
 import Navbar from '../../component/main/Navbar'
 import Content from '../../component/like/Content/Content'
+import { useRecoilState } from 'recoil';
+import { NavAtoms } from '../../recoil/NavAtoms.js';
 
 const LikeContainer = styled.div`
   padding-top: 10px;
@@ -20,6 +22,11 @@ const LikeContainer = styled.div`
 `;
 
 const LikeMain = () => {
+  const [, setHighlightedItem] = useRecoilState(NavAtoms);
+
+  //Nav 변수변경
+  setHighlightedItem('heart')
+
   return (
     <>
     <Header pageName="찜목록"/>
