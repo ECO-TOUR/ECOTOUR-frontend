@@ -8,6 +8,8 @@ import { ReactComponent as WriteIcon } from '../../assets/write.svg';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../recoil/NavAtoms.js';
+import { ReactComponent as BackBtnIcon } from '../../assets/back_btn.svg';
+
 const CommunityContainer = styled.div`
   padding-top: 60px;
   padding-bottom: 70px;
@@ -109,31 +111,63 @@ const AddPostButton = styled.button`
     height: 45px;
   }
 `;
- 
+const BackBtn = styled.div`
+position: absolute;
+top: 21px;
+left: 20px;
+color: #D9D9D9;
+cursor: pointer;
+z-index: 1001;
+display: ${(props) => (props.visible ? 'block' : 'none')};
+
+svg{
+  width: 13px;
+  height: 18px;
+}
+`;
+
 
 const Community = () => {
   const [, setHighlightedItem] = useRecoilState(NavAtoms);
-
-  setHighlightedItem('chat')
+  const [isBntActivate, setIsBntActivate] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(null);
+  const [reset, setReset] = useState(false);
   const navigate = useNavigate();
 
+  //nav아이콘 하이라트
+  setHighlightedItem('chat')
+
+  //게시글작성으로 이동
   const moveToAddForm = () =>{
     navigate('./addform/')
   }
 
-  const [searchTerm, setSearchTerm] = useState(null);
-  
+  //검색 api 호출
   const handleSearch = async (term) => {
     await setSearchTerm(term); //검색어 업데이트 
+    if(term){
+      setIsBntActivate(true);
+      setReset(false);
+    }
     console.log("🚀 ~ Community ~ updatedSearchTerm:", searchTerm)
   } 
+
+  //뒤로가기
+  const onClickBackBtn = () => {
+    setSearchTerm(null);
+    setIsBntActivate(false);
+    setReset(true);
+  };
 
   return (
     <>
       <Header pageName="게시판" />
+      <BackBtn onClick={onClickBackBtn} visible={isBntActivate}>
+        <BackBtnIcon />
+      </BackBtn>
       <CommunityContainer id='community-container'>
         <CommunityArea id='community-area'>
-          <SearchBar onSearch={handleSearch}/>
+          <SearchBar onSearch={handleSearch} reset={reset}/>
           <PostArea id='post-area'>
             <PostTitle id='post-title'>{searchTerm?'검색 게시글':'전체 게시글'}</PostTitle>
             <Posts id='post' searchTerm={searchTerm}/>
