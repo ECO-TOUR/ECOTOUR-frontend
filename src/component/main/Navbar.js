@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { ReactComponent as AccountIcon } from '../../assets/account.svg';
 import { ReactComponent as HeartIcon } from '../../assets/heart.svg';
@@ -26,7 +26,6 @@ const NavbarArea = styled.div`
   left: 50%; /* 화면 중앙에 수평 위치 조정 */
   transform: translateX(-50%); /* 중앙 정렬을 위해 위치 조정 */
 `;
-
 const NavItem = styled.button`
   background: none;
   padding: 0;

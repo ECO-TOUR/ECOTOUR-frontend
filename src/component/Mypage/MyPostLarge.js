@@ -34,11 +34,11 @@ const ContentName = styled.div`
     font-weight: 600;
     height: 10%;
     font-size: 15px;
-    padding: 2px 0px 0px 9px;
+    padding: 4px 0px 0px 9px;
 `;
 
 const ContentRegion = styled.div`
-    height: 10%;
+    height: 7%;
     color: #676767;
     font-size: 12px;
     font-weight: 400;
@@ -71,7 +71,7 @@ function MyPostLarge() {
         const getPost = async () => {
             try {
                 const response = await axios.get(`/community/api/mypost/${userId}/`);
-                console.log('내 게시글 목록:', response.data);
+                // console.log('내 게시글 목록:', response.data);
     
                 if (response.data && response.data.content) {
                     setPosts(response.data.content); // 먼저 posts 상태를 업데이트합니다.

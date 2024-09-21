@@ -8,6 +8,8 @@ import { useNavigate  } from 'react-router-dom';
 import {ReactComponent as CameraIcon} from '../../assets/camera_icon.svg'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { ReactComponent as BackBtnIcon } from '../../assets/back_btn.svg';
+
 const AddFormArea = styled.div`
     padding-top: 60px;
     padding-bottom: 70px;
@@ -85,9 +87,23 @@ const PostBtn = styled.button`
         border: 1px solid black;
     }
 `;
+const BackBtn = styled.div`
+    position: absolute;
+    top: 21px;
+    left: 20px;
+    color: #D9D9D9;
+    cursor: pointer;
+    z-index: 1001;
+    
+    svg{
+      width: 13px;
+      height: 18px;
+    }
+`;
 
 const ModifyForm = () => {
     const [uploadedImage, setUploadedImage] = useState([]);
+    const [ImageUrl, setImageUrl] = useState([]);
     const [textContent, setTextContent] = useState('');
     const [tourId, setTourId] = useState(null);
     const [likes, setLikes] = useState(0);
@@ -103,8 +119,9 @@ const ModifyForm = () => {
                 const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
                 console.log('se',selectedPost);
                 if(selectedPost){
-                    setTextContent(selectedPost.post_text)
+                    setTextContent(selectedPost.post_text);
                     setUploadedImage(selectedPost.post_img);
+                    setImageUrl(selectedPost.post_img);
                     setTourId(selectedPost.tour_id);
                     setLikes(selectedPost.post_likes);
                     setIsTourIdLoaded(true);
@@ -113,7 +130,7 @@ const ModifyForm = () => {
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
-    },[postId]);
+    },[postId, userId]);
 
     //이미지 업로드
     const handleFileChange = (e) => {
@@ -124,6 +141,18 @@ const ModifyForm = () => {
         }
 
         setUploadedImage((prevImages) => [...prevImages, ...files]);
+
+        const newImageUrls = [];
+        files.forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                newImageUrls.push(event.target.result); // 미리보기 URL을 생성하여 추가
+                if (newImageUrls.length === files.length) {
+                    setImageUrl((prevImageUrl) => [...prevImageUrl, ...newImageUrls]); // 새로 생성된 URL들을 기존 URL에 추가
+                }
+            };
+            reader.readAsDataURL(file);
+        });
         fileInputRef.current.value = '';
         console.log('업로드 수정',uploadedImage);
     };
@@ -141,6 +170,7 @@ const ModifyForm = () => {
     const imageDelete = (index) => {
         const newImages =uploadedImage.filter((_, i) => i !== index);
         setUploadedImage(newImages);
+        setImageUrl(newImages)
         console.log('삭제',uploadedImage);
     };
 
@@ -149,6 +179,7 @@ const ModifyForm = () => {
         console.log('tour id changed:', value);
     }
 
+    //게시글 수정 요청
     const handlePost = async () => {
         if (uploadedImage.length === 0 || textContent.trim() === '') {
             alert("내용 또는 사진을 추가해 주세요");
@@ -197,6 +228,11 @@ const ModifyForm = () => {
         }
     };
 
+    //뒤로가기
+    const onClickBackBtn = () => {
+        navigate(`/community/post/${postId}`);
+    };
+
     if (!isTourIdLoaded) {
         return <div>Loading...</div>;  // tourId가 로드될 때까지 로딩 메시지 표시
     }
@@ -204,6 +240,9 @@ const ModifyForm = () => {
     return (
     <>
         <Header pageName='게시글 수정'/>
+        <BackBtn onClick={onClickBackBtn}>
+          <BackBtnIcon />
+        </BackBtn>
         <AddFormArea id='add-form-area'>
             <TextArea 
                 id='text-area' 
@@ -227,7 +266,7 @@ const ModifyForm = () => {
                         multiple
                         onChange={handleFileChange}
                     />
-                {uploadedImage.map((imageSrc, index) => (
+                {ImageUrl.map((imageSrc, index) => (
                     <AddedPhoto 
                         key={index} 
                         imageSrc={imageSrc} 

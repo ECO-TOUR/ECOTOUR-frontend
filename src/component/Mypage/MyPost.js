@@ -6,9 +6,30 @@ import LikeIcon from '../../assets/heart.svg'
 import CommentIcon from '../../assets/comment.svg'
 
 const Component = styled.div`
-    padding: 10px 30px;
+    height: 182px;
+    margin: 10px 30px;
+    padding-bottom: 10px;
     display: flex;
-    overflow-x: auto;
+    overflow-x: hidden;
+    user-select: none; /* 텍스트 선택 방지 */
+    
+    &:hover {
+        overflow-x: scroll; /* 호버 시 스크롤 바 표시 */
+    }
+
+    &::-webkit-scrollbar {
+        height: 8px; /* 스크롤 바 높이 조정 */
+        width: 80%;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #cccccc; /* 스크롤 바 색상 */
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #f5f5f5; /* 스크롤 바 트랙 색상 */
+    }
 `;
 
 const ContentBox = styled.div`
@@ -53,16 +74,31 @@ const ScoreText = styled.div`
     font-size: 11px;
 `;
 
+const MoreBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 20px;
+  height: 164px;
+  flex-shrink: 0;
+  margin: 0 5px;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: default;
+`;
+
 function MyPost() {
     const [posts, setPosts] = useState([]);
     const userId = localStorage.getItem('user_id')
     const [placeNames, setPlaceNames ]= useState([]);
 
+
     useEffect(() => {
         const getPost = async () => {
             try {
                 const response = await axios.get(`/community/api/mypost/${userId}/`);
-                console.log('내 게시글 목록:', response.data);
+                // console.log('내 게시글 목록:', response.data);
     
                 if (response.data && response.data.content) {
                     setPosts(response.data.content); // 먼저 posts 상태를 업데이트합니다.
@@ -103,22 +139,27 @@ function MyPost() {
         navigate(`/community/post/${id}`);
     };
     
+
+
     return (
-        <Component id='component'>
-            {posts.length > 0 ?(
-                posts.map((content, index) => (
-                    <ContentBox key={content.post_id} onClick={() => onClickBox(content.post_id)}>
-                        <ContentImage src={content.post_img[0]} />
-                        <ContentName>{content.post_text}</ContentName>
-                        <ContentRegion>{placeNames[index]}</ContentRegion>
-                        <ScoreContainer>
-                            <img src={LikeIcon} alt="like" width="12px" height="12px" color='red'/>
-                            <ScoreText>{content.post_likes}</ScoreText>
-                            <img src={CommentIcon} alt="like" width="12px" height="12px" color='red'/>
-                            <ScoreText>{content.comm_cnt}</ScoreText>
-                        </ScoreContainer>
-                    </ContentBox>
-                ))
+        <Component id="component">
+        {posts.length > 0 ? (
+        <>
+            {posts.slice(0, 5).map((content, index) => (
+                <ContentBox key={content.post_id} onClick={() => onClickBox(content.post_id)}>
+                <ContentImage src={content.post_img[0]} />
+                <ContentName>{content.post_text}</ContentName>
+                <ContentRegion>{placeNames[index]}</ContentRegion>
+                <ScoreContainer>
+                    <img src={LikeIcon} alt="like" width="12px" height="12px" color="red" />
+                    <ScoreText>{content.post_likes}</ScoreText>
+                    <img src={CommentIcon} alt="comment" width="12px" height="12px" />
+                    <ScoreText>{content.comm_cnt}</ScoreText>
+                </ScoreContainer>
+                </ContentBox>
+            ))}
+            {posts.length > 5 && <MoreBox>...</MoreBox>} {/* 5개 이상일 경우 "..." 표시 */}
+        </>
             ):(<div>아직 게시글이 없습니다.</div>)}
         </Component>
     );
