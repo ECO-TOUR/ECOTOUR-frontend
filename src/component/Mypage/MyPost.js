@@ -97,7 +97,7 @@ function MyPost() {
         const getPost = async () => {
             try {
                 const response = await axios.get(`/community/api/mypost/${userId}/`);
-                console.log('내 게시글 목록:', response.data);
+                // console.log('내 게시글 목록:', response.data);
     
                 if (response.data && response.data.content) {
                     setPosts(response.data.content); // 먼저 posts 상태를 업데이트합니다.

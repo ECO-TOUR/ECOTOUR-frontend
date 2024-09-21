@@ -6,7 +6,6 @@ import Switch from 'react-switch';
 import Header from '../../component/main/Header';
 import Navbar from '../../component/main/Navbar';
 import MyPost from '../../component/Mypage/MyPost';
-import Notice from './Notice/Notice';
 
 const NameTag = styled.div`
   display: flex;
@@ -33,13 +32,6 @@ const FirstLine = styled.span`
   font-size: 19px;
   font-style: normal;
   font-weight: 600;
-`;
-const SecondLine = styled.div`
-  margin-top: 6px;
-  color: #676767;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
 `;
 
 // 내가 쓴 글 container
