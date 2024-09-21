@@ -9,6 +9,8 @@ import {ReactComponent as SendIcon} from '../../assets/send.svg'
 import { useRecoilState } from 'recoil';
 import { UserProfile } from '../../recoil/UserProfileAtoms.js';
 import { NavAtoms } from '../../recoil/NavAtoms.js';
+import { ReactComponent as BackBtnIcon } from '../../assets/back_btn.svg';
+import { useNavigate } from 'react-router-dom';
 
 const PostContainer = styled.div`
   padding-top: 60px;
@@ -68,7 +70,19 @@ const SendButton = styled.button`
     fill: #555555;
   }
 `;
-
+const BackBtn = styled.div`
+    position: absolute;
+    top: 21px;
+    left: 20px;
+    color: #D9D9D9;
+    cursor: pointer;
+    z-index: 1001;
+    
+    svg{
+      width: 13px;
+      height: 18px;
+    }
+`;
 
 const Post = () => {
   const userId = localStorage.getItem('user_id')
@@ -78,6 +92,8 @@ const Post = () => {
   const [commentText, setCommentText] = useState('');
   const [profile, setProfile] = useRecoilState(UserProfile);
   const [, setHighlightedItem] = useRecoilState(NavAtoms);
+  const navigate = useNavigate();
+
 
   //Nav 변수변경
   setHighlightedItem('chat')
@@ -156,10 +172,18 @@ const Post = () => {
       handleCommentSubmit();
     }
   }
-  
+
+  //뒤로가기
+  const onClickBackBtn = () => {
+    navigate(-1);
+  };
+
   return (
     <>
         <Header pageName="게시판" />
+        <BackBtn onClick={onClickBackBtn}>
+          <BackBtnIcon />
+        </BackBtn>
         <PostContainer id='community-container'>
           <PostDetail post = {post} comments={comments} />
         </PostContainer>

@@ -8,7 +8,7 @@ import { useNavigate  } from 'react-router-dom';
 import {ReactComponent as CameraIcon} from '../../assets/camera_icon.svg'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import { ReactComponent as BackBtnIcon } from '../../assets/back_btn.svg';
 
 const AddFormArea = styled.div`
     padding-top: 60px;
@@ -85,6 +85,19 @@ const PostBtn = styled.button`
     font-weight: bold;
     &:hover{
         border: 1px solid black;
+    }
+`;
+const BackBtn = styled.div`
+    position: absolute;
+    top: 21px;
+    left: 20px;
+    color: #D9D9D9;
+    cursor: pointer;
+    z-index: 1001;
+    
+    svg{
+      width: 13px;
+      height: 18px;
     }
 `;
 
@@ -166,6 +179,7 @@ const ModifyForm = () => {
         console.log('tour id changed:', value);
     }
 
+    //게시글 수정 요청
     const handlePost = async () => {
         if (uploadedImage.length === 0 || textContent.trim() === '') {
             alert("내용 또는 사진을 추가해 주세요");
@@ -214,6 +228,11 @@ const ModifyForm = () => {
         }
     };
 
+    //뒤로가기
+    const onClickBackBtn = () => {
+        navigate(`/community/post/${postId}`);
+    };
+
     if (!isTourIdLoaded) {
         return <div>Loading...</div>;  // tourId가 로드될 때까지 로딩 메시지 표시
     }
@@ -221,6 +240,9 @@ const ModifyForm = () => {
     return (
     <>
         <Header pageName='게시글 수정'/>
+        <BackBtn onClick={onClickBackBtn}>
+          <BackBtnIcon />
+        </BackBtn>
         <AddFormArea id='add-form-area'>
             <TextArea 
                 id='text-area' 

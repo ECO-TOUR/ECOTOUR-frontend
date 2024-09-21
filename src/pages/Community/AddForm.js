@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../recoil/NavAtoms.js';
+import { ReactComponent as BackBtnIcon } from '../../assets/back_btn.svg';
 
 const AddFormArea = styled.div`
     padding-top: 60px;
@@ -25,7 +26,6 @@ const AddFormArea = styled.div`
     max-width: 430px;
     min-width: 320px;
 `;
-
 const TextArea = styled.textarea`
     border: 1px solid #ccc;
     height: calc(100%  - 40px - 66px - 75px);
@@ -38,14 +38,12 @@ const TextArea = styled.textarea`
     font-weight: 600;
     border-radius: 5px;
 `;
-
 const LocArea = styled.div`
     width: calc(100% - 32px);
     margin: 0 16px;
     padding: 0;
     height: 40px;
 `;
-
 const AddPhotoArea = styled.div`
     height: 66px;
     width: calc(100% - 32px);
@@ -56,7 +54,6 @@ const AddPhotoArea = styled.div`
     white-space: nowrap; /* 이미지들이 한 줄에 나열되도록 설정 */
 
 `;
-
 const AddPhotoBtn = styled.button`
     height: 66px;
     border: 1px solid gray;
@@ -73,7 +70,6 @@ const AddPhotoBtn = styled.button`
         transition-duration: 0.1s;
     }    
 `;
-
 const PostBtn = styled.button`
     width: calc(100% - 32px);
     margin: 10px 16px 0px 16px;
@@ -85,6 +81,19 @@ const PostBtn = styled.button`
     font-weight: bold;
     &:hover{
         border: 1px solid black;
+    }
+`;
+const BackBtn = styled.div`
+    position: absolute;
+    top: 21px;
+    left: 20px;
+    color: #D9D9D9;
+    cursor: pointer;
+    z-index: 1001;
+    
+    svg{
+      width: 13px;
+      height: 18px;
     }
 `;
 
@@ -100,7 +109,8 @@ const AddForm = () => {
 
     //Nav 변수변경
     setHighlightedItem('chat')
-    // 파일 선택 핸들러
+
+    // 파일 업로드 시 데이터 처리
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
         
@@ -117,6 +127,7 @@ const AddForm = () => {
         fileInputRef.current.value = '';    
     };
 
+    //사진 추가 버튼
     const handleButtonClick = () => {
         if (uploadedImage.length >= 5){
             alert("최대 5장의 사진만 업로드 할 수 있습니다.")
@@ -125,6 +136,7 @@ const AddForm = () => {
         fileInputRef.current.click(); // 버튼 클릭 시 파일 입력을 클릭하도록 트리거
     };
 
+    //사진 삭제
     const imageDelete = (index) => {
         const newImages =uploadedImage.filter((_, i) => i !== index);
         setUploadedImage(newImages);
@@ -135,6 +147,7 @@ const AddForm = () => {
         console.log('tour id changed:', value);
     }
 
+    //게시글 작성 요청
     const handlePost = async () => {
         if (uploadedImage.length === 0 || textContent.trim() === '') {
             alert("내용 또는 사진을 추가해 주세요");
@@ -153,9 +166,6 @@ const AddForm = () => {
         formData.append('tour_id', tourId);
         formData.append('user_id', userId);
         
-                    
-
-
         try {
             uploadedImage.forEach((file) => {
               formData.append('img', file); // 'img' must match what you're using in your Django view
@@ -177,10 +187,18 @@ const AddForm = () => {
         }
     };
 
+    //뒤로가기
+    const onClickBackBtn = () => {
+        navigate('/community');
+    };
+
 
     return (
     <>
         <Header pageName='게시글 작성'/>
+        <BackBtn onClick={onClickBackBtn}>
+          <BackBtnIcon />
+        </BackBtn>
         <AddFormArea id='add-form-area'>
             <TextArea 
                 id='text-area' 
