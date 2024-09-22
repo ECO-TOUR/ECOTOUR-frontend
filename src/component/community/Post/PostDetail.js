@@ -202,15 +202,22 @@ const PostDetail = ({post, comments}) => {
   
   //포스트 삭제 요청
   const DeletePost = (postId) => {
-    axios.delete(`/community/api/postdelete/${postId}`)
-    .then(response =>{
-      console.log(response)
-      alert("게시글이 삭제되었습니다")
-      navigate('/community')
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    const confirmDelete = window.confirm("정말 이 게시글을 삭제하시겠습니까?");
+  
+    // 확인 버튼을 눌렀을 때만 삭제 요청을 보냄
+    if (confirmDelete) {
+      axios.delete(`/community/api/postdelete/${postId}`)
+        .then(response => {
+          console.log(response);
+          alert("게시글이 삭제되었습니다.");
+          navigate('/community');  // 삭제 후 커뮤니티 페이지로 이동
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      console.log("게시글 삭제가 취소되었습니다.");
+    }
   }
 
 
