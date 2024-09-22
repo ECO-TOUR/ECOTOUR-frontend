@@ -3,7 +3,25 @@ import styled from 'styled-components';
 export const Component = styled.div`
     padding: 28px 15px;
     display: flex;
-    overflow-x: auto; /* 좌우 스크롤 가능하게 설정 */
+    overflow-x: hidden;
+
+    &:hover {
+        overflow-x: scroll; /* 호버 시 스크롤 바 표시 */
+    }
+
+    &::-webkit-scrollbar {
+        height: 8px; /* 스크롤 바 높이 조정 */
+        width: 80%;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #cccccc; /* 스크롤 바 색상 */
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #f5f5f5; /* 스크롤 바 트랙 색상 */
+    }
 `;
 
 // content 박스

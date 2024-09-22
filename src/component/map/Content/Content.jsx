@@ -8,9 +8,10 @@ import exampleImage from '../../../assets/example1.png'; // 이미지 파일을 
 import EmptyHeart from '../../../assets/empty_heart.svg';
 import FillHeart from '../../../assets/click_heart.svg';
 // recoil
-import { useRecoilValue } from "recoil"; 
+import { useRecoilState, useRecoilValue } from "recoil"; 
 import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
 import { recentSearchesState } from '../../../recoil/SearchesAtoms';
+import { likedState } from '../../../recoil/SearchesAtoms';
 
 function Content() {
     const user_id = localStorage.getItem('user_id');
@@ -33,32 +34,27 @@ function Content() {
     }
 
     // 좋아요 상태 변수
-    const [liked, setLiked] = useState([]); // 각 콘텐츠의 좋아요 상태 관리
-    // 좋아요 상태 초기화
-    useEffect(() => {
-        // 초기 좋아요 상태 설정: 서버에서 받은 tourspot_liked 값을 기반으로 liked 배열 초기화
-        const initialLikedState = initialSearchResults.map(content => content.tourspot_liked === "liked");
-        setLiked(initialLikedState);
-    }, [initialSearchResults]);
+    const [liked, setLiked] = useRecoilState(likedState); // 각 콘텐츠의 좋아요 상태 관리
 
     // 좋아요 버튼 클릭 시 호출되는 함수: 특정 콘텐츠의 좋아요 상태를 토글
     const toggleLike = (tour_id, index, event) => {
         event.stopPropagation(); // 클릭 이벤트 전파 중단
+
+        setLiked((prevLiked) => {
+            const newLiked = [...prevLiked];
+            newLiked[index] = !newLiked[index]; // 좋아요 상태 토글
+            return newLiked;
+        });
 
         const fetchLike = async () => {
             try {
                 const response = await axios.post(`/tourlike/api/wishlist/${user_id}/toggle/`, {
                     tour_id: tour_id
                 });
-                setLiked((prevLiked) => {
-                    const newLiked = [...prevLiked];
-                    newLiked[index] = !newLiked[index]; // 좋아요 상태 토글
-                    return newLiked;
-                });
             } catch (error) {
                 console.log(error);
             }
-            };
+        };
         
         fetchLike(); // 컴포넌트가 마운트될 때 API 호출
     };

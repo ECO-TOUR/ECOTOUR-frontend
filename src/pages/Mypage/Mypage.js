@@ -108,7 +108,7 @@ const ToggleSwitch = () => {
 
 const MypageContainer = styled.div`
   padding-top: 60px;
-  padding-bottom: 70px;
+  padding-bottom: 150px;
   margin: 0;
   width: 100%;
   height: 100vh;

@@ -13,15 +13,15 @@ import { ReactComponent as SearchIcon } from '../../../assets/search_icon.svg';
 // recoil
 import { useRecoilState } from 'recoil';
 import { recentSearchesState } from '../../../recoil/SearchesAtoms';
-import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
+import { likedState } from '../../../recoil/SearchesAtoms';
 
 function MapSearch() {
 
   const navigate = useNavigate();
   const userId = localStorage.getItem("user_id");
   const access_token = localStorage.getItem("access_token");
-  const [searchResult, setSearchResult] = useRecoilState(recentSearchesState); // 검색 결과 저장 변수
-  const [bottomSheet, setBottomSheet] = useRecoilState(StateAtoms); // bottomSheet 상태 변수
+  const [, setLiked] = useRecoilState(likedState); // 좋아요 상태 관리 변수
+  const [, setSearchResult] = useRecoilState(recentSearchesState); // 검색 결과 저장 변수
   const queryClient = useQueryClient();
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]); // 자동 검색어 결과 상태
@@ -41,9 +41,15 @@ function MapSearch() {
       });
   };
 
+  // 자동완성된 단어 클릭 시
   const onClickWord = (result) => {
     setSearchValue(result);
-    searchMutation.mutate(searchValue);
+    searchMutation.mutate(result);
+  }
+
+  // 최근 검색어 단어 클릭 시
+  const onClickRecentWord = (result) => {
+    searchMutation.mutate(result);
   }
 
   // 검색 기능 및 결과 조회
@@ -56,12 +62,14 @@ function MapSearch() {
         },
       });
       setSearchResult(response.data.search_results); //검색 결과 저장
-      setBottomSheet(false); // bottomSheet 상태 변경
+
+      const initialLikedState = response.data.search_results.map(content => content.tourspot_liked === "liked");
+      setLiked(initialLikedState);
       return response.data;
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['recentSearches']);
+        queryClient.invalidateQueries(['recentSearches']); // 변수 새로고침
         setSearchValue('');
         navigate('/map-main');
       },
@@ -131,7 +139,7 @@ function MapSearch() {
             </S.SearchWordItem>
           ))
         ) : (
-          <S.SearchWordItem></S.SearchWordItem> // 검색 결과가 없거나 배열이 아닐 때 표시할 내용
+          <S.SearchWordItem/>// 검색 결과가 없거나 배열이 아닐 때 표시할 내용
         )}
       </S.SearchWordBox></>
       }
@@ -142,7 +150,7 @@ function MapSearch() {
           <S.Delete_btn onClick={deleteAllSearchLogs}>전체 삭제</S.Delete_btn>
         </S.Recent_header>
         {/* 최근 검색어 리스트 컴포넌트 */}
-        <RecentSearches />
+        <RecentSearches onClickRecentWord={onClickRecentWord}/>
       </S.Recent_container>
 
       {/* 실시간 검색어 */}

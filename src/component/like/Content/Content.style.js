@@ -9,9 +9,16 @@ export const Header = styled.div`
 
 export const SubHeader = styled.div`
     display: flex;
-    padding: 0px 20px;
-    margin-top: 70px;
+    padding: 22px 20px 19px 14px;
     align-items: center;
+    position: fixed;  /* 화면에 고정 */
+    top: 7%;           /* 상단에 고정 */
+    left: 50%;         /* 왼쪽부터 50% 위치 */
+    transform: translateX(-50%); /* 정확히 중앙으로 이동 */
+    width: 100%;      /* 너비를 전체로 설정 */
+    background-color: white;  /* 배경색을 지정하여 겹치는 요소와 구분 */
+    z-index: 100;     /* 다른 요소 위에 나타나도록 설정 */
+    border-bottom: 1px solid #D9D9D9;
 `;
 
 // 개수
