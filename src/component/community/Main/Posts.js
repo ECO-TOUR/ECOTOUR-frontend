@@ -140,7 +140,7 @@ const Posts = ({ searchTerm, isLike }) => {
         .then(response =>{
           setPosts(response.data.content);
           setFilteredPosts(response.data.content); 
-          console.log(response);
+          console.log('검색결과',response.data.content);
         })
         .catch(error => {
           console.error(error);
