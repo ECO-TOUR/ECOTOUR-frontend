@@ -29,6 +29,7 @@ function RecentSearches({ onClickRecentWord }) {
 
   // 삭제 기능
   const mutation = useMutation(
+
     async (logId) => {
       await axios.delete(`/place/log/${userId}/${logId}/delete`);
     },
@@ -53,8 +54,13 @@ function RecentSearches({ onClickRecentWord }) {
         filteredSearches.map((search, index) => (
           <S.Search_div key={index} onClick={() => onClickRecentWord(search.search_text)}>
             <ClockIcon />
-            <S.Word_text>{search.search_text}</S.Word_text>
-            <S.Word_del onClick={() => onClickDelete(search.log_id)}>X</S.Word_del>
+              <S.Word_text>{search.search_text}</S.Word_text>
+            <S.Word_del 
+              onClick={(e) => {
+                e.stopPropagation();
+                onClickDelete(search.log_id);
+              }}>X
+            </S.Word_del>
           </S.Search_div>
         ))
       ) : (
