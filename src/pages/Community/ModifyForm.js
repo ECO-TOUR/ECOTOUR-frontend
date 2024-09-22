@@ -198,7 +198,7 @@ const ModifyForm = () => {
         axios.get(`/community/api/postinquire/${userId}/`)
             .then(response => {
                 const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
-                console.log('se',selectedPost);
+                // console.log('se',selectedPost);
                 if(selectedPost){
                     setTextContent(selectedPost.post_text);
                     setUploadedImage(selectedPost.post_img);
@@ -236,7 +236,7 @@ const ModifyForm = () => {
             reader.readAsDataURL(file);
         });
         fileInputRef.current.value = '';
-        console.log('업로드 수정',uploadedImage);
+        // console.log('업로드 수정',uploadedImage);
     };
 
     //버튼 클릭 시 파일 입력 하는거 나옴 
@@ -312,12 +312,11 @@ const ModifyForm = () => {
                     formData.append('old_img', file);
                   }
                 });
-            
-                
-            // 폼 데이터 확인을 위한 로그
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
+               
+            // // 폼 데이터 확인을 위한 로그
+            // for (let pair of formData.entries()) {
+            //     console.log(pair[0] + ': ' + pair[1]);
+            // }
             const response = await axios.post('/community/api/postmodify/', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',

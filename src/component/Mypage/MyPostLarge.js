@@ -35,6 +35,9 @@ const ContentName = styled.div`
     height: 10%;
     font-size: 15px;
     padding: 4px 0px 0px 9px;
+    white-space: nowrap; /* 한 줄로 표시 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 말줄임표(...) 표시 */
 `;
 
 const ContentRegion = styled.div`
@@ -43,7 +46,7 @@ const ContentRegion = styled.div`
     font-size: 12px;
     font-weight: 400;
     padding: 2px 0px 0px 9px;
-        white-space: nowrap; /* 한 줄로 표시 */
+    white-space: nowrap; /* 한 줄로 표시 */
     overflow: hidden; /* 넘치는 텍스트 숨김 */
     text-overflow: ellipsis; /* 말줄임표(...) 표시 */
 `;
