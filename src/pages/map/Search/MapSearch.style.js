@@ -8,14 +8,13 @@ export const Search_main_container = styled.div`
 
 /* 헤더 */
 export const Header_container = styled.div`
-    width: 358px;
     border-bottom: 1px solid #E7DDD9;
     padding: 20px 0px;
     font-weight: 800;
     text-align: center;
     color: #333;
-    font-size: 19px;
-    margin: 0px auto;
+    font-size: 17px;
+    margin: 0px 16px;
 `;
 
 // 뒤로가기 버튼
