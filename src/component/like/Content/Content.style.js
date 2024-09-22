@@ -9,7 +9,7 @@ export const Header = styled.div`
 
 export const SubHeader = styled.div`
     display: flex;
-    padding: 15px 20px 13px 14px;
+    padding: 22px 20px 19px 14px;
     align-items: center;
     position: fixed;  /* 화면에 고정 */
     top: 7%;           /* 상단에 고정 */
