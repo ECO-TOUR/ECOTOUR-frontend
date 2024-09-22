@@ -22,7 +22,6 @@ const HeaderContainer = styled.div`
 const HeaderArea = styled.div`
   width: 100%;
   min-width: 320px;
-  height: 60px;
   display: flex;
   align-items: center;
 `;
@@ -32,8 +31,8 @@ const HeaderTitle = styled.div`
   padding: 20px 0px;
   font-weight: 800;
   text-align: center;
-  font-size: 19px;
-  color: ${(props) => props.color || 'black'};
+  font-size: 17px;
+  color: ${(props) => props.color || '#333'};
 `;
 
 const Header = (props) => {

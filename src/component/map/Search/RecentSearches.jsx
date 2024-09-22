@@ -9,7 +9,7 @@ function RecentSearches({ onClickRecentWord }) {
   const userId = localStorage.getItem("user_id"); // 사용자 id
 
   // useQuery로 API로부터 최근 검색어 목록 가져오기
-  const { data: recentSearches, isLoading, isError, error } = useQuery(
+  const { data: recentSearches } = useQuery(
     ['recentSearches', userId],
     async () => {
       const response = await axios.get(`/place/log/${userId}`);

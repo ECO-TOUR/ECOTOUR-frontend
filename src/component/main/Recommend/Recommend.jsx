@@ -20,7 +20,7 @@ function Recommend() {
               }
             });
             setContents(response.data.content);
-            //console.log(response.data);
+            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -35,12 +35,15 @@ function Recommend() {
 
   // 지역 길이 파싱
   const regionParsing = (text) => {
-    const parts = text.split(' ');
-    if (parts.length > 2) {
-        // 두 번째 공백까지의 텍스트를 포함
-        return `${parts[0]} ${parts[1]}`;
+    if (typeof text === 'string') { // text가 문자열인지 확인
+      const parts = text.split(' ');
+      if (parts.length > 2) {
+          // 두 번째 공백까지의 텍스트를 포함
+          return `${parts[0]} ${parts[1]}`;
+      }
+      return text;
     }
-    return text;
+    return ''; // text가 문자열이 아닐 경우 빈 문자열 반환
   };
   
   return (
