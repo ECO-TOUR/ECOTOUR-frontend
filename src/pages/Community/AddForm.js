@@ -28,7 +28,6 @@ const AddFormArea = styled.div`
   max-width: 430px;
   min-width: 320px;
 `;
-
 // 게시글 입력 input
 const TextArea = styled.textarea`
   border: 1px solid #d9d9d9;
@@ -43,7 +42,6 @@ const TextArea = styled.textarea`
   font-family: 'Pretendard';
   line-height: 1.5;
 `;
-
 // 관광지 선택하기 div
 const LocArea = styled.div`
   margin: 5px 16px;
@@ -58,7 +56,6 @@ const AddPhotoArea = styled.div`
   overflow-x: auto;
   white-space: nowrap; /* 이미지들이 한 줄에 나열되도록 설정 */
 `;
-
 // 사진 추가 버튼
 const AddPhotoBtn = styled.button`
   height: 66px;
@@ -71,7 +68,6 @@ const AddPhotoBtn = styled.button`
   width: 60px;
   cursor: pointer;
 `;
-
 // 게시글 등록 버튼
 const PostBtn = styled.button`
   width: calc(100% - 32px);
@@ -89,7 +85,6 @@ const PostBtn = styled.button`
     background-color: #555;
   }
 `;
-
 // 별점 팝업 뒷 overlay
 const Overlay = styled.div`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};  /* 상태에 따라 오버레이 표시 여부 결정 */
@@ -102,7 +97,6 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);  /* 반투명 검정색 배경 */
   z-index: 1000;
 `;
-
 // 별점 팝업 스타일
 const RatingModal = styled.div`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};  /* 상태에 따라 표시 여부 결정 */
@@ -118,27 +112,23 @@ const RatingModal = styled.div`
   width: 300px;  /* 가로 크기 작게 설정 */
   height: 200px;  /* 높이 제한 */
 `;
-
 const RatingText = styled.div`
     font-size: 16px;
     font-weight: 600;
     text-align: center;
     padding: 10px 0px;
 `;
-
 // 별점 표시 스타일
 const RatingStars = styled.div`
   display: flex;
   justify-content: center;
   padding: 25px 0 15px 0;
 `;
-
 // Star 컴포넌트 수정
 const Star = styled.div`
   cursor: pointer;
   margin: 0 5px;
 `;
-
 // 별 아이콘
 const CustomStarIcon = styled(StarIcon)`
   width: 2rem;
@@ -147,14 +137,12 @@ const CustomStarIcon = styled(StarIcon)`
   cursor: pointer;
   margin: 0 5px;
 `;
-
 // 버튼을 감싸는 부모 div 스타일
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;  /* 버튼을 수평 가운데로 정렬 */
   margin-top: 25px;  /* 상단에 약간의 여백 추가 */
 `;
-
 // 별점 제출 버튼 스타일
 const SubmitRatingButton = styled.button`
   padding: 10px 70px;  /* padding 값을 줄여서 버튼의 크기를 적절히 조정 */
@@ -169,7 +157,6 @@ const SubmitRatingButton = styled.button`
     background-color: #555;
   }
 `;
-
 // 뒤로가기 버튼
 const BackBtn = styled.div`
     position: absolute;
@@ -197,6 +184,7 @@ const AddForm = () => {
     const userId = localStorage.getItem('user_id');
     const navigate = useNavigate();
     const [, setHighlightedItem] = useRecoilState(NavAtoms);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     //Nav 변수변경
     setHighlightedItem('chat')
@@ -231,7 +219,9 @@ const AddForm = () => {
     //사진 삭제
     const imageDelete = (index) => {
         const newImages =uploadedImage.filter((_, i) => i !== index);
+        const newImageUrls =uploadedImageUrl.filter((_, i) => i !== index);
         setUploadedImage(newImages);
+        setUploadedImageUrl(newImageUrls);
     };
 
     // 등록된 관광지 값 가져오기
@@ -273,6 +263,9 @@ const AddForm = () => {
       formData.append('tour_id', tourId);
       formData.append('user_id', userId);
   
+      //게시물등록 버튼 비활성화
+      setIsSubmitting(true); 
+
       try {
         uploadedImage.forEach((file) => {
           formData.append('img', file); // 'img' must match what you're using in your Django view
@@ -291,6 +284,8 @@ const AddForm = () => {
       } catch (error) {
           console.error('게시글 등록 실패:', error);
           alert('게시글 등록 중 문제가 발생했습니다.');
+      } finally{
+        setIsSubmitting(false);
       }
 
   };
@@ -354,7 +349,9 @@ const AddForm = () => {
             ))}
           </RatingStars>
           <ButtonWrapper>
-            <SubmitRatingButton onClick={submitRating}>게시글 등록</SubmitRatingButton>
+            <SubmitRatingButton onClick={submitRating} disabled={isSubmitting}>
+              게시글 등록
+            </SubmitRatingButton>
           </ButtonWrapper>
         </RatingModal>
     </>
