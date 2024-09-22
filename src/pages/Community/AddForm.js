@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import Checkbox from '../../component/community/AddForm/Checkbox';
 import AddedPhoto from '../../component/community/AddForm/AddedPhoto';
@@ -86,7 +86,9 @@ const PostBtn = styled.button`
   }
 `;
 // 별점 팝업 뒷 overlay
-const Overlay = styled.div`
+const Overlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen'
+})`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};  /* 상태에 따라 오버레이 표시 여부 결정 */
   position: fixed;
   transform: translate(-50%, 0%);
@@ -98,7 +100,9 @@ const Overlay = styled.div`
   z-index: 1000;
 `;
 // 별점 팝업 스타일
-const RatingModal = styled.div`
+const RatingModal = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen'
+})`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};  /* 상태에 따라 표시 여부 결정 */
   position: absolute;
   top: 50%;
@@ -130,7 +134,9 @@ const Star = styled.div`
   margin: 0 5px;
 `;
 // 별 아이콘
-const CustomStarIcon = styled(StarIcon)`
+const CustomStarIcon = styled(StarIcon).withConfig({
+  shouldForwardProp: (prop) => prop !== 'active'
+})`
   width: 2rem;
   height: 2rem;
   fill: ${({ active }) => (active ? '#91EB86' : '#D9D9D9')};
@@ -187,8 +193,9 @@ const AddForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     //Nav 변수변경
-    setHighlightedItem('chat')
-
+    useEffect(() => {
+      setHighlightedItem('chat');
+    }, [setHighlightedItem]);
 
     // 파일 업로드 시 데이터 처리
     const handleFileChange = (e) => {

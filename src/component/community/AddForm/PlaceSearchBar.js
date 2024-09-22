@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components'
 import PlaceBox from './PlaceBox';
-import { ReactComponent as SearchIcon } from '../../../assets/search.svg'
 
 const SearchBarArea = styled.div`
   display: flex;
@@ -24,22 +23,6 @@ const StyledSearchBar = styled.input`
     font-weight: 500;
     font-size: 13px;
     box-sizing: border-box;
-`;
-
-// 닫기 버튼
-const CloseButton = styled.button`
-  position: sticky; /* 스크롤 시에도 고정 */
-  bottom: 0; /* 하단에 고정 */
-  background: white;
-  border: none;
-  width: 100%;  /* 닫기 버튼을 전체 너비로 확장 */
-  padding: 12px 20px;
-  font-size: 14px;
-  text-align: right;
-  font-size: 12px;
-  cursor: pointer;
-  color: #676767;
-  border-top: 1px solid #f5f5f5;
 `;
 
 const PlaceSearchBar = ({ onValueChange }) => {

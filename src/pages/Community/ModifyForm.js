@@ -9,6 +9,7 @@ import {ReactComponent as CameraIcon} from '../../assets/camera_icon.svg'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { ReactComponent as BackBtnIcon } from '../../assets/back_btn.svg';
+import { ReactComponent as StarIcon } from '../../assets/star.svg';
 
 const AddFormArea = styled.div`
     padding-top: 60px;
@@ -25,7 +26,6 @@ const AddFormArea = styled.div`
     max-width: 430px;
     min-width: 320px;
 `;
-
 const TextArea = styled.textarea`
     border: 1px solid #ccc;
     height: calc(100%  - 40px - 66px - 75px);
@@ -38,12 +38,14 @@ const TextArea = styled.textarea`
     font-weight: 600;
     border-radius: 5px;
 `;
-
 const LocArea = styled.div`
     width: calc(100% - 32px);
     margin: 0 16px;
     padding: 0;
     height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const AddPhotoArea = styled.div`
@@ -54,9 +56,7 @@ const AddPhotoArea = styled.div`
     display: flex;
     overflow-x: auto;
     white-space: nowrap; /* 이미지들이 한 줄에 나열되도록 설정 */
-
 `;
-
 const AddPhotoBtn = styled.button`
     height: 66px;
     border: 1px solid gray;
@@ -73,7 +73,6 @@ const AddPhotoBtn = styled.button`
         transition-duration: 0.1s;
     }    
 `;
-
 const PostBtn = styled.button`
     width: calc(100% - 32px);
     margin: 10px 16px 0px 16px;
@@ -86,6 +85,85 @@ const PostBtn = styled.button`
     &:hover{
         border: 1px solid black;
     }
+`;
+
+// 별점 팝업 뒷 overlay
+const Overlay = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'isOpen'
+})`
+display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};  /* 상태에 따라 오버레이 표시 여부 결정 */
+position: fixed;
+transform: translate(-50%, 0%);
+top: 0;
+left: 50%;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.5);  /* 반투명 검정색 배경 */
+z-index: 1000;
+`;
+// 별점 팝업 스타일
+const RatingModal = styled.div.withConfig({
+shouldForwardProp: (prop) => prop !== 'isOpen'
+})`
+display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};  /* 상태에 따라 표시 여부 결정 */
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);  /* 팝업을 화면 중앙에 위치 */
+background-color: white;
+padding: 15px;  /* 내부 여백 줄임 */
+border-radius: 10px;
+box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+z-index: 1000;
+width: 300px;  /* 가로 크기 작게 설정 */
+height: 200px;  /* 높이 제한 */
+`;
+const RatingText = styled.div`
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    padding: 10px 0px;
+`;
+// 별점 표시 스타일
+const RatingStars = styled.div`
+display: flex;
+justify-content: center;
+padding: 25px 0 15px 0;
+`;
+// Star 컴포넌트 수정
+const Star = styled.div`
+cursor: pointer;
+margin: 0 5px;
+`;
+// 별 아이콘
+const CustomStarIcon = styled(StarIcon).withConfig({
+shouldForwardProp: (prop) => prop !== 'active'
+})`
+width: 2rem;
+height: 2rem;
+fill: ${({ active }) => (active ? '#91EB86' : '#D9D9D9')};
+cursor: pointer;
+margin: 0 5px;
+`;
+// 버튼을 감싸는 부모 div 스타일
+const ButtonWrapper = styled.div`
+display: flex;
+justify-content: center;  /* 버튼을 수평 가운데로 정렬 */
+margin-top: 25px;  /* 상단에 약간의 여백 추가 */
+`;
+// 별점 제출 버튼 스타일
+const SubmitRatingButton = styled.button`
+padding: 10px 70px;  /* padding 값을 줄여서 버튼의 크기를 적절히 조정 */
+background-color: #333333;
+color: white;
+border-radius: 5px;
+border: none;
+cursor: pointer;
+font-size: 14px;
+
+&:hover {
+    background-color: #555;
+}
 `;
 const BackBtn = styled.div`
     position: absolute;
@@ -110,6 +188,9 @@ const ModifyForm = () => {
     const fileInputRef = useRef(null);
     const [isTourIdLoaded, setIsTourIdLoaded] = useState(false);
     const userId = localStorage.getItem('user_id')
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isRatingModalOpen, setIsRatingModalOpen] = useState(false); // 별점 팝업 상태
+    const [rating, setRating] = useState(0); // 별점 상태
     const {postId} = useParams();
     const navigate = useNavigate();
 
@@ -125,6 +206,7 @@ const ModifyForm = () => {
                     setTourId(selectedPost.tour_id);
                     setLikes(selectedPost.post_likes);
                     setIsTourIdLoaded(true);
+                    setRating(selectedPost.post_score);
                 }
             })
             .catch(error => {
@@ -180,10 +262,30 @@ const ModifyForm = () => {
     }
 
     //게시글 수정 요청
+    // 게시글 등록 버튼 클릭 시
     const handlePost = async () => {
         if (uploadedImage.length === 0 || textContent.trim() === '') {
-            alert("내용 또는 사진을 추가해 주세요");
-            return;
+        alert('내용 또는 사진을 추가해 주세요');
+        return;
+        }
+        if (tourId === '') {
+        alert('관광지를 선택해 주세요');
+        return;
+        } 
+        // 게시글 등록 전에 별점 팝업 열기
+        setIsRatingModalOpen(true); 
+    };
+
+    // 별 클릭 시 점수 값 변경 함수
+    const handleStarClick = (index) => {
+        setRating(index + 1);
+    };
+    
+    // 별점 팝업에서 게시글 등록 버튼 클릭 시 
+    const submitRating = async () => {
+        if (rating === 0) {
+        alert('별점을 선택해 주세요');
+        return;
         }
 
         const formData = new FormData();
@@ -194,6 +296,10 @@ const ModifyForm = () => {
         formData.append('hashtag', '#example');
         formData.append('tour_id', tourId);
         formData.append('user_id', userId);
+
+          
+        //게시물등록 버튼 비활성화
+        setIsSubmitting(true); 
 
         
         try {
@@ -230,7 +336,7 @@ const ModifyForm = () => {
 
     //뒤로가기
     const onClickBackBtn = () => {
-        navigate(`/community/post/${postId}`);
+        navigate(`/main`);
     };
 
     if (!isTourIdLoaded) {
@@ -252,7 +358,7 @@ const ModifyForm = () => {
                 onChange={(e) => setTextContent(e.target.value)}
             ></TextArea>
             <LocArea id='loc-check-area'>
-                <Checkbox onChange={handleSearch} initalValue={tourId}></Checkbox>
+                <Checkbox onChange={handleSearch} initialValue={tourId}></Checkbox>
             </LocArea>
             <AddPhotoArea id='add-photo-area'>
                 <AddPhotoBtn onClick={handleButtonClick}>
@@ -278,6 +384,24 @@ const ModifyForm = () => {
             </PostBtn>
         </AddFormArea>
         <Navbar/>
+
+        {/* 별점 팝업 */}
+        <Overlay isOpen={isRatingModalOpen} onClick={() => setIsRatingModalOpen(false)} />
+        <RatingModal isOpen={isRatingModalOpen}>
+          <RatingText>관광지에 대한 별점을 남겨주세요!</RatingText>
+          <RatingStars>
+            {[...Array(5)].map((_, index) => (
+            <Star key={index} onClick={() => handleStarClick(index)}>
+              <CustomStarIcon active={index < rating} />
+            </Star>
+            ))}
+          </RatingStars>
+          <ButtonWrapper>
+            <SubmitRatingButton onClick={submitRating} disabled={isSubmitting}>
+              게시글 등록
+            </SubmitRatingButton>
+          </ButtonWrapper>
+        </RatingModal>
     </>
     )
 }

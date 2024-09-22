@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components';
 
-const AddPhotoBox = styled.div`
+const AddPhotoBox = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'imageSrc',
+})`
     height: 66px;
     border: 1px solid gray;
     border-radius: 10px;
@@ -30,8 +32,11 @@ const AddPhotoBox = styled.div`
 `;
 
 const AddPhoto = ({imageSrc, onClick}) => {
+
+  const encodedImageSrc = encodeURI(imageSrc);
+
   return (
-    <AddPhotoBox imageSrc={imageSrc} onClick={onClick}></AddPhotoBox>
+    <AddPhotoBox imageSrc={encodedImageSrc} onClick={onClick}></AddPhotoBox>
   )
 }
 

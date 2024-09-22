@@ -10,7 +10,7 @@ import { useRecoilState } from 'recoil';
 import { UserProfile } from '../../recoil/UserProfileAtoms.js';
 import { NavAtoms } from '../../recoil/NavAtoms.js';
 import { ReactComponent as BackBtnIcon } from '../../assets/back_btn.svg';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const PostContainer = styled.div`
   padding-top: 60px;
@@ -96,7 +96,9 @@ const Post = () => {
 
 
   //Nav 변수변경
-  setHighlightedItem('chat')
+  useEffect(() => {
+    setHighlightedItem('chat');
+  }, [setHighlightedItem]);
 
   //유저정보 요청
   const fetchUserProfile = useCallback(async (userId) => {

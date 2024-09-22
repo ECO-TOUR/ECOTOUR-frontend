@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React , { useState }from 'react';
+import React , { useState,useEffect }from 'react';
 import Header from '../../component/main/Header.js';
 import Navbar from '../../component/main/Navbar.js';
 import Posts from '../../component/community/Main/Posts.js'; 
@@ -111,7 +111,9 @@ const AddPostButton = styled.button`
     height: 45px;
   }
 `;
-const BackBtn = styled.div`
+const BackBtn = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'visible'
+})`
 position: absolute;
 top: 21px;
 left: 20px;
@@ -135,7 +137,10 @@ const Community = () => {
   const navigate = useNavigate();
 
   //nav아이콘 하이라트
-  setHighlightedItem('chat')
+  useEffect(() => {
+    setHighlightedItem('chat');
+  }, [setHighlightedItem]);
+
 
   //게시글작성으로 이동
   const moveToAddForm = () =>{
