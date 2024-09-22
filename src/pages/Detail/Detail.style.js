@@ -53,7 +53,7 @@ export const Title = styled.div`
     font-size: 22px;
     font-weight: 700;
     margin-left: 25px;
-    width: 290px;
+    width: 250px;
 `;
 
 // 좋아요 공유 아이콘 박스
