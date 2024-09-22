@@ -38,8 +38,14 @@ const PostArea = styled.div`
   margin-top: 16px;
   font-weight: bold;
 `;
+const PostTitleArea = styled.div`
+  width: 100%;
+  height: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 const PostTitle = styled.div`
-  margin-bottom: 10px;
 `;
 const AddButtonArea = styled.div`
   position: fixed;
@@ -127,15 +133,33 @@ svg{
   height: 18px;
 }
 `;
+const StateBtn = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isLike'
+})`
+    border-radius: 15px;
+    background: ${(props) => (props.isLike ? "#91EB86;" : "#333")};
+    color: ${(props) => (props.isLike ? "#333" : "white")};
+    font-size: 12px;
+    padding: 7px 12px;
+    margin: 0px 4px;
+    cursor: pointer;
+    font-weight: 500;
+`;
+
 
 
 const Community = () => {
   const [, setHighlightedItem] = useRecoilState(NavAtoms);
   const [isBntActivate, setIsBntActivate] = useState(false);
+  const [isLike, setIsLike] = useState(false);
   const [searchTerm, setSearchTerm] = useState(null);
   const [reset, setReset] = useState(false);
   const navigate = useNavigate();
 
+  // 별점순 버튼 클릭 시
+  const onClickLikeBtn = () => {
+    setIsLike((prev) => !prev);
+  }
   //nav아이콘 하이라트
   useEffect(() => {
     setHighlightedItem('chat');
@@ -174,8 +198,11 @@ const Community = () => {
         <CommunityArea id='community-area'>
           <SearchBar onSearch={handleSearch} reset={reset}/>
           <PostArea id='post-area'>
-            <PostTitle id='post-title'>{searchTerm?'검색 게시글':'전체 게시글'}</PostTitle>
-            <Posts id='post' searchTerm={searchTerm}/>
+            <PostTitleArea>
+              <PostTitle id='post-title'>{searchTerm?'검색 게시글':'전체 게시글'}</PostTitle>
+              <StateBtn onClick={onClickLikeBtn} isLike={isLike}>좋아요</StateBtn>
+            </PostTitleArea>
+            <Posts id='post' searchTerm={searchTerm} isLike={isLike}/>
           </PostArea>
         </CommunityArea>
       </CommunityContainer>
