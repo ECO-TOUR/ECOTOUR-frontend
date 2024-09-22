@@ -137,7 +137,7 @@ function MapSearch() {
             </S.SearchWordItem>
           ))
         ) : (
-          <S.SearchWordItem></S.SearchWordItem> // 검색 결과가 없거나 배열이 아닐 때 표시할 내용
+          <S.SearchWordItem/>// 검색 결과가 없거나 배열이 아닐 때 표시할 내용
         )}
       </S.SearchWordBox></>
       }
