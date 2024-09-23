@@ -18,6 +18,8 @@ const StyledPost = styled.div`
     flex-direction: column;
     align-self: center;
     padding: 10px;
+    cursor: pointer;
+
 `;
 const PhotoArea = styled.div`
     max-width: 100%;
@@ -33,7 +35,7 @@ const PhotoArea = styled.div`
 const SwiperImage = styled.img`
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     display: block;
 `;
 
