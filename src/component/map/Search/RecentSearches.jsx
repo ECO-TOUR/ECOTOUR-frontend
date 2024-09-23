@@ -9,7 +9,7 @@ function RecentSearches({ onClickRecentWord }) {
   const userId = localStorage.getItem("user_id"); // 사용자 id
 
   // useQuery로 API로부터 최근 검색어 목록 가져오기
-  const { data: recentSearches, isLoading, isError, error } = useQuery(
+  const { data: recentSearches } = useQuery(
     ['recentSearches', userId],
     async () => {
       const response = await axios.get(`/place/log/${userId}`);
@@ -29,6 +29,7 @@ function RecentSearches({ onClickRecentWord }) {
 
   // 삭제 기능
   const mutation = useMutation(
+
     async (logId) => {
       await axios.delete(`/place/log/${userId}/${logId}/delete`);
     },
@@ -53,8 +54,13 @@ function RecentSearches({ onClickRecentWord }) {
         filteredSearches.map((search, index) => (
           <S.Search_div key={index} onClick={() => onClickRecentWord(search.search_text)}>
             <ClockIcon />
-            <S.Word_text>{search.search_text}</S.Word_text>
-            <S.Word_del onClick={() => onClickDelete(search.log_id)}>X</S.Word_del>
+              <S.Word_text>{search.search_text}</S.Word_text>
+            <S.Word_del 
+              onClick={(e) => {
+                e.stopPropagation();
+                onClickDelete(search.log_id);
+              }}>X
+            </S.Word_del>
           </S.Search_div>
         ))
       ) : (

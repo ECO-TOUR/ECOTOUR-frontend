@@ -5,14 +5,13 @@
 
 /* 헤더 */
 #map_main_header_container{
-    width: 358px;
     border-bottom: 1px solid #D9D9D9;
     padding: 20px 0px;
     font-weight: 800;
     text-align: center;
     color: #333;
     font-size: 17px;
-    margin: 0px auto;
+    margin: 0px 16px;
 }
 
 /* 검색 컴포넌트 */
