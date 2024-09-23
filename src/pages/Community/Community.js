@@ -60,7 +60,7 @@ const AddPostButton = styled.button`
   margin-left: 0;
   margin-right: 10px;
   appearance: none;
-  background-color: #91EB86;
+  background-color: #333333;
   border: 1px solid rgba(27, 31, 35, 0.15);
   border-radius: 50px;
   box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
@@ -97,7 +97,7 @@ const AddPostButton = styled.button`
 
   &:hover {
     outline: none;
-    background-color: #2ea44f; 
+    background-color: #555; 
   }
 
   &:disabled {

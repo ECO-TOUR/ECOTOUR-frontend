@@ -79,11 +79,13 @@ const PostBtn = styled.button`
     height: 45px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: #91EB86;
+    background-color: #333333;
+    color: white;
     font-size: 15px;
     font-weight: bold;
     &:hover{
         border: 1px solid black;
+        background-color: #555;
     }
 `;
 

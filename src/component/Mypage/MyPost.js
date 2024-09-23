@@ -6,7 +6,7 @@ import LikeIcon from '../../assets/heart.svg'
 import CommentIcon from '../../assets/comment.svg'
 
 const Component = styled.div`
-    height: 182px;
+    height: ${(prop) => (prop.isExist > 0 ?'182px':'60px')};
     margin: 10px 30px;
     padding-bottom: 10px;
     display: flex;
@@ -14,7 +14,8 @@ const Component = styled.div`
     user-select: none; /* 텍스트 선택 방지 */
     
     &:hover {
-        overflow-x: scroll; /* 호버 시 스크롤 바 표시 */
+        
+        overflow-x: ${(prop) => (prop.isExist > 0 ? 'scroll' : 'none')};; /* 호버 시 스크롤 바 표시 */
     }
 
     &::-webkit-scrollbar {
@@ -94,6 +95,16 @@ const MoreBox = styled.div`
   cursor: default;
 `;
 
+const TextStyle = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;  /* Make sure it takes the full height of the parent */
+    width: 100%;   /* Ensure the text is centered within the entire width */
+    font-size: 16px; /* Optional: you can adjust the font size if needed */
+    font-weight: bold;
+`
+
 function MyPost() {
     const [posts, setPosts] = useState([]);
     const userId = localStorage.getItem('user_id')
@@ -148,7 +159,7 @@ function MyPost() {
 
 
     return (
-        <Component id="component">
+        <Component id="component" isExist = {posts.length}>
         {posts.length > 0 ? (
         <>
             {posts.slice(0, 5).map((content, index) => (
@@ -166,7 +177,7 @@ function MyPost() {
             ))}
             {posts.length > 5 && <MoreBox>...</MoreBox>} {/* 5개 이상일 경우 "..." 표시 */}
         </>
-            ):(<div>아직 게시글이 없습니다.</div>)}
+            ):(<TextStyle>아직 게시글이 없습니다.</TextStyle>)}
         </Component>
     );
 }

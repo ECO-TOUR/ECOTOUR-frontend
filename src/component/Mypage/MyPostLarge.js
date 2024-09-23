@@ -64,6 +64,16 @@ const ScoreText = styled.div`
     color: #676767;
     font-size: 11px;
 `;
+const TextStyle = styled.div`
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;  /* Make sure it takes the full height of the parent */
+    width: 100%;   /* Ensure the text is centered within the entire width */
+    font-size: 18px; /* Optional: you can adjust the font size if needed */
+    font-weight: bold;
+`
 
 function MyPostLarge() {
     const [posts, setPosts] = useState([]);
@@ -131,7 +141,7 @@ function MyPostLarge() {
                         </ScoreContainer>
                     </ContentBox>
                 ))
-            ):(<div>아직 게시글이 없습니다.</div>)}
+            ):(<TextStyle>아직 게시글이 없습니다.</TextStyle>)}
         </Component>
     );
 }

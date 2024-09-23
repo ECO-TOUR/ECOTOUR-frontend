@@ -92,6 +92,9 @@ export const Img = styled.img`
     border-radius: 10px;
     width: 140px;
     height: 98px;
+    object-fit: cover; /* 이미지 비율을 유지하면서 크기를 맞춤 */
+    min-width: 140px; /* 최소 너비를 140px로 고정 */
+    min-height: 98px; /* 최소 높이를 98px로 고정 */
 `;
 
 // 정보 박스
