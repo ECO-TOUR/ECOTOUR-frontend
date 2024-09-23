@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as S from './Review.style';
 import exampleImage from '../../assets/example1.png'; // 이미지 파일을 import
@@ -10,6 +10,7 @@ function Review() {
     const [count, setCount] = useState();
     const [score, setScore] = useState();
     const [images, setImages] = useState([]);
+    const navigate = useNavigate();
 
     // 날짜 형식 변경 함수
     function formatDateTime(dateTimeString) {
@@ -42,7 +43,7 @@ function Review() {
                 setCount(response.data.content.count);
                 setScore(response.data.content.avg_score);
                 setContents(response.data.content.data);
-                //console.log(response.data.content.data);
+                console.log(response.data.content.data);
             } catch (error) {
               console.log(error);
             }
@@ -50,6 +51,15 @@ function Review() {
       
         fetchDetail(); // 컴포넌트가 마운트될 때 API 호출
     },[]);
+
+    // 방문자 커뮤니티 클릭 시
+    const onClickReview = (post_id) => {
+        navigate(`/community/post/${post_id}`);
+    }
+
+    function onClickWriteBtn(){
+        navigate('/community/addform');
+    }
   return (
     <div>
         {/* 헤더 */}
@@ -58,12 +68,13 @@ function Review() {
             <S.ScoreComponent>
                 <S.ScoreIcon/><S.Score>{score} ({count})</S.Score>
             </S.ScoreComponent>
+            <S.MoreBtn onClick={onClickWriteBtn}>리뷰 작성하기</S.MoreBtn>
         </S.HeaderComponent>
 
         {contents.length === 0 ? (<S.None>아직 작성된 방문 리뷰가 없습니다!</S.None>):(
         <>
             {contents.map((content, index) => (
-                <S.ReviewComponent>
+                <S.ReviewComponent onClick={() => onClickReview(content.post_id)}>
                     {/* 헤더 */}
                     <S.ReviewHeader>
                         <S.Profile src={content.profile_photo}/>
