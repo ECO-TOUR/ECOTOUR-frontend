@@ -78,7 +78,7 @@ const LikeIcon = ({ liked }) => (
     </svg>
   );
 const FirstLine = styled.div`
-    height: 75px;
+    /* height: 75px; */
     width: 100%;
     margin-top: 5px;
     font-size: 16px;
@@ -147,6 +147,7 @@ const ProfilePhoto = styled.img`
 `
 const PlaceLine = styled.div`
   width: 100%;
+  margin-top: 7px;
   height: 20px;
   color: #676767;
   cursor: pointer;

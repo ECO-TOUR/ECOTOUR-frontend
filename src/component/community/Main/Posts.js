@@ -79,6 +79,13 @@ const FirstLine = styled.div`
     margin-top: 5px;
     font-size: 16px;
     font-weight: 500;
+    overflow: hidden; /* 넘치는 텍스트 숨김 */ 
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* 텍스트를 5줄로 제한 */
+    -webkit-box-orient: vertical;
+    line-height: 1.2; /* 줄 간격 설정 */
+    max-height: calc(1.2em * 5); /* line-height * 줄 수 */
+    text-overflow: ellipsis; /* 말줄임표(...) 표시 */
 `;
 const SecondLine = styled.div`
     width: 100%;
