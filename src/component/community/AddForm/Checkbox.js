@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 // component
 import SearchBar from './PlaceSearchBar';
-import PlaceBox from './PlaceBox';
 
 //체크박스 스타일
 const CheckboxInput = styled.input`
@@ -11,7 +10,9 @@ const CheckboxInput = styled.input`
   visibility: hidden;
 `;
 
-const CheckboxLabel = styled.label`
+const CheckboxLabel = styled.label.withConfig({
+  shouldForwardProp: (prop) => prop !== 'selectedPlace',
+})`
   -webkit-user-select: none;
   user-select: none;
   cursor: pointer;
@@ -100,7 +101,9 @@ const waveAnimation = `
   }
 `;
 
-const CheckboxWrapperStyled = styled.div`
+const CheckboxWrapperStyled = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'selectedPlace',
+})`
   ${CheckboxLabel}:hover span:first-child {
     border-color: #91EB86;
   }
@@ -119,7 +122,9 @@ const CheckboxWrapperStyled = styled.div`
 `;
 
 // 팝업 스타일
-const PopupContainer = styled.div`
+const PopupContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'show',
+})`
   display: ${(props) => (props.show ? 'flex' : 'none')};
   z-index: 1001;
   position: fixed;  /* 화면에 고정 */
@@ -132,7 +137,6 @@ const PopupContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 const PopupContent = styled.div`
   background-color: white;
   padding: 20px;
@@ -142,13 +146,11 @@ const PopupContent = styled.div`
   height: 50%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 `;
-
 const ResultArea = styled.div`
   width: 100%;
   height: calc(100% - 70px);
   overflow-y: scroll;
 `;
-
 const ButtonArea = styled.div`
   width: 100%;
   height: 30px;
@@ -156,7 +158,6 @@ const ButtonArea = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 // 팝업 닫기 버튼
 const CloseButton = styled.button`
   background-color: #333;
@@ -174,11 +175,25 @@ const CloseButton = styled.button`
   }
 `;
 
-const Checkbox = ({ onChange }) => {
+
+const Checkbox = ({ onChange, initialValue }) => {
   const [isChecked, setIsChecked] = useState(false);  // 체크박스 상태 관리
   const [searchTerm, setSearchTerm] = useState('');   // 검색어 상태 관리
   const userId = localStorage.getItem('user_id');
-  const access_token = localStorage.getItem('access_token');
+
+  
+  // 초기값 있을 때 관광지 선택
+  if(initialValue){
+    const fetchInitialData = async () =>{
+      try{
+        const response = await axios.get(`/place/detail/${initialValue}/${userId}`)
+        setSearchTerm(response.data.place_detail.tour_name)  
+      }catch(error){
+        console.error('초기 검색 중 오류 발생:', error);
+      }
+    }
+    fetchInitialData();
+  }
 
   // 체크icon handle함수
   const handleCheckboxChange = () => {

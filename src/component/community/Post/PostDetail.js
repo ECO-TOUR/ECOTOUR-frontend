@@ -78,7 +78,7 @@ const LikeIcon = ({ liked }) => (
     </svg>
   );
 const FirstLine = styled.div`
-    height: 75px;
+    min-height: 75px;
     width: 100%;
     margin-top: 5px;
     font-size: 16px;
@@ -86,8 +86,7 @@ const FirstLine = styled.div`
 `;
 const SecondLine = styled.div`
     width: 100%;
-    margin-top: 5px;
-    height: 35px;
+    height: 20px;
     font-size: 14px;
     font-weight: 600;
     display: flex;
@@ -146,14 +145,22 @@ const ProfilePhoto = styled.img`
     height: 50px;
     border-radius: 25px;
 `
-
+const PlaceLine = styled.div`
+  width: 100%;
+  margin-top: 7px;
+  height: 20px;
+  color: #676767;
+  cursor: pointer;
+`
+const Place = styled.a`
+`
 const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
   const userId = localStorage.getItem('user_id');
   const [profile] = useRecoilState(UserProfile);
   const [userData, setUserData] = useState(null);
-
+  const [placeName, setPlaceName] = useState(null);
 
   const navigate = useNavigate();
 
@@ -163,6 +170,17 @@ const PostDetail = ({post, comments}) => {
       const foundData = profile.find((user) => user.userId === parseInt(post.user_id))
       setUserData(foundData);
       // console.log("🚀 ~ useEffect ~ foundData:", foundData)
+      const fetchPlace = async() => {
+        try{
+          const response = await axios.get(`/place/detail/${post.tour_id}/${userId}/`)
+          // console.log("🚀 ~ fetchPlace ~ response:", response)
+          setPlaceName(response.data.place_detail.tour_name);
+
+        }catch (error){
+          console.log('관광지 검색 실패', error);
+        }
+      }
+      fetchPlace();
     }
   },[post, profile]);
 
@@ -202,15 +220,22 @@ const PostDetail = ({post, comments}) => {
   
   //포스트 삭제 요청
   const DeletePost = (postId) => {
-    axios.delete(`/community/api/postdelete/${postId}`)
-    .then(response =>{
-      console.log(response)
-      alert("게시글이 삭제되었습니다")
-      navigate('/community')
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    const confirmDelete = window.confirm("정말 이 게시글을 삭제하시겠습니까?");
+  
+    // 확인 버튼을 눌렀을 때만 삭제 요청을 보냄
+    if (confirmDelete) {
+      axios.delete(`/community/api/postdelete/${postId}`)
+        .then(response => {
+          console.log(response);
+          alert("게시글이 삭제되었습니다.");
+          navigate('/community');  // 삭제 후 커뮤니티 페이지로 이동
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      console.log("게시글 삭제가 취소되었습니다.");
+    }
   }
 
 
@@ -275,6 +300,9 @@ const PostDetail = ({post, comments}) => {
           <FirstLine>
               {post.post_text}
           </FirstLine>
+          <PlaceLine>
+              <Place href={`/detail/${post.tour_id}`}>#{placeName}</Place>
+          </PlaceLine>
           <SecondLine>
               <div>댓글 {post.comm_cnt || '0'}개</div>
           </SecondLine>

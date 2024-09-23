@@ -79,6 +79,13 @@ const FirstLine = styled.div`
     margin-top: 5px;
     font-size: 16px;
     font-weight: 500;
+    overflow: hidden; /* 넘치는 텍스트 숨김 */ 
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* 텍스트를 5줄로 제한 */
+    -webkit-box-orient: vertical;
+    line-height: 1.2; /* 줄 간격 설정 */
+    max-height: calc(1.2em * 5); /* line-height * 줄 수 */
+    text-overflow: ellipsis; /* 말줄임표(...) 표시 */
 `;
 const SecondLine = styled.div`
     width: 100%;
@@ -104,69 +111,81 @@ const LikeHandler = (userId, postId) => {
 }
 
 // Post 컴포넌트 정의
-const Posts = ({ searchTerm }) => {
-    const navigate = useNavigate();
+const Posts = ({ searchTerm, isLike }) => {
+  const navigate = useNavigate();
 
-    const moveToPost = (postId) =>{
-      navigate(`./post/${postId}`);
-    };
+  const moveToPost = (postId) =>{
+    navigate(`./post/${postId}`);
+  };
 
-    const userId = localStorage.getItem('user_id');
-    const [posts, setPosts] = useState([]);
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
+  const userId = localStorage.getItem('user_id');
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
 
 
-    useEffect(() => {
-        //사이즈에 따라 게시물 크기 변경
-        const handleResize = () =>{
-            const updateWidth = window.innerWidth > 430 ? 430 : window.innerWidth;
-            setWindowWidth(updateWidth);
-        };
+  useEffect(() => {
+      //사이즈에 따라 게시물 크기 변경
+      const handleResize = () =>{
+          const updateWidth = window.innerWidth > 430 ? 430 : window.innerWidth;
+          setWindowWidth(updateWidth);
+      };
 
-        window.addEventListener('resize', handleResize);
-        
-        //게시물 정보 받아오기
-        if(searchTerm){
-          axios.get(`/community/api/postsearch/1/${searchTerm}/${userId}`
-            , {
-              headers: {
-                'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
-                'Pragma': 'no-cache',
-                'Expires': '0'
-              }
-            }
-          )
-          .then(response =>{
-            setPosts(response.data.content);
-            console.log(response);
-          })
-          .catch(error => {
-            console.error(error);
-          })  
-        }
-        else{
-          axios.get(`/community/api/postinquire/${userId}/`
-            , {
+      window.addEventListener('resize', handleResize);
+      
+      //게시물 정보 받아오기
+      if(searchTerm){
+        axios.get(`/community/api/postsearch/1/${searchTerm}/${userId}`
+          , {
             headers: {
               'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
               'Pragma': 'no-cache',
               'Expires': '0'
             }
-          })
-          .then(response => {
-            setPosts(response.data.content);
-            console.log('Fetched data:', response.data.content);
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-          });
-        }
+          }
+        )
+        .then(response =>{
+          setPosts(response.data.content);
+          setFilteredPosts(response.data.content); 
+          console.log('검색결과',response.data.content);
+        })
+        .catch(error => {
+          console.error(error);
+        })  
+      }
+      else{
+        axios.get(`/community/api/postinquire/${userId}/`
+          , {
+          headers: {
+            'Cache-Control': 'no-cache',  // 서버나 브라우저에 캐시를 사용하지 않도록 요청
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        })
+        .then(response => {
+          setPosts(response.data.content);
+          setFilteredPosts(response.data.content); 
+          console.log('Fetched data:', response.data.content);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+      }
+    
+      return () => {
+          window.removeEventListener('resize', handleResize);
+      };
       
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-        
   }, [searchTerm, userId]); 
+
+  useEffect(() => {
+    if (isLike) {
+      const likedPosts = posts.filter((post) => post.like === 'yes');
+      setFilteredPosts(likedPosts);
+    } else {
+      setFilteredPosts(posts); // 모든 게시물로 복구
+    }
+  }, [isLike, posts]);
 
   const toggleLike = (id) => {
     setPosts(prevPosts => 
@@ -178,8 +197,8 @@ const Posts = ({ searchTerm }) => {
 
   return (
     <>
-      {posts.length>0?(
-        posts.map(post => (
+      {filteredPosts.length>0?(
+        filteredPosts.map(post => (
           <StyledPost onClick={() => moveToPost(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
             <PhotoArea>
               <Swiper

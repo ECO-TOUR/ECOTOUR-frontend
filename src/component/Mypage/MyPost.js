@@ -52,6 +52,9 @@ const ContentName = styled.div`
     font-weight: 600;
     font-size: 15px;
     padding: 7px 9px 4px 9px;
+    white-space: nowrap; /* 한 줄로 표시 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 말줄임표(...) 표시 */
 `;
 
 const ContentRegion = styled.div`
@@ -59,6 +62,9 @@ const ContentRegion = styled.div`
     font-size: 12px;
     font-weight: 400;
     padding: 0px 9px;
+    white-space: nowrap; /* 한 줄로 표시 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 말줄임표(...) 표시 */
 `;
 
 const ScoreContainer = styled.div`
