@@ -91,6 +91,7 @@ const Post = () => {
   const [post, setPost] = useState(null);
   const [commentText, setCommentText] = useState('');
   const [profile, setProfile] = useRecoilState(UserProfile);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [, setHighlightedItem] = useRecoilState(NavAtoms);
   const navigate = useNavigate();
 
@@ -156,6 +157,8 @@ const Post = () => {
 
   //댓글 달기
   const handleCommentSubmit = () => {
+    setIsSubmitting(true)
+
     axios.post('/community/api/commentwrite/', {
       'post_id': postId,
       'user_id': userId,
@@ -167,7 +170,9 @@ const Post = () => {
       
     }).catch(error => {
       console.error("Error submitting comment: ", error);
-    })
+    }).finally(() => {
+      setIsSubmitting(false);
+    });
   };
   const handleKeyDown = (e) =>{
     if(e.key === 'Enter'){
@@ -198,7 +203,7 @@ const Post = () => {
             onChange={(e) => setCommentText(e.target.value)}
             onKeyDown={handleKeyDown}
           ></CommentBar>
-          <SendButton onClick={handleCommentSubmit}>
+          <SendButton onClick={handleCommentSubmit} disabled={isSubmitting}>
             <SendIcon width="24px" height="24px"></SendIcon>
           </SendButton>
         </CommentBarArea>
