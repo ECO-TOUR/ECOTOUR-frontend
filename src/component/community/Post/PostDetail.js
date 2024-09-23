@@ -86,8 +86,7 @@ const FirstLine = styled.div`
 `;
 const SecondLine = styled.div`
     width: 100%;
-    margin-top: 5px;
-    height: 35px;
+    height: 20px;
     font-size: 14px;
     font-weight: 600;
     display: flex;
@@ -146,14 +145,21 @@ const ProfilePhoto = styled.img`
     height: 50px;
     border-radius: 25px;
 `
-
+const PlaceLine = styled.div`
+  width: 100%;
+  height: 20px;
+  color: #676767;
+  cursor: pointer;
+`
+const Place = styled.a`
+`
 const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
   const userId = localStorage.getItem('user_id');
   const [profile] = useRecoilState(UserProfile);
   const [userData, setUserData] = useState(null);
-
+  const [placeName, setPlaceName] = useState(null);
 
   const navigate = useNavigate();
 
@@ -163,6 +169,17 @@ const PostDetail = ({post, comments}) => {
       const foundData = profile.find((user) => user.userId === parseInt(post.user_id))
       setUserData(foundData);
       // console.log("🚀 ~ useEffect ~ foundData:", foundData)
+      const fetchPlace = async() => {
+        try{
+          const response = await axios.get(`/place/detail/${post.tour_id}/${userId}/`)
+          // console.log("🚀 ~ fetchPlace ~ response:", response)
+          setPlaceName(response.data.place_detail.tour_name);
+
+        }catch (error){
+          console.log('관광지 검색 실패', error);
+        }
+      }
+      fetchPlace();
     }
   },[post, profile]);
 
@@ -282,6 +299,9 @@ const PostDetail = ({post, comments}) => {
           <FirstLine>
               {post.post_text}
           </FirstLine>
+          <PlaceLine>
+              <Place href={`/detail/${post.tour_id}`}>#{placeName}</Place>
+          </PlaceLine>
           <SecondLine>
               <div>댓글 {post.comm_cnt || '0'}개</div>
           </SecondLine>
