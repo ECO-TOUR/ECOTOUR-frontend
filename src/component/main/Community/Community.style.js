@@ -24,7 +24,7 @@ export const ContentImage = styled.img`
     border-radius: 10px;
     width: 180px;
     height: 210px;
-    filter: brightness(0.9);
+    filter: brightness(0.7);
 `;
 
 export const ContentDiv = styled.div`

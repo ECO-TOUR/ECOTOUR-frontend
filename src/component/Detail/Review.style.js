@@ -39,13 +39,14 @@ export const Score = styled.div`
     font-size: 13px;
 `;
 
-// 더보기 버튼
+// 리뷰작성 버튼
 export const MoreBtn = styled.div`
-    color: #333333;
-    font-size: 13px;
-    font-weight: 800;
+    color: #676767;
+    font-size: 12px;
+    font-weight: 400;
     margin-left: auto;
     margin-right: 15px;
+    cursor: pointer;
 `;
 
 // 리뷰 컴포넌트
@@ -92,8 +93,26 @@ export const Date = styled.div`
 export const ImgComponent = styled.div`
     padding: 15px 0px;
     display: flex;
-    overflow-x: auto;
-    flex-shrink: 0;
+    overflow-x: hidden;
+    margin-bottom: 10px;
+
+    &:hover {
+        overflow-x: scroll; /* 호버 시 스크롤 바 표시 */
+    }
+
+    &::-webkit-scrollbar {
+        height: 8px; /* 스크롤 바 높이 조정 */
+        width: 80%;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #cccccc; /* 스크롤 바 색상 */
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #f5f5f5; /* 스크롤 바 트랙 색상 */
+    }
 `;
 
 // 사진
