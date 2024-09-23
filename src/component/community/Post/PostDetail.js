@@ -78,7 +78,7 @@ const LikeIcon = ({ liked }) => (
     </svg>
   );
 const FirstLine = styled.div`
-    /* height: 75px; */
+    min-height: 75px;
     width: 100%;
     margin-top: 5px;
     font-size: 16px;
