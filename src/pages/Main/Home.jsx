@@ -8,9 +8,9 @@ import 'swiper/css/autoplay';
 // 필요 모듈은 Swiper 패키지의 직접 가져오기 방식으로 변경
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 // img
-import { ReactComponent as Banner1 } from '../../assets/banner1.svg';
-import { ReactComponent as Banner2 } from '../../assets/banner2.svg';
-import { ReactComponent as Banner3 } from '../../assets/banner3.svg';
+import Banner1 from '../../assets/banner1.jpeg';  // JPEG 파일로 변경
+import Banner2 from '../../assets/banner2.jpeg';  // JPEG 파일로 변경
+import Banner3 from '../../assets/banner3.jpeg';  // JPEG 파일로 변경
 import { ReactComponent as UpIcon } from '../../assets/up_icon.svg';
 // 컴포넌트
 import Navbar from '../../component/main/Navbar';
@@ -44,7 +44,7 @@ function Home() {
           <SwiperSlide>
             <S.BannerContainer>
             <a href="https://languid-gateway-421.notion.site/ECO-TOUR-4da99f0989c94f28b664eea86a5d268e?pvs=4" target="_blank" rel="noopener noreferrer">
-              <Banner1 />
+              <img src={Banner1} alt="Banner1" width="359" height="186"/> {/* JPEG 이미지 */}
             </a>
             </S.BannerContainer>
           </SwiperSlide>
@@ -52,7 +52,7 @@ function Home() {
           <SwiperSlide>
             <S.BannerContainer>
             <a href="https://open.kakao.com/o/g0raUSNg" target="_blank" rel="noopener noreferrer">
-              <Banner2 />
+              <img src={Banner2} alt="Banner2" width="359" height="186"/> {/* JPEG 이미지 */}
             </a>
             </S.BannerContainer>
           </SwiperSlide>
@@ -60,7 +60,7 @@ function Home() {
           <SwiperSlide>
             <S.BannerContainer>
             <a href="https://languid-gateway-421.notion.site/ECO-TOUR-3ade7c8b0e6f4b65bb7b92fe4a2cb442?pvs=4" target="_blank" rel="noopener noreferrer">
-              <Banner3 />
+              <img src={Banner3} alt="Banner3" width="359" height="186"/> {/* JPEG 이미지 */}
             </a>
             </S.BannerContainer>
           </SwiperSlide>
