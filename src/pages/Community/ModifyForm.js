@@ -200,7 +200,7 @@ const ModifyForm = () => {
         axios.get(`/community/api/postinquire/${userId}/`)
             .then(response => {
                 const selectedPost = response.data.content.find(p => p.post_id === Number(postId));
-                // console.log('se',selectedPost);
+                console.log('se',selectedPost);
                 if(selectedPost){
                     setTextContent(selectedPost.post_text);
                     setUploadedImage(selectedPost.post_img);
@@ -305,16 +305,16 @@ const ModifyForm = () => {
 
         
         try {
-            uploadedImage.forEach((file) => {
+            for (const file of uploadedImage) {
                 if (file instanceof File) {
-                    // 파일인 경우에만 'img'로 FormData에 추가
-                    formData.append('img', file);
-                  } else if (typeof file === 'string' && file.startsWith('http')) {
-                    // URL인 경우에만 'old_img'로 FormData에 추가
+                    // File인 경우 WebP로 변환 후 FormData에 추가
+                    const webpFile = await convertToWebP(file);
+                    formData.append('img', webpFile);
+                } else if (typeof file === 'string' && file.startsWith('http')) {
+                    // URL인 경우 'old_img'로 FormData에 추가
                     formData.append('old_img', file);
-                  }
-                });
-               
+                }
+            }
             // // 폼 데이터 확인을 위한 로그
             // for (let pair of formData.entries()) {
             //     console.log(pair[0] + ': ' + pair[1]);
@@ -332,9 +332,49 @@ const ModifyForm = () => {
         } catch (error) {
             console.error('게시글 등록 실패:', error);
             alert('게시글 등록 중 문제가 발생했습니다.');
+            setIsSubmitting(false);
         }
     };
 
+    //webp 형식으로 바꾸기
+    const convertToWebP = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+    
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+    
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+    
+                    // 이미지를 캔버스에 그린 후 WebP 형식으로 변환
+                    ctx.drawImage(img, 0, 0);
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            const webpFile = new File([blob], file.name.replace(/\.\w+$/, '.webp'), {
+                                type: 'image/webp',
+                                lastModified: file.lastModified,
+                            });
+                            resolve(webpFile);
+                        } else {
+                            reject(new Error('WebP 변환 중 문제가 발생했습니다.'));
+                        }
+                    }, 'image/webp');
+                };
+    
+                img.onerror = (error) => reject(error);
+            };
+    
+            reader.onerror = (error) => reject(error);
+    
+            reader.readAsDataURL(file);
+        });
+    };
+    
     //뒤로가기
     const onClickBackBtn = () => {
         navigate(`/main`);

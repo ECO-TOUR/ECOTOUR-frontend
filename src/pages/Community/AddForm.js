@@ -274,8 +274,15 @@ const AddForm = () => {
       setIsSubmitting(true); 
 
       try {
-        uploadedImage.forEach((file) => {
-          formData.append('img', file); // 'img' must match what you're using in your Django view
+        const filePromises = uploadedImage.map((file) => {
+          return convertToWebP(file);
+        });
+
+        const webpFiles = await Promise.all(filePromises);
+        webpFiles.forEach((webpFile) => {
+            if (webpFile) {
+                formData.append('img', webpFile);
+            }
         });
 
         const response = await axios.post('/community/api/postwrite/', formData, {
@@ -297,6 +304,46 @@ const AddForm = () => {
 
   };
 
+  
+    //webp 형식으로 바꾸기
+    const convertToWebP = (file) => {
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+  
+          reader.onload = (event) => {
+              const img = new Image();
+              img.src = event.target.result;
+  
+              img.onload = () => {
+                  const canvas = document.createElement('canvas');
+                  const ctx = canvas.getContext('2d');
+                  canvas.width = img.width;
+                  canvas.height = img.height;
+  
+                  // 이미지를 캔버스에 그린 후 WebP 형식으로 변환
+                  ctx.drawImage(img, 0, 0);
+                  canvas.toBlob((blob) => {
+                      if (blob) {
+                          const webpFile = new File([blob], file.name.replace(/\.\w+$/, '.webp'), {
+                              type: 'image/webp',
+                              lastModified: file.lastModified,
+                          });
+                          resolve(webpFile);
+                      } else {
+                          reject(new Error('WebP 변환 중 문제가 발생했습니다.'));
+                      }
+                  }, 'image/webp');
+              };
+  
+              img.onerror = (error) => reject(error);
+          };
+  
+          reader.onerror = (error) => reject(error);
+  
+          reader.readAsDataURL(file);
+      });
+  };
+  
   //뒤로가기
   const onClickBackBtn = () => {
       navigate('/community');

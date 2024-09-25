@@ -34,6 +34,7 @@ const AddPhotoBox = styled.div.withConfig({
 const AddPhoto = ({imageSrc, onClick}) => {
 
   const encodedImageSrc = encodeURI(imageSrc);
+  // console.log("🚀 ~ AddPhoto ~ encodedImageSrc:", encodedImageSrc)
 
   return (
     <AddPhotoBox imageSrc={encodedImageSrc} onClick={onClick}></AddPhotoBox>

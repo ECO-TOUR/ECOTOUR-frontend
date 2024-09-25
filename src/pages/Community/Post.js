@@ -138,6 +138,7 @@ const Post = () => {
       const selectedPost = postResponse.data.content.find(p => p.post_id === Number(postId));
       setPost(selectedPost);
       setComments(commentsResponse.data.content);
+      console.log("🚀 ~ fetchPost ~ selectedPost:", selectedPost)
   
       //유저정보 불러오기
       if (!profile.some((user) => user.userId === selectedPost.user_id)) {
