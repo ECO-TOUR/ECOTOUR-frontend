@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import exampleImage from '../../../assets/example2.jpg';
+import { ReactComponent as MoveRightIcon } from '../../../assets/move_right.svg';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules'
 
 // Import Swiper styles
 import 'swiper/css';
-
+import 'swiper/css/navigation';
 
 const StyledPost = styled.div`
     margin-top: 16px;
@@ -22,6 +24,7 @@ const StyledPost = styled.div`
 
 `;
 const PhotoArea = styled.div`
+    position: relative;
     max-width: 100%;
     max-height: 100%;
     aspect-ratio: 1 / 1;
@@ -39,6 +42,35 @@ const SwiperImage = styled.img`
     display: block;
 `;
 
+// Swiper 기본 내비게이션 버튼을 SVG로 교체하는 스타일
+const CustomNavigationButton = styled.div`
+  .swiper-button-next, .swiper-button-prev {
+    background: none; /* 배경을 없애기 */
+    border: none;
+    &::after {
+      content: ''; /* Swiper 기본 화살표 없애기 */
+    }
+  }
+
+  .swiper-button-next svg,
+  .swiper-button-prev svg {
+    width: 35px;
+    height: 35px;
+  }
+
+  .swiper-button-prev {
+    left: 10px;
+  }
+
+  .swiper-button-next {
+    right: 10px;
+  }
+
+  /* 왼쪽 버튼은 아이콘 회전 */
+  .swiper-button-prev svg {
+    transform: rotate(180deg);
+  }
+`;
 const Like = styled.div`
     margin-top: 5px;
     height: 35px;
@@ -199,53 +231,79 @@ const Posts = ({ searchTerm, isLike }) => {
 
   return (
     <>
-      {filteredPosts.length>0?(
-        filteredPosts.map(post => (
-          <StyledPost onClick={() => moveToPost(post.post_id)} key={post.post_id} id='post' width={windowWidth}> 
-            <PhotoArea>
-              <Swiper
-                pagination={{ clickable: true }}
-                spaceBetween={15}
-                slidesPerView={1}
-                style={{height: '100%'}}
-              >
-                {Array.isArray(post.post_img) && post.post_img.slice(0, 5).map((imgSrc, index) => (
-                  <SwiperSlide key={index}>
-                    <SwiperImage 
-                      src={imgSrc || exampleImage} 
-                      alt={`Post Image ${index + 1}`} 
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </PhotoArea>
+      {filteredPosts.length > 0 ? (
+        filteredPosts.map((post, index) => (
+          <CustomNavigationButton key={post.post_id}> {/* 고유한 key로 설정 */}
+            <StyledPost onClick={() => moveToPost(post.post_id)} id='post' width={windowWidth}>
+              <PhotoArea>
+                <Swiper
+                  key={post.post_id} // Swiper가 각 게시물마다 독립적으로 작동하도록 고유 key 추가
+                  navigation={{
+                    nextEl: `.swiper-button-next-${index}`, // index로 고유 클래스명 부여
+                    prevEl: `.swiper-button-prev-${index}`,
+                  }}
+                  pagination={{ clickable: true }}
+                  spaceBetween={15}
+                  slidesPerView={1}
+                  style={{ height: '100%' }}
+                  modules={[Navigation]}
+                >
+                  {Array.isArray(post.post_img) &&
+                    post.post_img.slice(0, 5).map((imgSrc, imgIndex) => (
+                      <SwiperSlide key={imgIndex}>
+                        <SwiperImage
+                          src={imgSrc || exampleImage}
+                          alt={`Post Image ${imgIndex + 1}`}
+                        />
+                      </SwiperSlide>
+                    ))}
+                </Swiper>
+                <div
+                  className={`swiper-button-next swiper-button-next-${index}`} // 고유 클래스명 부여
+                  onClick={(e) => e.stopPropagation()} // 클릭 시 이벤트 전파 방지
+                >
+                  <MoveRightIcon />
+                </div>
+                <div
+                  className={`swiper-button-prev swiper-button-prev-${index}`} // 고유 클래스명 부여
+                  onClick={(e) => e.stopPropagation()} // 클릭 시 이벤트 전파 방지
+                >
+                  <MoveRightIcon />
+                </div>
+              </PhotoArea>
               <Like>
-                  <LikeButton onClick={(e) => {
-                      e.stopPropagation();
-                      toggleLike(post.post_id);
-                      LikeHandler(userId, post.post_id);
-                    }}>
-                      <LikeIcon liked={post.like} />
-                  </LikeButton>
+                <LikeButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleLike(post.post_id);
+                    LikeHandler(userId, post.post_id);
+                  }}
+                >
+                  <LikeIcon liked={post.like} />
+                </LikeButton>
               </Like>
-              <FirstLine>
-                  {post.post_text}
-              </FirstLine>
+              <FirstLine>{post.post_text}</FirstLine>
               <SecondLine>
-                  <div>댓글 {post.comm_cnt?post.comm_cnt:'0'}개</div>
-                  <div>{post.last_modified?formatDate(post.last_modified):"20xx.xx.xx PM 3:55"}</div>
+                <div>댓글 {post.comm_cnt ? post.comm_cnt : '0'}개</div>
+                <div>{post.last_modified ? formatDate(post.last_modified) : '20xx.xx.xx PM 3:55'}</div>
               </SecondLine>
-          </StyledPost>
+            </StyledPost>
+          </CustomNavigationButton>
         ))
-      ):(
-        <div style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100px",
-          textAlign: "center" 
-      }}>게시물이 없습니다</div>
+      ) : (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100px',
+            textAlign: 'center',
+          }}
+        >
+          게시물이 없습니다
+        </div>
       )}
+
     </>
   );  
 }

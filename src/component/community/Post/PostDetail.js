@@ -3,12 +3,15 @@ import styled from 'styled-components';
 import axios from 'axios';
 import exampleImage from '../../../assets/example2.jpg';
 import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
+import { ReactComponent as MoveRightIcon } from '../../../assets/move_right.svg';
 import Comment from './Comment'
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules'
 import { useRecoilState } from 'recoil';
 import { UserProfile } from '../../../recoil/UserProfileAtoms';
 import 'swiper/css';
+import 'swiper/css/navigation';
 
 const StyledPost = styled.div`
     width: 100%;
@@ -23,6 +26,7 @@ const StyledPost = styled.div`
     }
 `;
 const PhotoArea = styled.div`
+    position: relative;
     max-width: 100%;
     max-height: 100%;
     aspect-ratio: 1 / 1;
@@ -37,6 +41,36 @@ const SwiperImage = styled.img`
     height: 100%;
     object-fit: cover;
     display: block;
+`;
+
+// Swiper 기본 내비게이션 버튼을 SVG로 교체하는 스타일
+const CustomNavigationButton = styled.div`
+  .swiper-button-next, .swiper-button-prev {
+    background: none; /* 배경을 없애기 */
+    border: none;
+    &::after {
+      content: ''; /* Swiper 기본 화살표 없애기 */
+    }
+  }
+
+  .swiper-button-next svg,
+  .swiper-button-prev svg {
+    width: 35px;
+    height: 35px;
+  }
+
+  .swiper-button-prev {
+    left: 10px;
+  }
+
+  .swiper-button-next {
+    right: 10px;
+  }
+
+  /* 왼쪽 버튼은 아이콘 회전 */
+  .swiper-button-prev svg {
+    transform: rotate(180deg);
+  }
 `;
 const Like = styled.div`
     margin-top: 5px;
@@ -154,6 +188,7 @@ const PlaceLine = styled.div`
 `
 const Place = styled.a`
 `
+
 const PostDetail = ({post, comments}) => {
   const [liked, setLiked] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth > 430 ? 430 : window.innerWidth);
@@ -175,14 +210,13 @@ const PostDetail = ({post, comments}) => {
           const response = await axios.get(`/place/detail/${post.tour_id}/${userId}/`)
           // console.log("🚀 ~ fetchPlace ~ response:", response)
           setPlaceName(response.data.place_detail.tour_name);
-
         }catch (error){
           console.log('관광지 검색 실패', error);
         }
-      }
+      };
       fetchPlace();
     }
-  },[post, profile]);
+  },[post, userId, profile]);
 
 
   //사이즈에 따라 게시물 크기 변경
@@ -246,6 +280,7 @@ const PostDetail = ({post, comments}) => {
 
   return (
     <>
+    <CustomNavigationButton>
       <StyledPost id="post-area" width={windowWidth}> 
           <UserArea id="user-area">
             <Span>
@@ -276,21 +311,33 @@ const PostDetail = ({post, comments}) => {
             </Control>
           </UserArea>
           <PhotoArea>
-            <Swiper
-              pagination={{ clickable: true }}
-              spaceBetween={15}
-              slidesPerView={1}
-              style={{height: '100%'}}
+          <Swiper
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }}
+            pagination={{ clickable: true }}
+            spaceBetween={15}
+            slidesPerView={1}
+            style={{ height: '100%' }}
+            modules={[Navigation]}
             >
-              {Array.isArray(post.post_img) && post.post_img.slice(0, 5).map((imgSrc, index) => (
-                <SwiperSlide key={index}>
-                  <SwiperImage 
-                    src={imgSrc || exampleImage} 
-                    alt={`Post Image ${index + 1}`} 
-                  />
-                </SwiperSlide>
-              ))}
+            {Array.isArray(post.post_img) && post.post_img.slice(0, 5).map((imgSrc, index) => (
+              <SwiperSlide key={index}>
+                <SwiperImage
+                  src={imgSrc || exampleImage}
+                  alt={`Post Image ${index + 1}`}
+                />
+              </SwiperSlide>
+            ))}
             </Swiper>
+
+            <div className="swiper-button-next">
+            <MoveRightIcon />
+            </div>
+            <div className="swiper-button-prev">
+            <MoveRightIcon />
+            </div>
           </PhotoArea>
           <Like>
               <LikeButton onClick={toggleLike}>
@@ -310,6 +357,7 @@ const PostDetail = ({post, comments}) => {
             <Comment comments={comments || []}></Comment>
           </CommentArea>
       </StyledPost>
+      </CustomNavigationButton>
     </>
   );
 }
