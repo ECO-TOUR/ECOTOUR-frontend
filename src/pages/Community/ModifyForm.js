@@ -379,7 +379,7 @@ const ModifyForm = () => {
     
     //뒤로가기
     const onClickBackBtn = () => {
-        navigate(`/main`);
+        navigate(-1);
     };
 
     if (!isTourIdLoaded) {
