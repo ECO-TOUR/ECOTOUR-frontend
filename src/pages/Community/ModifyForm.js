@@ -96,6 +96,8 @@ const Overlay = styled.div.withConfig({
 display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};  /* 상태에 따라 오버레이 표시 여부 결정 */
 position: fixed;
 transform: translate(-50%, 0%);
+width: 100%;
+height: 100%;
 top: 0;
 left: 50%;
 right: 0;

@@ -168,7 +168,6 @@ const CloseButton = styled.button`
   cursor: pointer;
   float: right;
   transition: background-color 0.3s;
-  margin-top: -555px;
 
   &:hover{
       background-color: #555;
@@ -254,8 +253,7 @@ const Checkbox = ({ onChange, initialValue }) => {
         <PopupContent>
           {/* 검색어 입력 input */}
           <SearchBar onValueChange={handleValueChange}/>
-          <ResultArea/>
-          <ButtonArea>
+          <ButtonArea id='btn-area'>
             <CloseButton onClick={handleClose}>닫기</CloseButton>
           </ButtonArea>
         </PopupContent>
