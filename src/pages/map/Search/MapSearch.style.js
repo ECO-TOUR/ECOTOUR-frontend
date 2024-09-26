@@ -27,7 +27,7 @@ export const BackBtn = styled.div`
 
 /* 검색 컴포넌트 */
 export const Search_container = styled.input`
-    width: 358px;
+    width: calc(100% - 32px);
     border-radius: 10px;
     background: #F5F5F5;
     color: #676767;
@@ -36,7 +36,7 @@ export const Search_container = styled.input`
     padding: 12px 20px 13px 20px;
     display: flex;
     align-items: center;
-    margin: 20px auto;
+    margin: 20px 16px;
     position: relative;
     z-index: 0;
     cursor: pointer;
