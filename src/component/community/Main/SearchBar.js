@@ -3,29 +3,28 @@ import styled from 'styled-components'
 import { ReactComponent as SearchIcon } from '../../../assets/search.svg'
 
 const StyledSearchBar = styled.input`
-    width: 100%;
+    width: 358px;
     min-width: calc(var(--mim-width) - 32px);
-    height: 40px;
     align-self: center;
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
+    margin: 12px auto;
+    padding: 10px 20px 12px 20px;
     color: #333333;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 13px;
     box-sizing: border-box;
 `;
 const SearchButton = styled.div`
   position: relative;
-  right: 30px;
-  height: 20px;
+  right: 52px;
+  top: 1px;
   width: 0px;
   cursor: pointer;
   svg{
-    width: 23px;
-    height: 23px;
+    width: 20px;
+    height: 20px;
   }
   &:hover {
     transform: scale(1.05); /* 호버 시 살짝 확대 */
@@ -64,9 +63,8 @@ const SearchBar = ({ onSearch, reset}) => {
 
   return (
     <>
-    <SearchBarArea id='searchBarArea'>
+    <SearchBarArea>
       <StyledSearchBar 
-        id='community-search' 
         type="text" 
         placeholder="검색"         
         value={searchValue}

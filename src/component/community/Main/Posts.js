@@ -15,13 +15,13 @@ const StyledPost = styled.div`
     margin-top: 16px;
     width: 100%;
     height: ${props => `calc(${props.width > 430 ? 430 : props.width}px + 128px)` };
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
     align-self: center;
-    padding: 10px;
+    padding: 20px 10px;
     cursor: pointer;
-
+    border-top: 1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
 `;
 const PhotoArea = styled.div`
     position: relative;
@@ -76,9 +76,9 @@ const Like = styled.div`
     height: 35px;
     width: 100%;
     font-size: 15px;
-    font-weight: 600;
-    align-self: start;
+    font-weight: 500;
 `;
+
 const LikeButton = styled.button`
     height: 35px;
     width: 35px;
@@ -87,32 +87,32 @@ const LikeButton = styled.button`
     background: none;
     cursor: pointer; /* 마우스를 올렸을 때 커서를 포인터로 변경 */
     padding: 0;
-
-
 `;
 const LikeIcon = ({ liked }) => (
     <svg
       width="25"
       height="25"
       viewBox="0 0 25 25"
-      fill={liked ? "red" : "none"}
-      stroke={liked ? "red" : "#333"}
-      strokeWidth="2"
+      fill={liked ? "#FF5959" : "none"}
+      stroke={liked ? "#FF5959" : "#333"}
+      strokeWidth="1"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
         d="M22 8.5C22 5.46243 19.5376 3 16.5 3C14.7819 3.05354 13.1586 3.80024 12 5.07C10.8414 3.80024 9.2181 3.05354 7.5 3C4.46243 3 2 5.46243 2 8.5C2 12.42 6.75 16.75 9 19L11.28 21.28C11.4205 21.4207 11.6112 21.4998 11.81 21.5H12.19C12.3888 21.4998 12.5795 21.4207 12.72 21.28L15 19C17.25 16.75 22 12.42 22 8.5Z"
-        fill={liked === "yes" ? "red" : "none"}
-        stroke="#333"
+        fill={liked === "yes" ? "#FF5959" : "none"}
+        stroke="#FF5959"
       />
     </svg>
   );
+
+// 게시글 내용
 const FirstLine = styled.div`
     height: 75px;
     width: 100%;
     margin-top: 5px;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 400;
     overflow: hidden; /* 넘치는 텍스트 숨김 */ 
     display: -webkit-box;
     -webkit-line-clamp: 4; /* 텍스트를 5줄로 제한 */
@@ -271,6 +271,8 @@ const Posts = ({ searchTerm, isLike }) => {
                   <MoveRightIcon />
                 </div>
               </PhotoArea>
+
+              {/* 좋아요 */}
               <Like>
                 <LikeButton
                   onClick={(e) => {
@@ -282,10 +284,11 @@ const Posts = ({ searchTerm, isLike }) => {
                   <LikeIcon liked={post.like} />
                 </LikeButton>
               </Like>
+
               <FirstLine>{post.post_text}</FirstLine>
               <SecondLine>
                 <div>댓글 {post.comm_cnt ? post.comm_cnt : '0'}개</div>
-                <div>{post.last_modified ? formatDate(post.last_modified) : '20xx.xx.xx PM 3:55'}</div>
+                <div style={{fontWeight:"400", color:"#676767"}}>{post.last_modified ? formatDate(post.last_modified) : '20xx.xx.xx PM 3:55'}</div>
               </SecondLine>
             </StyledPost>
           </CustomNavigationButton>

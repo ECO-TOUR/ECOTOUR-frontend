@@ -38,15 +38,37 @@ const PostArea = styled.div`
   margin-top: 16px;
   font-weight: bold;
 `;
+
+// 정렬 선택 조건 div
 const PostTitleArea = styled.div`
   width: 100%;
-  height: 26px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 358px;
+  margin: 0px auto;
 `
+
+// 정렬 선택 조건(전체게시글)
 const PostTitle = styled.div`
+  cursor: pointer;
+  border-bottom: 3px solid ${(props) => (props.isLike ? "#F5F5F5" : "#91EB86")};
+  flex: 1;
+  text-align: center;
+  padding: 0px 0px 13px 0px;
+  font-weight: 500;
 `;
+
+// 정렬 선택 조건(좋아요)
+const LikeTitle = styled.div`
+  cursor: pointer;
+  border-bottom: 3px solid ${(props) => (props.isLike ? "#91EB86" : "#F5F5F5")};
+  flex: 1;
+  text-align: center;
+  padding: 0px 0px 13px 0px;
+  font-weight: 500;
+`;
+
 const AddButtonArea = styled.div`
   position: fixed;
   bottom: 80px;
@@ -56,65 +78,30 @@ const AddButtonArea = styled.div`
   justify-content: flex-end;
   z-index: 9999;
 `;
+
 const AddPostButton = styled.button`
-  margin-left: 0;
-  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-right: 15px;
   appearance: none;
   background-color: #333333;
-  border: 1px solid rgba(27, 31, 35, 0.15);
+  border: none;
   border-radius: 50px;
-  box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
-  box-sizing: border-box;
-  color: #fff;
+  filter: drop-shadow(1px 2px 4px #ABABAB);
   cursor: pointer;
   display: inline-block;
-  font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 20px;
   padding: 0;
   position: relative;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: middle;
-  white-space: nowrap;
-  width: 4rem;
-  height: 4rem;
+  width: 3.3rem;
+  height: 3.3rem;
   z-index: 10000; /* z-index를 더 높게 설정 */
-  
-  &:focus:not(:focus-visible):not(.focus-visible) {
-    box-shadow: none;
-    outline: none;
-  }
 
   &:hover {
-    background-color: #2c974b;
-  }
-  z-index: 1000;
-
-  &:hover {
-    outline: none;
-    background-color: #555; 
-  }
-
-  &:disabled {
-    background-color: #94d3a2;
-    border-color: rgba(27, 31, 35, 0.1);
-    color: rgba(255, 255, 255, 0.8);
-    cursor: default;
-  }
-
-  &:active {
-    background-color: #298e46;
-    box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+    background-color: #555;
   }
 
   svg{
-    width: 45px;
-    height: 45px;
+    width: 23px;
+    height: 23px;
   }
 `;
 const BackBtn = styled.div.withConfig({
@@ -133,20 +120,6 @@ svg{
   height: 18px;
 }
 `;
-const StateBtn = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'isLike'
-})`
-    border-radius: 15px;
-    background: ${(props) => (props.isLike ? "#91EB86;" : "#333")};
-    color: ${(props) => (props.isLike ? "#333" : "white")};
-    font-size: 12px;
-    padding: 7px 12px;
-    margin: 0px 4px;
-    cursor: pointer;
-    font-weight: 500;
-`;
-
-
 
 const Community = () => {
   const [, setHighlightedItem] = useRecoilState(NavAtoms);
@@ -156,10 +129,16 @@ const Community = () => {
   const [reset, setReset] = useState(false);
   const navigate = useNavigate();
 
-  // 별점순 버튼 클릭 시
+  // 좋아요 버튼 클릭 시
   const onClickLikeBtn = () => {
-    setIsLike((prev) => !prev);
+    setIsLike(true);
   }
+
+  // 전체 게시글 버튼 클릭 시
+  const onClickPostBtn = () => {
+    setIsLike(false);
+  }
+
   //nav아이콘 하이라트
   useEffect(() => {
     setHighlightedItem('chat');
@@ -178,7 +157,7 @@ const Community = () => {
       setIsBntActivate(true);
       setReset(false);
     }
-    console.log("🚀 ~ Community ~ updatedSearchTerm:", searchTerm)
+    //console.log("🚀 ~ Community ~ updatedSearchTerm:", searchTerm)
   } 
 
   //뒤로가기
@@ -194,24 +173,27 @@ const Community = () => {
       <BackBtn onClick={onClickBackBtn} visible={isBntActivate}>
         <BackBtnIcon />
       </BackBtn>
-      <CommunityContainer id='community-container'>
-        <CommunityArea id='community-area'>
+      <CommunityContainer>
+        <CommunityArea>
+          {/* 검색어 입력창 */}
           <SearchBar onSearch={handleSearch} reset={reset}/>
-          <PostArea id='post-area'>
+          <PostArea>
             <PostTitleArea>
-              <PostTitle id='post-title'>{searchTerm?'검색 게시글':'전체 게시글'}</PostTitle>
-              <StateBtn onClick={onClickLikeBtn} isLike={isLike}>좋아요</StateBtn>
+              <PostTitle onClick={onClickPostBtn} isLike={isLike}>{searchTerm?'검색 게시글':'전체 게시글'}</PostTitle>
+              <LikeTitle onClick={onClickLikeBtn} isLike={isLike}>좋아요</LikeTitle>
             </PostTitleArea>
-            <Posts id='post' searchTerm={searchTerm} isLike={isLike}/>
+            {/* 게시글 */}
+            <Posts searchTerm={searchTerm} isLike={isLike}/>
           </PostArea>
         </CommunityArea>
       </CommunityContainer>
-      <AddButtonArea id='add-button-area'>
+      {/* 글쓰기 버튼 */}
+      <AddButtonArea>
         <AddPostButton role="button" onClick={moveToAddForm}>
           <WriteIcon />
         </AddPostButton>
       </AddButtonArea>
-      <Navbar id='navbar' />
+      <Navbar />
     </>
   );
 };
