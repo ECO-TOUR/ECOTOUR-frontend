@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Map as KakaoMap, MapMarker, useMap } from "react-kakao-maps-sdk";
+import Papa from 'papaparse';
 import './MapMain.css';
 // component
 import BottomSheet from "../../../component/map/BottomSheet/BottomSheet";
@@ -33,25 +34,29 @@ const EventMarkerContainer = ({ position, content }) => {
 }
 
 function MapMain() {
+  const [data, setData] = useState([]);
 
-  const data = [
-    {
-      content: <div style={{ color: "#000" }}>카카오</div>,
-      latlng: { lat: 33.450705, lng: 126.570677 },
-    },
-    {
-      content: <div style={{ color: "#000" }}>생태연못</div>,
-      latlng: { lat: 33.450936, lng: 126.569477 },
-    },
-    {
-      content: <div style={{ color: "#000" }}>텃밭</div>,
-      latlng: { lat: 33.450879, lng: 126.56994 },
-    },
-    {
-      content: <div style={{ color: "#000" }}>근린공원</div>,
-      latlng: { lat: 33.451393, lng: 126.570738 },
-    },
-  ]
+  useEffect(() => {
+    // CSV 파일 경로
+    const csvFilePath = '/TourPlace_trans_xy.csv';
+    // CSV 파일을 가져와서 파싱
+    fetch(csvFilePath)
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true, // 첫 번째 줄을 헤더로 간주
+          complete: (result) => {
+            // 데이터 변환
+            const parsedData = result.data.map(row => ({
+              content: <div style={{ color: "#000" }}>{row.tour_name}</div>,
+              latlng: { lat: parseFloat(row.tour_y), lng: parseFloat(row.tour_x) },
+            }));
+            setData(parsedData);
+            console.log(parsedData);
+          }
+        });
+      });
+  }, []);
 
   // Nav 변수 설정
   const [highlightedItem, setHighlightedItem] = useRecoilState(NavAtoms);
@@ -128,7 +133,7 @@ function MapMain() {
           width: "100%",
           height: "70%",
         }}
-        level={4}
+        level={11}
         onCenterChanged={updateCenterWhenMapMoved}
       >
         <MapMarker
