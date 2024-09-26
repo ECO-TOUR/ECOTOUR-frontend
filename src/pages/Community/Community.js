@@ -45,7 +45,6 @@ const PostTitleArea = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 358px;
   margin: 0px auto;
 `
 
@@ -178,7 +177,7 @@ const Community = () => {
           {/* 검색어 입력창 */}
           <SearchBar onSearch={handleSearch} reset={reset}/>
           <PostArea>
-            <PostTitleArea>
+            <PostTitleArea id='post-title'>
               <PostTitle onClick={onClickPostBtn} isLike={isLike}>{searchTerm?'검색 게시글':'전체 게시글'}</PostTitle>
               <LikeTitle onClick={onClickLikeBtn} isLike={isLike}>좋아요</LikeTitle>
             </PostTitleArea>

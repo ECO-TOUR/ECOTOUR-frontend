@@ -12,16 +12,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const StyledPost = styled.div`
-    margin-top: 16px;
+    margin-top: 10px;
     width: 100%;
     height: ${props => `calc(${props.width > 430 ? 430 : props.width}px + 128px)` };
     display: flex;
     flex-direction: column;
     align-self: center;
-    padding: 20px 10px;
+    padding: 20px 5px 0px 5px;
     cursor: pointer;
     border-top: 1px solid #D9D9D9;
-    border-bottom: 1px solid #D9D9D9;
 `;
 const PhotoArea = styled.div`
     position: relative;
