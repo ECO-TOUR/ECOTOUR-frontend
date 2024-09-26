@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { Map as KakaoMap, MapMarker } from "react-kakao-maps-sdk";
+import { Map as KakaoMap, MapMarker, useMap } from "react-kakao-maps-sdk";
+import Papa from 'papaparse';
 import './MapMain.css';
 // component
 import BottomSheet from "../../../component/map/BottomSheet/BottomSheet";
@@ -15,7 +16,48 @@ import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../../recoil/NavAtoms';
 import { StateAtoms } from '../../../recoil/BottomSheetAtoms';
 
+const EventMarkerContainer = ({ position, content }) => {
+  const map = useMap()
+  const [isVisible, setIsVisible] = useState(false)
+
+  return (
+    <MapMarker
+      position={position} // 마커를 표시할 위치
+      // @ts-ignore
+      onClick={(marker) => map.panTo(marker.getPosition())}
+      onMouseOver={() => setIsVisible(true)}
+      onMouseOut={() => setIsVisible(false)}
+    >
+      {isVisible && content}
+    </MapMarker>
+  )
+}
+
 function MapMain() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // CSV 파일 경로
+    const csvFilePath = '/TourPlace_trans_xy.csv';
+    // CSV 파일을 가져와서 파싱
+    fetch(csvFilePath)
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true, // 첫 번째 줄을 헤더로 간주
+          complete: (result) => {
+            // 데이터 변환
+            const parsedData = result.data.map(row => ({
+              content: <div style={{ color: "#000" }}>{row.tour_name}</div>,
+              latlng: { lat: parseFloat(row.tour_y), lng: parseFloat(row.tour_x) },
+            }));
+            setData(parsedData);
+            console.log(parsedData);
+          }
+        });
+      });
+  }, []);
+
   // Nav 변수 설정
   const [highlightedItem, setHighlightedItem] = useRecoilState(NavAtoms);
   const [closeState, setCloseState] = useRecoilState(StateAtoms);
@@ -91,7 +133,7 @@ function MapMain() {
           width: "100%",
           height: "70%",
         }}
-        level={4}
+        level={11}
         onCenterChanged={updateCenterWhenMapMoved}
       >
         <MapMarker
@@ -101,6 +143,13 @@ function MapMain() {
           }}
           position={position}
         />
+      {data.map((value) => (
+        <EventMarkerContainer
+          key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
+          position={value.latlng}
+          content={value.content}
+        />
+      ))}
       </KakaoMap>
       <img src={LocationBtn} className="location_btn" onClick={setCenterToMyPosition} />
       <BottomSheet>
