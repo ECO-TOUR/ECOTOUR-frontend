@@ -18,9 +18,9 @@ const StyledPost = styled.div`
     display: flex;
     flex-direction: column;
     align-self: center;
-    padding: 20px 5px 0px 5px;
+    padding: 15px 5px 10px 5px;
     cursor: pointer;
-    border-top: 1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
 `;
 const PhotoArea = styled.div`
     position: relative;
