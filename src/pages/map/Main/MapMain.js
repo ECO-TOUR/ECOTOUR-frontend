@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Map as KakaoMap, MapMarker, useMap } from "react-kakao-maps-sdk";
 import Papa from 'papaparse';
 import './MapMain.css';
+import axios from "axios";
 // component
 import BottomSheet from "../../../component/map/BottomSheet/BottomSheet";
 import Navbar from '../../../component/main/Navbar';
@@ -15,16 +16,48 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../../recoil/NavAtoms';
 import { StateAtoms } from '../../../recoil/BottomSheetAtoms';
+import { recentSearchesState } from '../../../recoil/SearchesAtoms';
+import { likedState } from '../../../recoil/SearchesAtoms';
 
-const EventMarkerContainer = ({ position, content }) => {
+const EventMarkerContainer = ({ position, content, tourName }) => {
   const map = useMap()
   const [isVisible, setIsVisible] = useState(false)
+  const [, setSearchResult] = useRecoilState(recentSearchesState);
+  const [, setLiked] = useRecoilState(likedState); // 좋아요 상태 관리 변수
+
+  // 마커 클릭 이벤트 핸들러
+  const handleMarkerClick = (marker) => {
+    map.panTo(marker.getPosition());
+    // 검색 API 호출 로직 추가
+    searchAPI(tourName);
+  };
+
+  // 검색 API 호출 함수
+  const searchAPI = async (tourName) => {
+    console.log("🚀 ~ searchAPI ~ tourName:", tourName)
+    const access_token = localStorage.getItem("access_token");
+    
+    try {
+      const response = await axios.get(`/place`, {
+        params: { search: tourName, },
+        headers: {
+          'Authorization': `Bearer ${access_token}`, // Bearer 토큰 방식으로 추가
+        },
+      });
+      console.log('검색 결과:', response.data);
+      setSearchResult(response.data.search_results || [])
+      const initialLikedState = response.data.search_results.map(content => content.tourspot_liked === "liked");
+      setLiked(initialLikedState);
+    } catch (error) {
+      console.error('검색 API 호출 오류:', error);
+    }
+  };
 
   return (
     <MapMarker
       position={position} // 마커를 표시할 위치
       // @ts-ignore
-      onClick={(marker) => map.panTo(marker.getPosition())}
+      onClick={(marker) => handleMarkerClick(marker)}
       onMouseOver={() => setIsVisible(true)}
       onMouseOut={() => setIsVisible(false)}
     >
@@ -32,6 +65,8 @@ const EventMarkerContainer = ({ position, content }) => {
     </MapMarker>
   )
 }
+
+
 
 function MapMain() {
   const [data, setData] = useState([]);
@@ -50,6 +85,7 @@ function MapMain() {
             const parsedData = result.data.map(row => ({
               content: <div style={{ color: "#000" }}>{row.tour_name}</div>,
               latlng: { lat: parseFloat(row.tour_y), lng: parseFloat(row.tour_x) },
+              tourName: row.tour_name, // tour_name 정보를 추가
             }));
             setData(parsedData);
             console.log(parsedData);
@@ -148,6 +184,7 @@ function MapMain() {
           key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
           position={value.latlng}
           content={value.content}
+          tourName={value.tourName}
         />
       ))}
       </KakaoMap>
