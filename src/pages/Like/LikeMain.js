@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../recoil/NavAtoms.js';
 
 const LikeContainer = styled.div`
-  padding-top: 105px;
+  padding-top: 98px;
   padding-bottom: 40px;
   margin: 0;
   height: 100vh;
