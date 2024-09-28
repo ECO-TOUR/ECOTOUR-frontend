@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Component = styled.div`
-    padding: 28px 15px 0px 15px;
+    padding-top: 28px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -10,7 +10,7 @@ export const Component = styled.div`
 
 // content 박스
 export const ContentBox = styled.div`
-    margin: 0px 9px 20px 9px;
+    margin: 0px 6px 20px 6px;
     cursor: pointer;
     position: relative;
     transition: filter 0.3s ease; /* 부드러운 전환을 위한 속성 */

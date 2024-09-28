@@ -161,8 +161,8 @@ const ButtonArea = styled.div`
   align-items: center;
 `;
 const CloseButton = styled.button`
-  background-color: #f44336;
-  color: white;
+  background-color: #D9D9D9;
+  color: #333;
   margin: 5px;
   padding: 8px 16px;
   border: none;
@@ -171,7 +171,7 @@ const CloseButton = styled.button`
   float: right;
 `;
 const ConfirmButton = styled.button`
-  background-color: #4caf50;
+  background-color: #333;
   color: white;
   margin: 5px;
   padding: 8px 16px;

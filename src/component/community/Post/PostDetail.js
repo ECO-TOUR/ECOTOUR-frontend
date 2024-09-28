@@ -55,16 +55,16 @@ const CustomNavigationButton = styled.div`
 
   .swiper-button-next svg,
   .swiper-button-prev svg {
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    height: 25px;
   }
-
+    
   .swiper-button-prev {
-    left: 10px;
+    left: 5px;
   }
 
   .swiper-button-next {
-    right: 10px;
+    right: 5px;
   }
 
   /* 왼쪽 버튼은 아이콘 회전 */

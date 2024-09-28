@@ -31,10 +31,17 @@ export const StyledSwiper = styled(Swiper)`
     }
 
     /* 화살표의 크기와 모양을 조절합니다 */
-    .swiper-button-next::after,
-    .swiper-button-prev::after {
-        font-size: 16px; /* 화살표 아이콘의 크기를 조절합니다 */
+    .swiper-button-next::after{ /* 오른쪽 화살표*/
+        font-size: 13px; /* 화살표 아이콘의 크기를 조절합니다 */
         color: #676767; /* 화살표 아이콘 색상 */
+        margin-top: -15px;
+        margin-left: 20px;
+    }
+    .swiper-button-prev::after { /* 왼쪽 화살표*/
+        font-size: 13px; /* 화살표 아이콘의 크기를 조절합니다 */
+        color: #676767; /* 화살표 아이콘 색상 */
+        margin-top: -15px;
+        margin-right: 20px;
     }
 `;
 

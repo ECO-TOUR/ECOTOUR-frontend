@@ -53,16 +53,16 @@ const CustomNavigationButton = styled.div`
 
   .swiper-button-next svg,
   .swiper-button-prev svg {
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    height: 25px;
   }
 
   .swiper-button-prev {
-    left: 10px;
+    left: 5px;
   }
 
   .swiper-button-next {
-    right: 10px;
+    right: 5px;
   }
 
   /* 왼쪽 버튼은 아이콘 회전 */
@@ -235,40 +235,46 @@ const Posts = ({ searchTerm, isLike }) => {
           <CustomNavigationButton key={post.post_id}> {/* 고유한 key로 설정 */}
             <StyledPost onClick={() => moveToPost(post.post_id)} id='post' width={windowWidth}>
               <PhotoArea>
-                <Swiper
-                  key={post.post_id} // Swiper가 각 게시물마다 독립적으로 작동하도록 고유 key 추가
-                  navigation={{
-                    nextEl: `.swiper-button-next-${index}`, // index로 고유 클래스명 부여
-                    prevEl: `.swiper-button-prev-${index}`,
-                  }}
-                  pagination={{ clickable: true }}
-                  spaceBetween={15}
-                  slidesPerView={1}
-                  style={{ height: '100%' }}
-                  modules={[Navigation]}
-                >
-                  {Array.isArray(post.post_img) &&
-                    post.post_img.slice(0, 5).map((imgSrc, imgIndex) => (
-                      <SwiperSlide key={imgIndex}>
-                        <SwiperImage
-                          src={imgSrc || exampleImage}
-                          alt={`Post Image ${imgIndex + 1}`}
-                        />
-                      </SwiperSlide>
-                    ))}
-                </Swiper>
-                <div
-                  className={`swiper-button-next swiper-button-next-${index}`} // 고유 클래스명 부여
-                  onClick={(e) => e.stopPropagation()} // 클릭 시 이벤트 전파 방지
-                >
-                  <MoveRightIcon />
-                </div>
-                <div
-                  className={`swiper-button-prev swiper-button-prev-${index}`} // 고유 클래스명 부여
-                  onClick={(e) => e.stopPropagation()} // 클릭 시 이벤트 전파 방지
-                >
-                  <MoveRightIcon />
-                </div>
+              <Swiper
+                key={post.post_id} // Swiper가 각 게시물마다 독립적으로 작동하도록 고유 key 추가
+                navigation={{
+                  nextEl: `.swiper-button-next-${index}`, // index로 고유 클래스명 부여
+                  prevEl: `.swiper-button-prev-${index}`,
+                }}
+                pagination={{ clickable: true }}
+                spaceBetween={15}
+                slidesPerView={1}
+                style={{ height: '100%' }}
+                modules={[Navigation]}
+              >
+                {Array.isArray(post.post_img) &&
+                  post.post_img.slice(0, 5).map((imgSrc, imgIndex) => (
+                    <SwiperSlide key={imgIndex}>
+                      <SwiperImage
+                        src={imgSrc || exampleImage}
+                        alt={`Post Image ${imgIndex + 1}`}
+                      />
+                    </SwiperSlide>
+                  ))}
+              </Swiper>
+
+              {Array.isArray(post.post_img) && post.post_img.length > 1 && (
+                <>
+                  <div
+                    className={`swiper-button-next swiper-button-next-${index}`} // 고유 클래스명 부여
+                    onClick={(e) => e.stopPropagation()} // 클릭 시 이벤트 전파 방지
+                  >
+                    <MoveRightIcon />
+                  </div>
+                  <div
+                    className={`swiper-button-prev swiper-button-prev-${index}`} // 고유 클래스명 부여
+                    onClick={(e) => e.stopPropagation()} // 클릭 시 이벤트 전파 방지
+                  >
+                    <MoveRightIcon />
+                  </div>
+                </>
+              )}
+
               </PhotoArea>
 
               {/* 좋아요 */}
