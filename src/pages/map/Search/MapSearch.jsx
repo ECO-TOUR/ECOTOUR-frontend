@@ -123,7 +123,7 @@ function MapSearch() {
 
       <S.Search_container 
         placeholder="지역이나 생태관광지를 검색해보세요" 
-        onKeyDown={handleKeyDown} 
+        onKeyPress={handleKeyDown} 
         onChange={handleInputChange}
         value={searchValue}>
       </S.Search_container>

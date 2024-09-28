@@ -68,7 +68,7 @@ const SearchBar = ({ onSearch, reset}) => {
         placeholder="검색"         
         value={searchValue}
         onChange={handleInputChange}
-        onKeyDown={handleKeyDown}>
+        onKeyPress={handleKeyDown}>
       </StyledSearchBar>
       <SearchButton onClick={handleButtonClick}>
         <SearchIcon />

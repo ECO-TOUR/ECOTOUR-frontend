@@ -60,8 +60,7 @@ function Detail() {
         const fetchDetail = async () => {
             try {
               const response = await axios.get(`/place/detail/${tour_id}/${user_id}`);
-              const { tour_name, tour_location, tour_img, website, tour_tel, 
-                tour_telname, restrooms, parking, fees, opening_hours} = response.data.place_detail;
+              const { tour_name, tour_location, tour_img} = response.data.place_detail;
               setTitle(tour_name); // 관광지 이름
               setAddress(tour_location); // 관광지 주소
               setImage(tour_img); // 관광지 이미지
@@ -96,7 +95,7 @@ function Detail() {
           // 중복 initialization 방지
           // 카카오에서 제공하는 javascript key를 이용하여 initialize
           if (!kakao.isInitialized()) {
-            kakao.init("e2615a5b9086f44b29fc393b782e4f29");
+            kakao.init(process.env.REACT_APP_KAKAO_API_KEY);
           }
     
           kakao.Share.sendDefault({
@@ -106,6 +105,7 @@ function Detail() {
                 description: `${title}에 대해 더 자세히 보고싶다면?`,
                 imageUrl: imageUrl,
                 link: {
+                    mobileWebUrl: window.location.href,
                     webUrl: window.location.href,
                 },
             },
@@ -113,7 +113,8 @@ function Detail() {
                 {
                     title: '자세히 보러가기',
                     link: {
-                    webUrl: window.location.href,
+                        mobileWebUrl: window.location.href,
+                        webUrl: window.location.href,
                     },
                 },
                 ],
