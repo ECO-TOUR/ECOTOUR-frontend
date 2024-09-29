@@ -320,8 +320,8 @@ const AddForm = () => {
               img.onload = () => {
                   const canvas = document.createElement('canvas');
                   const ctx = canvas.getContext('2d');
-                  canvas.width = img.width;
-                  canvas.height = img.height;
+                  let width = img.width;
+                  let height = img.height;
                   const MAX_SIZE_MB = 2 * 1024 * 1024; // 2MB를 바이트로 변환
   
                   
