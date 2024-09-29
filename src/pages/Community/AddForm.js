@@ -275,32 +275,42 @@ const AddForm = () => {
   
       //게시물등록 버튼 비활성화
       setIsSubmitting(true); 
+      let formDataSize = 0;
 
       try {
-        const filePromises = uploadedImage.map((file) => {
+        console.log('Uploaded images:', uploadedImage.length);
+
+        // 이미지 변환을 위한 프로미스 배열 생성
+        const filePromises = uploadedImage.map((file, index) => {
+          console.log(`Original file ${index + 1}: name=${file.name}, size=${file.size}`);
           return convertToWebP(file);
         });
-
+        
         const webpFiles = await Promise.all(filePromises);
-        webpFiles.forEach((webpFile) => {
-            if (webpFile) {
-                formData.append('img', webpFile);
-            }
+
+        // 변환된 웹P 파일 로그 출력
+        webpFiles.forEach((webpFile, index) => {
+          if (webpFile) {
+            console.log(`Converted webp file ${index + 1}: name=${webpFile.name}, size=${webpFile.size}`);
+            formData.append('img', webpFile);
+          } else {
+            console.log(`File ${index + 1} was not converted successfully.`);
+          }
         });
 
-        const response = await axios.post('/community/api/postwrite/', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        // 전체 formData 크기 확인
+        formDataSize = [...formData].reduce((acc, [, value]) => acc + (value.size || 0), 0);
+
+        const response = await axios.post('/community/api/postwrite/', formData);
         
         if (response.status === 200) {
             alert("게시글이 성공적으로 등록되었습니다.");
             navigate('/community/')
         }
       } catch (error) {
-          console.error('게시글 등록 실패:', error);
-          alert('게시글 등록 중 문제가 발생했습니다.');
+        const formDataSizeMB = (formDataSize / (1024 * 1024)).toFixed(2);
+        console.error('게시글 등록 실패:', error);
+        alert(`게시글 등록 중 문제가 발생했습니다. 총 데이터 크기: ${formDataSizeMB} MB`);
       } finally{
         setIsSubmitting(false);
       }
@@ -322,7 +332,7 @@ const AddForm = () => {
                   const ctx = canvas.getContext('2d');
                   let width = img.width;
                   let height = img.height;
-                  const MAX_SIZE_MB = 2 * 1024 * 1024; // 2MB를 바이트로 변환
+                  const MAX_SIZE_MB = 0.4 * 1024 * 1024; // 2MB를 바이트로 변환
   
                   
                   const resizeAndCheckSize = () => {
