@@ -41,6 +41,7 @@ const TextArea = styled.textarea`
   border-radius: 5px;
   font-family: 'Pretendard';
   line-height: 1.5;
+  -webkit-user-select: none;
 `;
 // 관광지 선택하기 div
 const LocArea = styled.div`
@@ -321,21 +322,43 @@ const AddForm = () => {
                   const ctx = canvas.getContext('2d');
                   canvas.width = img.width;
                   canvas.height = img.height;
+                  const MAX_SIZE_MB = 2 * 1024 * 1024; // 2MB를 바이트로 변환
   
-                  // 이미지를 캔버스에 그린 후 WebP 형식으로 변환
-                  ctx.drawImage(img, 0, 0);
-                  canvas.toBlob((blob) => {
-                      if (blob) {
-                          const webpFile = new File([blob], file.name.replace(/\.\w+$/, '.webp'), {
-                              type: 'image/webp',
-                              lastModified: file.lastModified,
-                          });
-                          resolve(webpFile);
-                      } else {
-                          reject(new Error('WebP 변환 중 문제가 발생했습니다.'));
-                      }
-                  }, 'image/webp');
-              };
+                  
+                  const resizeAndCheckSize = () => {
+                    // 캔버스의 크기를 설정
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    // 이미지를 캔버스에 그리기
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // 캔버스를 WebP Blob으로 변환
+                    return new Promise((resolve) => {
+                        canvas.toBlob((blob) => {
+                            if (blob.size <= MAX_SIZE_MB) {
+                                // 파일 크기가 제한 내에 있을 경우, Blob을 파일로 변환하여 반환
+                                const webpFile = new File([blob], file.name.replace(/\.\w+$/, '.webp'), {
+                                    type: 'image/webp',
+                                    lastModified: file.lastModified,
+                                });
+                                resolve(webpFile);
+                            } else {
+                                // 파일 크기가 제한을 초과하면 크기를 줄임
+                                width *= 0.9;
+                                height *= 0.9;
+                                // 크기 조정 반복
+                                resolve(resizeAndCheckSize());
+                            }
+                        }, 'image/webp');
+                    });
+                };
+
+                // 크기 조정 및 확인 반복 시작
+                resizeAndCheckSize()
+                    .then((resizedWebP) => resolve(resizedWebP))
+                    .catch((error) => reject(error));
+            };
   
               img.onerror = (error) => reject(error);
           };
