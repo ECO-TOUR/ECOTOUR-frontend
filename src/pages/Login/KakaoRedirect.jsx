@@ -21,6 +21,14 @@ function getCookie(name) {
 function KakaoRedirect() {
   const code = new URL(document.location.toString()).searchParams.get('code');
   const navigate = useNavigate();
+
+  // 현재 URL에서 쿼리 파라미터 추출
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // 'state' 쿼리 파라미터 값 추출
+  const extractedState = urlParams.get('state');
+  const decodedState = JSON.parse(decodeURIComponent(extractedState)); // 디코딩 후 JSON 파싱
+
   useEffect(() => {
     const csrfToken = getCookie('csrftoken');
     axios
@@ -65,14 +73,21 @@ function KakaoRedirect() {
                 res.data.content.access_token // Correct way to access the access token
               );
               localStorage.setItem('nickname', res.data.content.user.nickname);
-              navigate('/main');
+              
+              if(decodedState === null){
+                navigate("/main");
+              }
+              else{
+                navigate(decodedState);
+              }
             });
         }
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [code, navigate]);
+  }, [code, navigate, decodedState]);
+  
   return <div><LoadingPage text="로그인 중입니다."/></div>;
 }
 export default KakaoRedirect;

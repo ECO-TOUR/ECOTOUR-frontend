@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as S from './Detail.style';
 // 컴포넌트
@@ -17,7 +17,17 @@ function Detail() {
 
     const { tour_id } = useParams();
     const [detail, setDetail] = useState(null);
+    const navigate = useNavigate();
     const user_id = parseInt(localStorage.getItem('user_id'));
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+      const user_id = localStorage.getItem('user_id');
+      if (user_id === null) {
+        navigate("/", { state: pathname });
+      }
+    }, []);
 
     // 스크롤 함수
     const scrollToTop = () => {
@@ -87,7 +97,7 @@ function Detail() {
     const shareToKatalk = () => {
         // 이미지 URL이 존재하는지 확인
         const imageUrl = mainImgRef.current ? mainImgRef.current.src : '';
-        console.log(imageUrl);
+
         // kakao sdk script 부른 후 window.Kakao로 접근
         if (window.Kakao) {
           const kakao = window.Kakao;
@@ -110,13 +120,12 @@ function Detail() {
                 },
             },
             buttons: [
-                {
-                    title: '자세히 보러가기',
-                    link: {
-                        mobileWebUrl: window.location.href,
-                        webUrl: window.location.href,
+                    {
+                        title: '자세히 보러가기',
+                        link: {
+                            webUrl: window.location.href,
+                        },
                     },
-                },
                 ],
             });
         }
@@ -224,11 +233,11 @@ function Detail() {
                 <S.InfoIcon/>
                 <S.InfoTitle>주차시설</S.InfoTitle>
             </S.InfoHeader>
-            <S.InfoText>
+            <S.InfoText2>
                 {detail ? (<>{detail.parking}</>) : (
                     <>Loading...</> // 데이터를 불러오는 동안 보여줄 내용
                 )}
-            </S.InfoText>
+            </S.InfoText2>
         </S.InfoComponent>
         <S.Line/>
 

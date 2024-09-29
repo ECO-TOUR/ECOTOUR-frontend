@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Navigate } from 'react-router-dom';
 import { Map as KakaoMap, MapMarker, useMap } from "react-kakao-maps-sdk";
 import Papa from 'papaparse';
 import './MapMain.css';
@@ -34,7 +35,7 @@ const EventMarkerContainer = ({ position, content, tourName }) => {
 
   // 검색 API 호출 함수
   const searchAPI = async (tourName) => {
-    console.log("🚀 ~ searchAPI ~ tourName:", tourName)
+    //console.log("🚀 ~ searchAPI ~ tourName:", tourName)
     const access_token = localStorage.getItem("access_token");
     
     try {
@@ -44,7 +45,7 @@ const EventMarkerContainer = ({ position, content, tourName }) => {
           'Authorization': `Bearer ${access_token}`, // Bearer 토큰 방식으로 추가
         },
       });
-      console.log('검색 결과:', response.data);
+      //console.log('검색 결과:', response.data);
       setSearchResult(response.data.search_results || [])
       const initialLikedState = response.data.search_results.map(content => content.tourspot_liked === "liked");
       setLiked(initialLikedState);
@@ -72,6 +73,7 @@ function MapMain() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+
     // CSV 파일 경로
     const csvFilePath = '/TourPlace_trans_xy.csv';
     // CSV 파일을 가져와서 파싱
@@ -88,7 +90,7 @@ function MapMain() {
               tourName: row.tour_name, // tour_name 정보를 추가
             }));
             setData(parsedData);
-            console.log(parsedData);
+            //console.log(parsedData);
           }
         });
       });

@@ -53,7 +53,6 @@ export const Title = styled.div`
     font-size: 22px;
     font-weight: 700;
     margin-left: 25px;
-    width: 250px;
 `;
 
 // 좋아요 공유 아이콘 박스
@@ -128,6 +127,16 @@ export const InfoText = styled.div`
     padding: 0px 30px 0px 45px;
     line-height: 1.3;
     width: 215px;
+    word-wrap: break-word;
+`;
+
+// 설명(주차시설)
+export const InfoText2 = styled.div`
+    color: #333333;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 0px 30px 0px 45px;
+    line-height: 1.3;
     word-wrap: break-word;
 `;
 
