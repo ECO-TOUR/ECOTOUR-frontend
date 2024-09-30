@@ -14,11 +14,11 @@ import Marker from '../../../assets/Marker.svg'; // 현위치 아이콘
 import debounce from 'lodash/debounce';
 import { useNavigate } from 'react-router-dom';
 // recoil
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { NavAtoms } from '../../../recoil/NavAtoms';
 import { StateAtoms } from '../../../recoil/BottomSheetAtoms';
 import { recentSearchesState } from '../../../recoil/SearchesAtoms';
-import { likedState, mapXY } from '../../../recoil/SearchesAtoms';
+import { likedState, mapXY, searchValueState } from '../../../recoil/SearchesAtoms';
 
 const EventMarkerContainer = ({ position, content, tourName }) => {
   const map = useMap()
@@ -71,9 +71,9 @@ function MapMain() {
   
   const [data, setData] = useState([]);
   const [mapXy, setMapXy] = useRecoilState(mapXY); // 검색 결과 표시할 관광지 위경도 정보
+  const searchValue = useRecoilValue(searchValueState); // 검색어
 
   useEffect(() => {
-
     // CSV 파일 경로
     const csvFilePath = '/TourPlace_trans_xy.csv';
     // CSV 파일을 가져와서 파싱
@@ -162,7 +162,7 @@ function MapMain() {
   return (
     <div id="map_main_container">
       <div id="map_main_header_container">지도</div>
-      <div className="map_search_container" onClick={onClickSearch}>검색</div>
+      <div className="map_search_container" onClick={onClickSearch}>{searchValue === '' ? "검색" : searchValue}</div>
       <KakaoMap
         id="map"
         center={center}

@@ -13,7 +13,7 @@ import { ReactComponent as SearchIcon } from '../../../assets/search_icon.svg';
 // recoil
 import { useRecoilState } from 'recoil';
 import { recentSearchesState } from '../../../recoil/SearchesAtoms';
-import { likedState } from '../../../recoil/SearchesAtoms';
+import { likedState, searchValueState } from '../../../recoil/SearchesAtoms';
 
 function MapSearch() {
 
@@ -23,7 +23,8 @@ function MapSearch() {
   const [, setLiked] = useRecoilState(likedState); // 좋아요 상태 관리 변수
   const [, setSearchResult] = useRecoilState(recentSearchesState); // 검색 결과 저장 변수
   const queryClient = useQueryClient();
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState(''); // 검색어 저장 변수
+  const [searchValueAtom, setSearchValueAtom] = useRecoilState(searchValueState); // 검색어 저장 전역변수
   const [autoResults, setAutoResults] = useState([]); // 자동 검색어 결과 상태
 
   // 자동 입력 입력 상태 없데이트
@@ -62,6 +63,7 @@ function MapSearch() {
         },
       });
       setSearchResult(response.data.search_results); //검색 결과 저장
+      setSearchValueAtom(searchValue);
 
       const initialLikedState = response.data.search_results.map(content => content.tourspot_liked === "liked");
       setLiked(initialLikedState);
@@ -127,7 +129,6 @@ function MapSearch() {
         onChange={handleInputChange}
         value={searchValue}>
       </S.Search_container>
-      
       {/* 검색어 자동완성 */}
       {searchValue.length === 0 ? <></>:<>
       <S.SearchWordBox>
