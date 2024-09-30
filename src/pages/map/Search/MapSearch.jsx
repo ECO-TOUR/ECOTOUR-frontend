@@ -24,7 +24,7 @@ function MapSearch() {
   const [, setSearchResult] = useRecoilState(recentSearchesState); // 검색 결과 저장 변수
   const queryClient = useQueryClient();
   const [searchValue, setSearchValue] = useState('');
-  const [searchResults, setSearchResults] = useState([]); // 자동 검색어 결과 상태
+  const [autoResults, setAutoResults] = useState([]); // 자동 검색어 결과 상태
 
   // 자동 입력 입력 상태 없데이트
   const handleInputChange = (event) => {
@@ -33,11 +33,11 @@ function MapSearch() {
     axios.get(`/autocomplete/?query=${event.target.value}`)
       .then(response => {
         //console.log(response.data);
-        setSearchResults(response.data.autocompleteResults || []); // 응답 데이터가 없을 경우 빈 배열로 설정
+        setAutoResults(response.data.autocompleteResults || []); // 응답 데이터가 없을 경우 빈 배열로 설정
       })
       .catch(error => {
         console.error(error);
-        setSearchResults([]); // 에러 발생 시 빈 배열로 설정
+        setAutoResults([]); // 에러 발생 시 빈 배열로 설정
       });
   };
 
@@ -131,8 +131,8 @@ function MapSearch() {
       {/* 검색어 자동완성 */}
       {searchValue.length === 0 ? <></>:<>
       <S.SearchWordBox>
-        {Array.isArray(searchResults) && searchResults.length > 0 ? (
-          searchResults.map((result, index) => (
+        {Array.isArray(autoResults) && autoResults.length > 0 ? (
+          autoResults.map((result, index) => (
             <S.SearchWordItem key={index} onClick={() => onClickWord(result)}>
               <SearchIcon/>
               <S.SearchText>{result}</S.SearchText>

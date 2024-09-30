@@ -16,3 +16,9 @@ export const communitySearchValue = atom({
   key: 'communitySearchValue',
   default: '',
 });
+
+// 관광지 위경도
+export const mapXY = atom({
+  key: 'mapXY',
+  default: []
+});

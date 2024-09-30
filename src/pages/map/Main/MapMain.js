@@ -18,7 +18,7 @@ import { useRecoilState } from 'recoil';
 import { NavAtoms } from '../../../recoil/NavAtoms';
 import { StateAtoms } from '../../../recoil/BottomSheetAtoms';
 import { recentSearchesState } from '../../../recoil/SearchesAtoms';
-import { likedState } from '../../../recoil/SearchesAtoms';
+import { likedState, mapXY } from '../../../recoil/SearchesAtoms';
 
 const EventMarkerContainer = ({ position, content, tourName }) => {
   const map = useMap()
@@ -35,7 +35,7 @@ const EventMarkerContainer = ({ position, content, tourName }) => {
 
   // 검색 API 호출 함수
   const searchAPI = async (tourName) => {
-    //console.log("🚀 ~ searchAPI ~ tourName:", tourName)
+
     const access_token = localStorage.getItem("access_token");
     
     try {
@@ -45,7 +45,7 @@ const EventMarkerContainer = ({ position, content, tourName }) => {
           'Authorization': `Bearer ${access_token}`, // Bearer 토큰 방식으로 추가
         },
       });
-      //console.log('검색 결과:', response.data);
+
       setSearchResult(response.data.search_results || [])
       const initialLikedState = response.data.search_results.map(content => content.tourspot_liked === "liked");
       setLiked(initialLikedState);
@@ -67,10 +67,10 @@ const EventMarkerContainer = ({ position, content, tourName }) => {
   )
 }
 
-
-
 function MapMain() {
+  
   const [data, setData] = useState([]);
+  const [mapXy, setMapXy] = useRecoilState(mapXY); // 검색 결과 표시할 관광지 위경도 정보
 
   useEffect(() => {
 
@@ -90,7 +90,6 @@ function MapMain() {
               tourName: row.tour_name, // tour_name 정보를 추가
             }));
             setData(parsedData);
-            //console.log(parsedData);
           }
         });
       });
@@ -181,14 +180,27 @@ function MapMain() {
           }}
           position={position}
         />
-      {data.map((value) => (
-        <EventMarkerContainer
-          key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
-          position={value.latlng}
-          content={value.content}
-          tourName={value.tourName}
-        />
-      ))}
+      {mapXy.length === 0 ? (
+        // mapXy 배열이 비어있을 경우 data 배열 출력
+        data.map((value) => (
+          <EventMarkerContainer
+            key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
+            position={value.latlng}
+            content={value.content}
+            tourName={value.tourName}
+          />
+        ))
+      ) : (
+        // mapXy 배열이 있을 경우
+        mapXy.map((value) => (
+          <EventMarkerContainer
+            key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
+            position={value.latlng}
+            content={value.content}
+            tourName={value.tourName}
+          />
+        ))
+      )}
       </KakaoMap>
       <img src={LocationBtn} className="location_btn" onClick={setCenterToMyPosition} />
       <BottomSheet>

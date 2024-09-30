@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as S from './Content.style';
-
 // img
 import exampleImage from '../../../assets/example1.png'; // 이미지 파일을 import
 import EmptyHeart from '../../../assets/empty_heart.svg';
@@ -11,7 +10,7 @@ import FillHeart from '../../../assets/click_heart.svg';
 import { useRecoilState, useRecoilValue } from "recoil"; 
 import { StateAtoms } from "../../../recoil/BottomSheetAtoms";
 import { recentSearchesState } from '../../../recoil/SearchesAtoms';
-import { likedState } from '../../../recoil/SearchesAtoms';
+import { likedState, mapXY } from '../../../recoil/SearchesAtoms';
 
 function Content() {
     const user_id = localStorage.getItem('user_id');
@@ -20,6 +19,7 @@ function Content() {
     const [searchResults, setSearchResults] = useState(initialSearchResults); // 상태를 복사하여 관리
     const [scoreList, setScoreList] = useState(false); // 별점순 버튼 상태
     const [viewList, setViewList] = useState(false); // 조회순 버튼 상태
+    const [, setMapXy] = useRecoilState(mapXY);
 
     // 별점순 버튼 클릭 시
     function onClickScoreListBtn() {
@@ -98,6 +98,17 @@ function Content() {
     useEffect(() => {
         prevCloseStateRef.current = closeState;
         //console.log(searchResults);
+        const transformedResults = searchResults.map(result => ({
+            content: <div style={{ color: "#000" }}>{result.tour_name}</div>, // 필요 시 업데이트
+            latlng: {
+              lat: result.tour_y || 0, // 위경도 값 설정
+              lng: result.tour_x || 0,
+            },
+            tourName: result.tour_name || '', // 관광지 이름 설정
+          }));
+        
+        // 변환된 배열을 mapXY에 저장
+        setMapXy(transformedResults);
     }, [closeState]);
 
     // 이전 상태와 현재 상태를 비교하여 변화 감지
